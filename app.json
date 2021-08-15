@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "microMD",
+    "slug": "microMD",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "microMD"
+}
