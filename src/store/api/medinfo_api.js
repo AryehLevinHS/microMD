@@ -370,8 +370,8 @@ export const LabresultListGet = (dispatch,patientId) => {
 //=============================================================================
 export const LabResultTests = (dispatch,patientId,labresultcat_id) => {
 
-  let queryString = '/api/medinfo/labresults/test?patient_id='+patientId+'&labresultcat_id='+labresultcat_id
-  axios.get(queryString)
+  let queryString = `${MEDINFO_SERVER}/labresults/test?patient_id=${patientId}&labresultcat_id=${labresultcat_id}`
+   axios.get(queryString)
   .then(response=>{
       dispatch({type: LABTESTS_GET,payload:response.data}) 
    })

@@ -1,5 +1,5 @@
 
-import {b64toBlob} from  '../../components/utils/document_tools'
+//import {b64toBlob} from  '../../components/utils/document_tools'
 import {LOGIN_USER, USER_REGISTER, AUTH_USER, USER_LOGOUT,LOGIN_FAILURE,
         USER_PASSWORD_CHANGE,USER_PROFILE,USER_PROXY,USER_HOMEPAGECOUNTS,USER_PROXYLIST,USER_LOGINNAME_VERIFY,
         USER_AUTHNUMBER_LIST,USER_AUTHNUMBER_GET,USER_AUTHNUMBER_UPDATE,USER_CONSENT_ADD,USER_NOTE,USER_NOTEUPDATE,USER_NOTELIST,
@@ -51,14 +51,15 @@ export default function(state={},action){
         case USER_LOGOUT: 
             return state
         case PATIENT_PHOTO:
-              let photoBlob = {}
+  /*            let photoBlob = {}
               let photoUrl = ''
                if (action.payload && action.payload.recordset && action.payload.recordset.length > 0){
                    photoBlob = b64toBlob(action.payload.recordset[0].doc_binary) // base64 to blob
                    photoUrl  = URL.createObjectURL(photoBlob);     // blob to url     
                }
                return {...state, data: action.payload,loading:false ,error:'',photo:photoUrl}     
-     
+    */
+   return {...state} 
         case RETREIVE_FAILURE: 
              return {...state, data: {}, error:'Unable to retrieve the data',loading:false} 
         case FORM_VALIDATION_RESET: 

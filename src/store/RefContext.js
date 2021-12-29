@@ -207,6 +207,20 @@ clinicList:[], // to be populated on user profile screen
 //============================================================================= 
 // Appointments 
 //============================================================================= 
+  apptPrefTime: [{ key:'am',value:'Morning'},
+                 { key:'pm',value:'Afternoon'},
+                 { key:'any',value:'Any'}
+                ],
+
+  apptPrefDays: [{ key:'1',value:'Sun', checked:false},
+               { key:'2',value:'Mon', checked:true},
+               { key:'3',value:'Tues',checked:true},
+               { key:'4',value:'Wed', checked:true},
+               { key:'5',value:'Thu', checked:true},
+               { key:'6',value:'Fri', checked:true},
+               { key:'7',value:'Sat', checked:false}
+              ],
+
   apptTypes: [  { key:'office',value:'Office Visit'},
                  { key:'telehealth',value:'Video Consultation'},
                  { key:'phone',value:'Phone Consultation'},

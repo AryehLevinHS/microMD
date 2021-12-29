@@ -27,7 +27,8 @@ const AllergyList = () => {
     const AllergyDisplay = ({allergydata}) => {
 
         if (!allergydata || !allergydata.recordset || allergydata.recordset.length === 0)
-           return (<View> </View>)
+           return (<View> 
+                   </View>)
 
         return (
             <View>
@@ -47,7 +48,7 @@ const AllergyList = () => {
 //=============================================================================
  return (
     <ScrollView>
-        <Text> Allergies</Text>
+        {/* <Text> Allergies</Text> */}
         {state.loading ? loading(true) : loading(false)}
         <AllergyDisplay allergydata={state.data} />
     </ScrollView>

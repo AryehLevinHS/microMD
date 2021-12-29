@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity} from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 
 // tools
 import { loading } from '../../utils/misc_tools'
@@ -12,7 +13,7 @@ import {appStyles} from '../../../resources/styles/main_styles'
 // Get Notice data
 //=============================================================================
 const NoticeList = () => {
-
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const [state,DataNoticeGetList,DataNoticeSetStatus] = useNotices()
     //=============================================================================
@@ -20,6 +21,13 @@ const NoticeList = () => {
     //=============================================================================
     useEffect(()=>{
         DataNoticeGetList(user.patient_id)
+
+        // navigation.setOptions({
+        //     headerLeft:()=> (<TouchableOpacity  onPress={()=>{navigation.toggleDrawer()}  }>
+        //                      <Text>NAV</Text>
+                             
+        //                     </TouchableOpacity>)
+        // })
     },[])
     //=============================================================================
     // NoticeListDisplay - displays the list of notices
@@ -27,7 +35,9 @@ const NoticeList = () => {
     const NoticeListDisplay = ({noticedata}) => {
 
         if (!noticedata || !noticedata.recordset || noticedata.recordset.length === 0)
-           return (<View> </View>)
+           return (<View> 
+                   </View>
+           )
 
         return (
             <View>
@@ -47,7 +57,7 @@ const NoticeList = () => {
 //=============================================================================
  return (
     <ScrollView>
-        <Text> Notices</Text>
+        {/* <Text> Notices</Text> */}
         {state.loading ? loading(true) : loading(false)}
         <NoticeListDisplay noticedata={state.data} />
     </ScrollView>

@@ -8,6 +8,7 @@ import { USER_SERVER} from '../store/api/server_route'
 //=============================================================================
 export const UserContext = React.createContext({
     token: 'xx',
+    baseURL:'',
     portal_user_id: '1',
     portal_user_name: 'Danny Lee Smith',
     login_name: 'danny',
@@ -47,8 +48,17 @@ export const UserContext = React.createContext({
      mail_outbox_filter:{read:false,date_range:'all',from_date:'',to_date:''},
      mail_inbox_filter_open: false,
      mail_inbox_filter:{read:false,date_range:'all',from_date:'',to_date:''},
-
-
+//=============================================================================
+// Local Storage
+//=============================================================================
+     localStorage: {
+        labresult_id: '408594',
+        labresultcat_id: '117069',
+        note_id:5,
+        msg_id:4,
+        authentication_id:13,
+        patcontact_id:168156,
+     }
 })
 //=============================================================================
 // Functions for the context

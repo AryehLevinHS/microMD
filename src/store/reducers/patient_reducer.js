@@ -7,7 +7,7 @@ import {PATIENT_PERSONALDATA,PATIENT_DEMOGRAPHIC_UPDATE,PATIENT_INSURANCE,PATIEN
         PATIENT_PROVIDERWORKPLACE,PATIENT_PHOTO,PATIENT_PROXY,
         SAVE_FAILURE,RETREIVE_FAILURE,SEND_FAILURE,FORM_VALIDATION_FAILURE,FORM_VALIDATION_RESET,FORM_ERROR
         } from '../api/types'
-import {b64toBlob} from  '../../components/utils/document_tools'
+//import {b64toBlob} from  '../../components/utils/document_tools'
 
 //=============================================================================
 // userreducer
@@ -34,13 +34,15 @@ export default function(state={},action){
         case PATIENT_INSURANCEUPDATE: 
              return {...state, data: action.payload, error:'',loading:false, sendSuccess: true}
         case PATIENT_PHOTO:
-              let photoBlob = {}
+    /*          let photoBlob = {}
               let photoUrl = ''
                if (action.payload && action.payload.recordset && action.payload.recordset.length > 0){
                    photoBlob = b64toBlob(action.payload.recordset[0].doc_binary) // base64 to blob
                    photoUrl  = URL.createObjectURL(photoBlob);     // blob to url     
                }
                return {...state, data: action.payload,loading:false ,error:'',photo:photoUrl}     
+               */
+              return {...state}
         case PATIENT_REGISTER_LOGINNAME_VERIFY:
              let verified = false
              if (action.payload && action.payload.recordset && action.payload.recordset.length > 0) {

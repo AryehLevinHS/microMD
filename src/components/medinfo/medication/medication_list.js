@@ -1,5 +1,6 @@
 import React, { useContext, useEffect,useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+//import moment from 'moment'
 // tools
 import { loading } from '../../utils/misc_tools'
 // data
@@ -15,6 +16,11 @@ const MedicationList = () => {
     const user = useContext (UserContext)
     const [state,DataMedicationGetList] = useMedicationList()
     //filtering
+    let currentDate = new Date()
+    let fromDate = currentDate
+    let toDate = currentDate
+  //  let fromDate = moment(currentDate).format('YYYY-MM-DD') // need this format for a date field
+  //  let toDate = moment(currentDate).format('YYYY-MM-DD')
     const [filterData,setFilterData] = useState({medlist:'current',date_range:'past_month',begin_date:fromDate,end_date:toDate})
    
     //=============================================================================
@@ -29,7 +35,8 @@ const MedicationList = () => {
     const MedicationDisplay = ({medicationdata}) => {
 
         if (!medicationdata || !medicationdata.recordset || medicationdata.recordset.length === 0)
-           return (<View></View>)
+           return (<View>
+                  </View>)
 
         return (
             <View>
@@ -45,7 +52,6 @@ const MedicationList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text> Medications</Text>
             {state.loading ? loading(true) : loading(false)} 
             <MedicationDisplay medicationdata={state.data} /> 
         </ScrollView>

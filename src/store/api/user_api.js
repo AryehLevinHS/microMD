@@ -228,6 +228,7 @@ export const noteDelete = (dispatch,portal_user_id,note_id) => {
 export const noteUpdate = (dispatch,dataToSubmit) => {
   
    let queryString = `${USER_SERVER}/note_update`
+
    axios.post(queryString,dataToSubmit)
    .then(response=>{
          dispatch({type:USER_NOTEUPDATE,payload:response.data})

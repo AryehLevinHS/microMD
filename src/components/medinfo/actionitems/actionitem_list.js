@@ -5,55 +5,54 @@ import { Text, View,ScrollView,TouchableOpacity} from 'react-native'
 import { loading } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
-import {useAllergyList} from '../../../store/hooks/useMedinfoData'
+import {useActionItemList} from '../../../store/hooks/useMedinfoData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
 //=============================================================================
-// Get Allergy data
+// Get ActionitemList data
 //=============================================================================
-const AllergyList = () => {
+const ActionitemList = () => {
 
     const user = useContext (UserContext)
-    const [state,DataAllergyGetList] = useAllergyList()
+    const [state,DataActionItemGetlist,DataActionItemSetStatus] = useActionItemList()
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
     useEffect(()=>{
-        DataAllergyGetList(user.patient_id)
+        DataActionItemGetlist(user.patient_id)
     },[])
     //=============================================================================
-    // AllergyDisplay - displays the lsit of allergies
+    // ActionItemDisplay - displays the list of action items
     //=============================================================================
-    const AllergyDisplay = ({allergydata}) => {
+    const ActionItemDisplay = ({actionitemdata}) => {
 
-        if (!allergydata || !allergydata.recordset || allergydata.recordset.length === 0)
-           return (<View> </View>)
+        if (!actionitemdata || !actionitemdata.recordset || actionitemdata.recordset.length === 0){
+           return (<View>
+                  </View>)
+        }
 
         return (
             <View>
-                {allergydata.recordset.map((row,index) => (
-                <TouchableOpacity key={index} style={appStyles.item}>
-                    <Text >{'Allergy: '+row.description}</Text>
-                    <Text >{'Severity: '+row.allergy_severity}</Text>
-                    <Text >{'Diagnosed:'+row.begin_date_display}{'  By:'+row.diagnosed_by}</Text>
+                {actionitemdata.recordset.map((row,index) => (
+                <TouchableOpacity key={row.actionitem_id} style={appStyles.item}>
+                    <Text >{row.description}</Text>
+                    <Text >{'Sent By: '+row.provider_name}{' On: '+row.date_sent_display}</Text>
                 </TouchableOpacity> 
                ))}
            </View>
         )
-
-      
     }
 
 //=============================================================================
  return (
     <ScrollView>
-        <Text> Allergies</Text>
+        <Text> Action Items</Text>
         {state.loading ? loading(true) : loading(false)}
-        <AllergyDisplay allergydata={state.data} />
+        <ActionItemDisplay actionitemdata={state.data} />
     </ScrollView>
  )
 
 }
  
-export default AllergyList;
+export default ActionitemList;
 //=============================================================================

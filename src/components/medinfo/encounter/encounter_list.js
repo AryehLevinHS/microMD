@@ -44,7 +44,6 @@ const EncounterList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text> Visits</Text>
             {state.loading ? loading(true) : loading(false)} 
             <EncounterDisplay encounterdata={state.data} /> 
         </ScrollView>

@@ -32,7 +32,7 @@ const ImmunizationList = () => {
             <View>
                 {immunizationdata.recordset.map((row) => (
                 <TouchableOpacity key={row.immunization_id} style={appStyles.item}>
-                    <Text >{row.vaccine_name}</Text>
+                    <Text style={appStyles.bold}>{row.vaccine_name}</Text>
                     <Text >{'Scheduled: '+row.scheduled}{'  Given:'+row.given}</Text>
                     <Text >{'Last Given: '+row.last_given_display} {'  Next Scheduled:'+row.next_sched_display}</Text> 
                 </TouchableOpacity> 
@@ -43,7 +43,6 @@ const ImmunizationList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text> Immunizations</Text>
             {state.loading ? loading(true) : loading(false)} 
             <ImmunizationDisplay immunizationdata={state.data} /> 
         </ScrollView>

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Icon } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading } from '../../utils/misc_tools'
 // data
@@ -7,6 +9,8 @@ import { UserContext } from '../../../store/UserContext'
 import {useCareplanList} from '../../../store/hooks/useMedinfoData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
+// navigation
+import {NAV_MEDINFO_CAREPLAN_PROGRESS} from '../../../navigation/route_types' 
 //=============================================================================
 // Get Careplan data
 //=============================================================================
@@ -14,12 +18,19 @@ const CareplanList = () => {
 
     const user = useContext (UserContext)
     const [state,DataCareplanGetList,DataCareplanSetStatus] = useCareplanList()
+    const navigation = useNavigation();
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
     useEffect(()=>{
         DataCareplanGetList(user.patient_id)
     },[])
+    //=============================================================================
+    // addItem - adds a new item
+    //=============================================================================
+    const addItem = () =>{
+        navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
+    }
     //=============================================================================
     // CareplanDisplay - displays the list of careplans
     //=============================================================================
@@ -42,7 +53,15 @@ const CareplanList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text> Care Plan</Text>
+            {/* <Text> Care Plan</Text> */}
+            <View style={appStyles.addButton}>
+                <Icon 
+                    name='pluscircleo'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => addItem()}
+                />
+              </View>
             {state.loading ? loading(true) : loading(false)} 
             <CareplanDisplay careplandata={state.data} /> 
         </ScrollView>

@@ -1,0 +1,83 @@
+
+export const NAV_HOME_NAVIGATOR = 'Home Navigator'
+export const NAV_HOME = 'Home'
+export const NAV_DEFAULT = '/'
+
+/*appointments */
+export const NAV_APPT_NAVIGATOR   = 'Appt Navigator'
+export const NAV_APPT_CURRENT = 'Current Appointments'
+export const NAV_APPT_PAST    = 'Past Appointments'
+export const NAV_APPT_REQ     = 'Appointment Request'
+export const NAV_APPT_NEW     = 'New Appointment'
+
+/* Practice */
+export const NAV_PRACTICE_NAVIGATOR       = 'Practice'
+export const NAV_PRACTICE_NEWS            = 'News & Updates'
+export const NAV_PRACTICE_NEWS_VIEW       = '/practice/practice_news/view'
+export const NAV_PRACTICE_RESOURCES       = 'Info and Resources'
+export const NAV_PRACTICE_INFO            = 'Practice Information'
+export const NAV_PRACTICE_EDU             = '/practice/patient_education'
+
+/* User  */
+export const NAV_USER_NAVIGATOR           = 'User Navigator'
+export const NAV_USER_DASHBOARD           = 'User Dashboard'
+export const NAV_USER_PROFILE             = 'User Profile'
+export const NAV_USER_NOTES               = 'User Notes'
+export const NAV_USER_NOTES_EDIT          = 'Edit Notes'
+export const NAV_USER_AUTHENTICATION_EDIT = '/user/authentication_edit'
+export const NAV_USER_LOGOUT              = '/user/logout'
+export const NAV_USER_LOGIN               = 'Login'
+export const NAV_USER_REGISTER            = 'Register User'
+export const NAV_USER_FORGOTPASSWORD      = 'Forgot Password'
+
+/* Patient */
+export const NAV_PATIENT_NAVIGATOR        = 'Patient'
+export const NAV_PATIENT_PROVIDERS        = 'My Providers'
+export const NAV_PATIENT_PERSONAL         = 'Personal Information'
+export const NAV_PATIENT_PERSONAL_EDIT    = '/patient/personal/edit'
+export const NAV_PATIENT_CHARGES          = '/patient/charges'
+export const NAV_PATIENT_STATEMENTS       = '/patient/statements'
+export const NAV_PATIENT_PAYMENTS         = '/patient/payments'
+export const NAV_PATIENT_CONTACT_NAVIGATOR = 'Contacts'
+export const NAV_PATIENT_CONTACTS         = 'Patient Contacts'
+export const NAV_PATIENT_CONTACTS_EDIT    = 'Edit Patient Contact'
+export const NAV_PATIENT_INSURANCE        = 'Insurance'
+export const NAV_PATIENT_INSURANCE_EDIT   = 'Edit Patient Insurance'
+
+/* Mail */
+export const NAV_MAIL_NAVIGATOR           = 'Mail'
+export const NAV_MAIL_INBOX               = 'Inbox'
+export const NAV_MAIL_OUTBOX              = 'OutBox'
+export const NAV_MAIL_MESSAGE             = 'New Mail Message'
+export const NAV_MAIL_MSGDISPLAY          = 'Mail Message'
+
+/* Medinfo */
+export const NAV_MEDINFO_NAVIGATOR        = 'Medical'
+export const NAV_MEDINFO_DASHBOARD        = 'Dashboard'
+export const NAV_MEDINFO_ALERTS           = '/medinfo/alerts'  // not programmed yet
+export const NAV_MEDINFO_ALLERGIES        = 'Allergies'
+export const NAV_MEDINFO_CAREPLAN_NAVIGATOR  = 'Care Plan List'
+export const NAV_MEDINFO_CAREPLAN         = 'Care Plan'
+export const NAV_MEDINFO_CAREPLAN_PROGRESS= '/medinfo/careplan/progress'
+export const NAV_MEDINFO_DOCUMENTS        = 'Medical Documents'
+export const NAV_MEDINFO_DOCUMMENT_VIEW   = '/medinfo/documents/view'
+export const NAV_MEDINFO_FORMS            = '/medinfo/forms'
+export const NAV_MEDINFO_FORM_FILL        = '/medinfo/forms/formfill'
+export const NAV_MEDINFO_FORM_VIEW        = '/medinfo/forms/formView'
+export const NAV_MEDINFO_HOSPITALIZATIONS = '/medinfo/hospitalizations' // not progrmmed yet
+export const NAV_MEDINFO_IMMUNIZATIONS    = 'Immunizations'
+export const NAV_MEDINFO_LABRESULTS       = 'Lab Results'
+export const NAV_MEDINFO_LABRESULT_GRAPH  = '/medinfo/labresults/graph'
+export const NAV_MEDINFO_LABRESULT_COMPARE= '/medinfo/labresults/compare'
+export const NAV_MEDINFO_LABRESULT_TESTS  = '/medinfo/labresults/tests'
+export const NAV_MEDINFO_MEDICATIONS      = 'Medications'
+export const NAV_MEDINFO_REFILLS          = 'Medication Refills'
+export const NAV_MEDINFO_REFERRALS_NAVIGATOR = 'Referral List'
+export const NAV_MEDINFO_REFERRALS        = 'Referrals'
+export const NAV_MEDINFO_REFERRAL_REQUEST = '/medinfo/referrals/request'
+export const NAV_MEDINFO_VISITS           = 'Visits'
+export const NAV_MEDINFO_VISITS_VIEW      = '/medinfo/encounters/view'
+export const NAV_MEDINFO_VITALSIGNS       = 'Vitalsigns'
+export const NAV_MEDINFO_VITALSIGN_EDIT   = '/medinfo/vitalsigns/edit'
+export const NAV_MEDINFO_VITALSIGN_GRAPH  = '/medinfo/vitalsigns/graph'
+export const NAV_MEDINFO_VITALSIGN_DEVICE = '/medinfo/vitalsigns/edit'
