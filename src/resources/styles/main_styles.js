@@ -9,7 +9,8 @@ export const appStyles = StyleSheet.create({
       backgroundColor: '#6fbcdc',//'#2196F3', //"#f9c2ff",
       padding: 10,
       marginVertical: 8,
-      margin:8
+      margin:8,
+      borderRadius:5,
     },
     header: {
       fontSize: 32,
@@ -19,17 +20,26 @@ export const appStyles = StyleSheet.create({
       fontSize: 24
     },
     addButton: {
-      //backgroundColor:'blue',
-      //width: 55,
-      //height:55,
       margin:10,
-      //right: 5,
-     // borderRadius:100,
-       flexDirection: "row",
+      flexDirection: "row",
       justifyContent:'center',
       alignItems:'center',
       alignSelf: 'flex-end'
     },
+    deleteButton: {
+      right: 5,
+      flexDirection: "row",
+      alignSelf: 'flex-end',
+      color: '#841584'
+    },
+    goBackButton: {
+      margin:10,
+      flexDirection: "row",
+      //justifyContent:'center',
+      //alignItems:'center',
+      alignSelf: 'flex-start'
+    },
+   
     //=============================================================================
     // General Settings
     //=============================================================================

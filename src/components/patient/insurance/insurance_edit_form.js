@@ -1,30 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment'
+
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { AppButton,AppMessage } from '../../utils/misc_tools';
+import { loading,AppButton,AppMessage } from '../../utils/misc_tools';
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
-import {useCareplanForm}     from '../../../store/hooks/useMedinfoData'
-import {careplanData}   from './careplan_data'
+
+import {useInsuranceForm}   from '../../../store/hooks/usePatientData'
+import {InsuranceData}   from './insurance_edit_data'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
-
 //=============================================================================
-// CarePlanProgress - edit the careplan progress
+// InsuranceEditForm - edit the patients insurance
 //=============================================================================
-const CarePlanProgress = () => {
+const InsuranceEditForm = () => {
 
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
-    const [loadingState,state,DataCarePlanSendProgress,DataCarePlanGetbyId,
-        DataValidationFailure,DataValidationReset]  = useCareplanForm()
-    const [formdata,setFormdata] = useState (careplanData)
+    // for loading and sending the data
+    const [state,loadingState,DataInsuranceGetDetails,DataInsuranceUpdate,
+        DataValidationFailure,DataValidationReset] = useInsuranceForm()
+    const [formdata,setFormdata] = useState (InsuranceData)
     const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
@@ -46,47 +49,50 @@ const CarePlanProgress = () => {
     //=============================================================================
     useEffect(()=>{
 
-         navigation.setOptions({
-             headerLeft:()=> (<TouchableOpacity  onPress={()=>{navigation.toggleDrawer()}  }>
-                              <Text>NAV</Text>
-                             
-                             </TouchableOpacity>)
-         })
-
         let newFormdata = formdata
         // set dropdowns
-        newFormdata = populateOptionFields(newFormdata,ref.careplanProgress,'progress_level')  
-        newFormdata = populateOptionFields(newFormdata,ref.providerList,'provider_id')   
-    
-        // set default values 
-        setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
-        setDefaultValue(newFormdata,'sender_name',user.portal_user_name)
-        setDefaultValue(newFormdata,'patient_id',user.patient_id)
-         
+        newFormdata = populateOptionFields(newFormdata,ref.yes_no,'accept_assignment')    
+        newFormdata = populateOptionFields(newFormdata,ref.relationship,'policy_holder_relationship')    
+        newFormdata = populateOptionFields(newFormdata,ref.states,'policy_holder_state')   
+
+        if (insurance_id > 0) {  // edit
+            DataInsuranceGetDetails(user.portal_user_id,insurance_id)  // see useeffect below
+        } else {            // add 
+            resetFields(newFormdata,'insurance')
+            setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
+            setDefaultValue(newFormdata,'patient_id',user.patient_id)
+            setDefaultValue(newFormdata,'effective_date',moment(new Date()).format('YYYY-MM-DD'))
+            setDefaultValue(newFormdata,'terminate_date',moment(new Date()).format('YYYY-MM-DD'))
+           
+       
+        }
+
         setFormdata(newFormdata)    
         DataValidationReset() 
 
-        let careplanId = 1 // localStorage.getItem('careplan_id');
-        if (careplanId > 0 ) {
-       //     localStorage.removeItem('careplan_id'); // clear data
-         }
-        if ( careplanId > 0){
-            /* existing care plan header */
-            DataCarePlanGetbyId(user.patient_id,careplanId)     
-        }
-       
-
     },[])
-    
+    //=============================================================================
+    // useEffect to load the data from the server (edit)
+    //=============================================================================
+    useEffect(()=>{
+        if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
+            let noteData    = loadingState.data.recordset[0]
+            let newFormData = formdata
+            
+            newFormData = populateFields(formdata,noteData)
+            setFormdata(newFormData) 
+            DataValidationReset()  //otherwize does not refresh
+        }
+    },[loadingState.loading])   
     //=============================================================================
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
         // NOTE: called when loading data 
         //console.log('update field',id,action,value)
-        
+
         // DataValidationReset()
-        const newFormdata = updateField(formdata,id,action,value,'careplanprogress');
+        const newFormdata = updateField(formdata,id,action,value,'insurance');
          setFormdata(newFormdata)    
     }
     //=============================================================================
@@ -94,11 +100,11 @@ const CarePlanProgress = () => {
     //=============================================================================
     const submitForm = () =>{
  
-        let dataToSubmit   = generateData(formdata,'careplanprogress');
-        let formIsValidRet = isFormValid(formdata,'careplanprogress')
+        let dataToSubmit   = generateData(formdata,'insurance');
+        let formIsValidRet = isFormValid(formdata,'insurance')
        
          if(formIsValidRet.formIsValid){
-            DataReferralSend(dataToSubmit)
+            DataNoteUpdate(dataToSubmit)
          } else {
             DataValidationFailure(formIsValidRet.errorMsg)
          }     
@@ -106,21 +112,23 @@ const CarePlanProgress = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-            {/* <Text style={appStyles.form_title}> Edit User Notes</Text> */}
-            <Formfield id={'provider_id'} formdata={formdata.provider_id}
+            <Text style={appStyles.form_title}> Edit Patient Insurance</Text>
+            <Formfield id={'note_type'} formdata={formdata.note_type}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-           <Formfield id={'progress_level'} formdata={formdata.progress_level}
+            <Formfield id={'status'} formdata={formdata.status}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'progress_notes'} formdata={formdata.progress_notes}
+            <Formfield id={'subject'} formdata={formdata.subject}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />            
-            <Formfield id={'comment'} formdata={formdata.comment}
+            <Formfield id={'note'} formdata={formdata.note}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? <AppMessage type ='success' message='Careplan Progress Sent Successfully' /> : <View></View> }  
-             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} /> : <View></View> } 
-             <AppButton type='send' title='Send Careplan Progress' onPress={submitForm}/>
+
+            {state.sendSuccess ? <AppMessage type ='success' message='Insurance Sent Successfully' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} /> : <View></View> } 
+            <AppButton type='send' title='Save User Note' onPress={submitForm}/>
+
         </ScrollView>
     )
 }
  
-export default CarePlanProgress;
+export default InsuranceEditForm;
 //=============================================================================

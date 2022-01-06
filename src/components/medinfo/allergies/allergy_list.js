@@ -33,16 +33,17 @@ const AllergyList = () => {
         return (
             <View>
                 {allergydata.recordset.map((row,index) => (
-                <TouchableOpacity key={index} style={appStyles.item}>
-                    <Text >{'Allergy: '+row.description}</Text>
+                <TouchableOpacity key={row.allergy_id} style={appStyles.item}>
+                    <View style={{flexDirection:'row'}} key={index}>
+                       <Text>Allergy: </Text> 
+                       <Text style={appStyles.bold}>{row.description}</Text>
+                    </View>
                     <Text >{'Severity: '+row.allergy_severity}</Text>
-                    <Text >{'Diagnosed:'+row.begin_date_display}{'  By:'+row.diagnosed_by}</Text>
+                    <Text >{'Recorded on: '+row.begin_date_display}{'  By:'+row.diagnosed_by}</Text>
                 </TouchableOpacity> 
                ))}
            </View>
         )
-
-      
     }
 
 //=============================================================================

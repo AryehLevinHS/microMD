@@ -7,7 +7,7 @@ import { updateField, generateData, isFormValid, setDefaultValue,populateOptionF
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,MessageDisplay } from '../../utils/misc_tools'
+import { loading,AppButton,AppMessage } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -29,6 +29,7 @@ const RefillForm = () => {
     const  [loadingState,DataMedicationsGetForRefill] = useMedicationRefill();   
     const [formdata,setFormdata] = useState (refillData)
     const [checked, setChecked]  = useState([]);
+    const [medications,setMedications] = useState()
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
@@ -82,41 +83,45 @@ const RefillForm = () => {
     // RefillDisplay - displays the refill llist
     //=============================================================================
     const RefillDisplay = () => {
+
         let medlist = (<View>
                       </View>)
-       // if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
-       //     let medications    = loadingState.data.recordset
-          let medications = [{description:'med1',prescription_id:1,dosage_description:"1 times per day"},
-                             {description:'med2',prescription_id:2,dosage_description:"2 times per day"},
-                             {description:'med3',prescription_id:3,dosage_description:"3 times per day"}]
+    
+    //console.log('meds','None')
+    
+    if (medications && medications.length > 0) {
+    //    console.log('meds',medications)
+    //    //     let medications    = loadingState.data.recordset
+    //   //    let medications = [{description:'med1',prescription_id:1,dosage_description:"1 times per day"},
+    //   //                       {description:'med2',prescription_id:2,dosage_description:"2 times per day"},
+    //   //                       {description:'med3',prescription_id:3,dosage_description:"3 times per day"}]
+   // <CheckBox size={20} containerStyle={{backgroundColor:'#2196F3',height:35}}
+            medlist =  medications.map(row => (
+                             <View key={row.prescription_id} style={appStyles.item}>
+                                  <CheckBox size={20} 
+                                            containerStyle={{backgroundColor:'transparent'}}
+                                            title= {row.description}
+                                            checked={checked.indexOf(row.prescription_id) !== -1}
+                                            onPress={() => HandleToggle(row.prescription_id)}
+                                  />
+                              <Text >{'Dosage: '+row.sig_text}</Text>
+                          </View> 
+                       ))
 
-         medlist =          medications.map(row => (
-                                <View key={row.prescription_id} style={appStyles.item}>
-                                    <CheckBox size={20} containerStyle={{backgroundColor:'#2196F3',height:35}}
-                                    title= {row.description}
-                                    checked={checked.indexOf(row.prescription_id) !== -1}
-                                     onPress={() => HandleToggle(row.prescription_id)}
-                                     />
-                                   <Text >{'   Dosage: '+row.dosage_description}</Text>
-                               </View> 
-                             ))
-            
-            return medlist
+          }     
+         return medlist
                
   
     }
     //=============================================================================
     // useEffect to load the data from the server ()
     //=============================================================================
-    useEffect(()=>{
-        if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
-            let medications    = loadingState.data.recordset[0]
-          
-            
-            // LOAD MEDICATION LIST
-        }
+     useEffect(()=>{
+         if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
+             setMedications(loadingState.data.recordset)
+         }
         
-    },[loadingState.loading])   
+     },[loadingState.loading])   
     //=============================================================================
     // updateFormField (update fields on the form)
     //=============================================================================
@@ -146,15 +151,14 @@ const RefillForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
             {/* <Text style={appStyles.form_title}> Refill Requests</Text> */}
-                   <RefillDisplay medications={state.data} />  
+            <RefillDisplay /> 
             <Formfield id={'notes'} formdata={formdata.notes}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? MessageDisplay('success','Request Sent Successfully') : <View></View> }  
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
-                 Send Refill Request
-            </Button>
-           
+
+            {state.sendSuccess ? <AppMessage type ='success' message='Request Sent Successfully' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} visible={true} /> : <View></View> } 
+            <AppButton type='send' title=' Send Refill Request' onPress={submitForm}/>
+            
         </ScrollView>
     )
 }

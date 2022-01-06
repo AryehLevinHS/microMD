@@ -16,20 +16,21 @@ import {
   NAV_HOME,NAV_DEFAULT,
   
   NAV_APPT_NAVIGATOR,
-  NAV_APPT_CURRENT,NAV_APPT_PAST,NAV_APPT_REQ,NAV_APPT_NEW,
+  NAV_APPT_CURRENT,NAV_APPT_PAST,NAV_APPT_REQ,NAV_APPT_NEW,NAV_MAIL_MESSAGE_LINK,
   
   NAV_MEDINFO_NAVIGATOR,
   NAV_MEDINFO_ALLERGIES,
   NAV_MEDINFO_CAREPLAN_NAVIGATOR,NAV_MEDINFO_CAREPLAN,NAV_MEDINFO_CAREPLAN_PROGRESS,
   NAV_MEDINFO_DOCUMENTS,NAV_MEDINFO_DOCUMMENT_VIEW,
-  NAV_MEDINFO_FORMS,NAV_MEDINFO_FORM_FILL,NAV_MEDINFO_IMMUNIZATIONS,
-  NAV_MEDINFO_LABRESULTS,NAV_MEDINFO_LABRESULT_GRAPH,NAV_MEDINFO_LABRESULT_COMPARE,
+  NAV_MEDINFO_FORMS,NAV_MEDINFO_FORM_FILL,NAV_MEDINFO_FORM_VIEW,
+  NAV_MEDINFO_IMMUNIZATION_NAVIGATOR,NAV_MEDINFO_IMMUNIZATION_LIST,NAV_MEDINFO_IMMUNIZATION_DETAIL,
+  NAV_MEDINFO_LABRESULTS,NAV_MEDINFO_LABRESULT_NAVIGATOR,NAV_MEDINFO_LABRESULT_GRAPH,NAV_MEDINFO_LABRESULT_COMPARE,
   NAV_MEDINFO_LABRESULT_TESTS,
   NAV_MEDINFO_MEDICATIONS,NAV_MEDINFO_REFILLS,
-  NAV_MEDINFO_HOSPITALIZATIONS,NAV_MEDINFO_FORM_VIEW,
+  NAV_MEDINFO_HOSPITALIZATIONS,
   NAV_MEDINFO_REFERRALS_NAVIGATOR,NAV_MEDINFO_REFERRALS,NAV_MEDINFO_REFERRAL_REQUEST,
   NAV_MEDINFO_VISITS,NAV_MEDINFO_VISITS_VIEW,
-  NAV_MEDINFO_VITALSIGNS,NAV_MEDINFO_VITALSIGN_GRAPH,NAV_MEDINFO_VITALSIGN_EDIT,
+  NAV_MEDINFO_VITALSIGNS,NAV_MEDINFO_VITALSIGN_GRAPH,NAV_MEDINFO_VITALSIGN_EDIT,NAV_MEDINFO_VITALSIGN_NAVIGATOR,
   NAV_MEDINFO_ALERTS,NAV_MEDINFO_DASHBOARD,
  
   NAV_MAIL_NAVIGATOR,
@@ -39,7 +40,8 @@ import {
   NAV_PATIENT_PROVIDERS,NAV_PATIENT_PERSONAL,NAV_PATIENT_CHARGES,NAV_PATIENT_INSURANCE,
   NAV_PATIENT_INSURANCE_EDIT,NAV_PATIENT_PERSONAL_EDIT,NAV_PATIENT_PAYMENTS,NAV_PATIENT_STATEMENTS,
   NAV_PATIENT_CONTACT_NAVIGATOR,NAV_PATIENT_CONTACTS,NAV_PATIENT_CONTACTS_EDIT,
-  NAV_USER_NOTES,NAV_USER_NOTES_EDIT,NAV_USER_PROFILE,NAV_USER_AUTHENTICATION_EDIT,
+  NAV_USER_NOTES_NAVIGATOR,NAV_USER_NOTES,NAV_USER_NOTES_EDIT,NAV_USER_PROFILE,
+  NAV_USER_AUTHENTICATION_EDIT,
  
   NAV_PRACTICE_NAVIGATOR,
   NAV_PRACTICE_NEWS,NAV_PRACTICE_NEWS_VIEW,NAV_PRACTICE_RESOURCES,NAV_PRACTICE_INFO,NAV_PRACTICE_EDU} from './route_types'  
@@ -62,6 +64,7 @@ import DocumentList     from '../components/medinfo/document/document_list';
 import EncounterList    from '../components/medinfo/encounter/encounter_list';
 import FormList         from '../components/medinfo/forms/form_list';
 import ImmunizationList from '../components/medinfo/immunization/immunization_list';
+import ImmunizationDetail from '../components/medinfo/immunization/immunization_detail';
 import LabresultList    from '../components/medinfo/labresult/labresult_list';
 import LabResultTests   from '../components/medinfo/labresult/labresult_tests';
 import LabResultCompare from '../components/medinfo/labresult/labresult_compare';
@@ -72,6 +75,8 @@ import ReferralList     from '../components/medinfo/referral/referral_list'
 import ReferralForm     from '../components/medinfo/referral/referral_form'
 import NoticeList       from '../components/medinfo/notices/notice_list';
 import VitalSignList    from '../components/medinfo/vitalsigns/vitalsign_list';
+import VitalSignEdit    from '../components/medinfo/vitalsigns/vitalsign_list';
+import VitalSignCompare from '../components/medinfo/vitalsigns/vitalsign_list';
 
 // Appt
 import ApptPastList     from '../components/appointments/appt_past_list';
@@ -98,7 +103,7 @@ import AuthNoEditForm   from '../components/user/authentication/authno_edit_form
 import TermsofUse       from '../components/user/register/terms_of_use';
 import ProxyScreen      from '../components/user/proxy/proxy_screen'; 
 import RegisterForm     from '../components/user/register/register_form'; 
-import UserProfile      from '../components/user/register/register_form'; 
+import UserProfile      from '../components/user/profile/profile_screen'; 
 
 // Practice
 import NewsList         from '../components/practice/news/news_list';
@@ -133,24 +138,39 @@ export const Routes = () => {
      const CarePlanStack  = createNativeStackNavigator();
      const ReferrralStack = createNativeStackNavigator();
      const HomeStack      = createNativeStackNavigator();
-    
+     const NotesStack     = createNativeStackNavigator();
+     const LabResultStack = createNativeStackNavigator();
+     const VitalSignStack = createNativeStackNavigator();
+     const ImmunizationStack = createNativeStackNavigator();
+     
+     
     //=============================================================================
     // HomeNavigator - navigator for home
     //=============================================================================
     const HomeNavigator = () => {
       return (
-              <HomeStack.Navigator>
-                <HomeStack.Screen name={NAV_HOME}                      component={HomeScreen}
-                  options= {{headerShown: false}}
-                 />
-                 <HomeStack.Screen name={NAV_MAIL_NAVIGATOR}     component={MailNavigator} />
-                 <HomeStack.Screen name={NAV_PATIENT_NAVIGATOR}  component={PatientNavigator} />
-                 <HomeStack.Screen name={NAV_APPT_NAVIGATOR}     component={AppointmentNavigator} />
-                 <HomeStack.Screen name={NAV_PRACTICE_NAVIGATOR} component={PracticeNavigator} />
-                 <HomeStack.Screen name={NAV_MEDINFO_NAVIGATOR}  component={MedinfoNavigator} />
-                 <HomeStack.Screen name={NAV_MEDINFO_REFILLS}    component={RefillForm} />
-             
-           
+              <HomeStack.Navigator >
+                <HomeStack.Screen name={NAV_HOME}                component={HomeScreen}
+                  options= {{headerShown: false}} />
+                 <HomeStack.Screen name={NAV_MAIL_NAVIGATOR}     component={MailNavigator} 
+                  options= {{headerShown: false}} />
+                 <HomeStack.Screen name={NAV_PATIENT_NAVIGATOR}  component={PatientNavigator}
+                  options= {{headerShown: false}} />
+                 <HomeStack.Screen name={NAV_APPT_NAVIGATOR}     component={AppointmentNavigator}
+                  options= {{headerShown: false}}  />
+                 <HomeStack.Screen name={NAV_PRACTICE_NAVIGATOR} component={PracticeNavigator} 
+                  options= {{headerShown: false}} />
+                 <HomeStack.Screen name={NAV_MEDINFO_NAVIGATOR}  component={MedinfoNavigator} 
+                 options= {{headerShown: false}} />
+                 <HomeStack.Screen name={NAV_MEDINFO_REFILLS}    component={RefillForm} /> 
+              
+                  {/* not the greatest solution 
+                    note check out path={}
+                  */}
+                 <HomeStack.Screen key = {NAV_MAIL_MESSAGE_LINK} name={NAV_MAIL_MESSAGE_LINK}  
+                     component={MsgForm} />
+                     {/* component={MsgForm} options={{ ...headerEdit  }}/>
+                    options={{ title: 'Awesome app',  }} */}
  {/*
           
                 <HomeStack.Screen name={NAV_APPT_CURRENT}              component={ApptCurrentList} />
@@ -233,7 +253,51 @@ export const Routes = () => {
               </CarePlanStack.Navigator>
       )
     }
- 
+    //=============================================================================
+    // MedinfoLabResultNavigator - LabResult Navigator
+    //=============================================================================
+    const MedinfoLabResultNavigator = () => {
+      
+      return (
+              <LabResultStack.Navigator InitialRouteName={NAV_MEDINFO_LABRESULTS} 
+                   screenOptions={{  headerShown: false  }}>
+                  <LabResultStack.Screen name={NAV_MEDINFO_LABRESULTS}          component={LabresultList} />
+                  <LabResultStack.Screen name={NAV_MEDINFO_LABRESULT_TESTS}     component={LabResultTests} />
+                  <LabResultStack.Screen name={NAV_MEDINFO_LABRESULT_GRAPH}     component={LabResultGraph} />
+                  <LabResultStack.Screen name={NAV_MEDINFO_LABRESULT_COMPARE}   component={LabResultCompare} />
+              </LabResultStack.Navigator>
+      )
+    }
+    //=============================================================================
+    // MedinfoLVitalSignNavigator - VitalSign Navigator
+    //=============================================================================
+    const MedinfoLVitalSignNavigator = () => {
+      
+      return (
+              <VitalSignStack.Navigator InitialRouteName={NAV_MEDINFO_VITALSIGNS} 
+                   screenOptions={{  headerShown: false  }}>
+                  <VitalSignStack.Screen name={NAV_MEDINFO_VITALSIGNS}         component={VitalSignList} />
+                  <VitalSignStack.Screen name={NAV_MEDINFO_VITALSIGN_EDIT}     component={VitalSignEdit} />
+                  <VitalSignStack.Screen name={NAV_MEDINFO_VITALSIGN_GRAPH}    component={VitalSignCompare} />
+              </VitalSignStack.Navigator>
+      )
+    }
+    //=============================================================================
+    // Immunization Navigator
+    //=============================================================================
+    const MedinfoImmunizationNavigator = () => {
+      
+      return (
+              <ImmunizationStack.Navigator InitialRouteName={NAV_MEDINFO_IMMUNIZATION_LIST} 
+                   screenOptions={{  headerShown: false  }}>
+                  <ImmunizationStack.Screen name={NAV_MEDINFO_IMMUNIZATION_LIST}   component={ImmunizationList} />
+                  <ImmunizationStack.Screen name={NAV_MEDINFO_IMMUNIZATION_DETAIL} component={ImmunizationDetail} 
+                    //  screenOptions={{...headerEdit}} /> 
+                    screenOptions={{  headerShown: true  }}
+                    setOptions={{...headerEdit}} /> 
+              </ImmunizationStack.Navigator>
+      )
+    }
     //=============================================================================
     // MedinfoNavigator - navigoator for medinfo
     //=============================================================================
@@ -249,13 +313,13 @@ export const Routes = () => {
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_ALLERGIES}      component={AllergyList} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_CAREPLAN_NAVIGATOR} component={MedinfoCareplanNavigator} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_DOCUMENTS}      component={DocumentList} />
-                  <MedinfoDrawer.Screen name={NAV_MEDINFO_IMMUNIZATIONS}  component={ImmunizationList} />
-                  <MedinfoDrawer.Screen name={NAV_MEDINFO_LABRESULTS}     component={LabresultList} />
+                  <MedinfoDrawer.Screen name={NAV_MEDINFO_IMMUNIZATION_NAVIGATOR}  component={MedinfoImmunizationNavigator} />
+                  <MedinfoDrawer.Screen name={NAV_MEDINFO_LABRESULT_NAVIGATOR}  component={MedinfoLabResultNavigator} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_MEDICATIONS}    component={MedicationList} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_REFILLS}        component={RefillForm} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_REFERRALS_NAVIGATOR} component={MedinfoReferralNavigator} />
-                  <MedinfoDrawer.Screen name={NAV_MEDINFO_VITALSIGNS}     component={VitalSignList} />
-                  <MedinfoDrawer.Screen name={NAV_MEDINFO_VISITS}         component={EncounterList} /> 
+                  <MedinfoDrawer.Screen name={NAV_MEDINFO_VITALSIGN_NAVIGATOR} component={MedinfoLVitalSignNavigator} />
+                  <MedinfoDrawer.Screen name={NAV_MEDINFO_VISITS}         component={EncounterList} />  
               </MedinfoDrawer.Navigator>
       )
     }
@@ -272,6 +336,19 @@ export const Routes = () => {
               </ContactStack.Navigator>
       )
     }
+     //=============================================================================
+    // PatientNotesNavigator Patient Notes
+    //=============================================================================
+    const PatientNotesNavigator = () => {
+
+      return (
+              <NotesStack.Navigator InitialRouteName={NAV_USER_NOTES} 
+                    screenOptions={{  headerShown: false  }}>
+                  <NotesStack.Screen name={NAV_USER_NOTES}      component={NoteList} />
+                  <NotesStack.Screen name={NAV_USER_NOTES_EDIT} component={NoteEditForm} />
+              </NotesStack.Navigator>
+      )
+    }
     //=============================================================================
     // PatientNavigator Patient / User - navigator 
     //=============================================================================
@@ -284,9 +361,11 @@ export const Routes = () => {
                   <PatientDrawer.Screen name={NAV_PATIENT_PROVIDERS}      component={ProviderList} />
                   <PatientDrawer.Screen name={NAV_PATIENT_CONTACT_NAVIGATOR} component={PatientContactNavigator} />
                   <PatientDrawer.Screen name={NAV_PATIENT_INSURANCE}      component={InsuranceList} />
-                  <PatientDrawer.Screen name={NAV_USER_NOTES}             component={NoteList} />
+                  <PatientDrawer.Screen name={NAV_USER_NOTES_NAVIGATOR}   component={PatientNotesNavigator} />
                   <PatientDrawer.Screen name={NAV_PATIENT_PERSONAL}       component={PersonalInfo} />
                   <PatientDrawer.Screen name={NAV_USER_PROFILE}           component={UserProfile} /> 
+                  {/* <PatientDrawer.Screen name={NAV_MAIL_MESSAGE_LINK}    component={MsgForm}
+                     tabBarStyle= {{ display: 'none' }} /> */}
               </PatientDrawer.Navigator>
       )
     }

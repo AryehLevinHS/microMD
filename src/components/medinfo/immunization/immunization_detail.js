@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading } from '../../utils/misc_tools'
@@ -8,31 +9,33 @@ import { UserContext } from '../../../store/UserContext'
 import {useImmunizationList} from '../../../store/hooks/useMedinfoData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
-// navigation
-import {NAV_MEDINFO_IMMUNIZATION_DETAIL} from '../../../navigation/route_types' 
 //=============================================================================
-// Get ImmunizationList data
+// Get ImmunizationDetail data
 //=============================================================================
-const ImmunizationList = () => {
+const ImmunizationDetail = () => {
 
     const user = useContext (UserContext)
     const [state,stateDetail,DataImmunizationlistGet] = useImmunizationList()
+    const [immunizationId,setImmunizationId] = useState(0)
     const navigation = useNavigation();
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
     useEffect(()=>{
         DataImmunizationlistGet(user.patient_id)
+        if (user.localStorage.immunization_id > 0) {
+            setImmunizationId(user.localStorage.immunization_id)
+            user.localStorage.immunization_id = 0 
+        } 
     },[])
     //=============================================================================
-    // OpenImmunizationDetail - adds a new item
+    // goback (goes back to the calling screen)
     //=============================================================================
-    const OpenImmunizationDetail = (immunization_id) =>{
-       user.localStorage.immunization_id = immunization_id
-       navigation.navigate(NAV_MEDINFO_IMMUNIZATION_DETAIL)
-    }
+    const goBack = () => {
+        navigation.goBack()
+    }    
     //=============================================================================
-    // ImmunizationDisplay - displays the list of immunizations
+    // ImmunizationDisplay - displays the immunization details
     //=============================================================================
     const ImmunizationDisplay = ({immunizationdata}) => {
 
@@ -41,13 +44,13 @@ const ImmunizationList = () => {
 
         return (
             <View>
-                {immunizationdata.recordset.map((row) => (
-                <TouchableOpacity key={row.immunization_id} style={appStyles.item} 
-                     onPress={()=>{OpenImmunizationDetail(row.immunization_id)}}>
+                {immunizationdata.recordset.filter(item => item.immunization_id === immunizationId)
+                .map((row) => (
+                <View key={row.immunizationdetail_id} style={appStyles.item}>
                     <Text style={appStyles.bold}>{row.vaccine_name}</Text>
-                    <Text >{'Scheduled: '+row.scheduled}{'  Given:'+row.given}</Text>
-                    <Text >{'Last Given: '+row.last_given_display} {'  Next Scheduled:'+row.next_sched_display}</Text> 
-                </TouchableOpacity> 
+                    <Text >{'Recommended: '+row.date_recommended_display}</Text>
+                    <Text >{'Given: '+row.date_given_display}</Text> 
+                </View> 
                ))}
            </View>
         )
@@ -55,11 +58,20 @@ const ImmunizationList = () => {
 //=============================================================================
     return (
         <ScrollView>
+            <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                <Text style={appStyles.h3}> Vaccine Details</Text>
+            </View>
             {state.loading ? loading(true) : loading(false)} 
-            <ImmunizationDisplay immunizationdata={state.data} /> 
+            <ImmunizationDisplay immunizationdata={stateDetail.data} /> 
         </ScrollView>
     )
 }
  
-export default ImmunizationList;
+export default ImmunizationDetail;
 //=============================================================================

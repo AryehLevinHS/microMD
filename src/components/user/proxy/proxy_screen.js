@@ -45,6 +45,7 @@ const ProxyScreen = () => {
     return (
         <ScrollView>
             <Text> User Proxy</Text>
+            <Text></Text>
             <Text>{user.portal_user_name} has access to the following Patient Portals: </Text>
             {state.loading ? loading(true) : loading(false)} 
             <ProxyListDisplay proxydata={state.data} /> 

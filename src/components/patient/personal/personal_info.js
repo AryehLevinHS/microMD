@@ -46,46 +46,46 @@ const PersonalInfo = () => {
                 <TouchableOpacity style={appStyles.item}>
                   {personaldata.recordset.map(row => (
                      <DataTable style={appStyles.table_frame}>
-                         <DataTable.Row key={row.patient_id+"100"}>
+                         <DataTable.Row key={10}>
                              <DataTable.Cell>First Name</DataTable.Cell>
                              <DataTable.Cell>{row.first_name}</DataTable.Cell>
                          </DataTable.Row>    
-                         <DataTable.Row key={row.patient_id+'1'}>
+                          <DataTable.Row key={1}>
                              <DataTable.Cell>Last Name</DataTable.Cell>
                              <DataTable.Cell>{row.last_name}</DataTable.Cell>
                          </DataTable.Row>    
-                         <DataTable.Row key={row.patient_id+'2'}>    
+                         <DataTable.Row key={2}>    
                              <DataTable.Cell>Address</DataTable.Cell>
                              <DataTable.Cell>{row.street_address +' '+row.street_address2}</DataTable.Cell>
                          </DataTable.Row>    
-                         <DataTable.Row key={row.patient_id+'3'}>  
+                         <DataTable.Row key={3}>  
                              <DataTable.Cell></DataTable.Cell>
                              <DataTable.Cell>{row.city +' '+row.state_code+' '+row.zip}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'4'}>  
+                        <DataTable.Row key={4}>  
                              <DataTable.Cell>Home Phone</DataTable.Cell>
                              <DataTable.Cell>{row.home_phone}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'5'}>  
+                         <DataTable.Row key={5}>  
                              <DataTable.Cell>Mobile</DataTable.Cell>
                              <DataTable.Cell>{row.mobile}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'6'}>  
+                          <DataTable.Row key={6}>  
                              <DataTable.Cell>Date of Birth</DataTable.Cell>
                              <DataTable.Cell>{row.date_of_birth}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'7'}>  
+                         <DataTable.Row key={7}>  
                              <DataTable.Cell>Marital status</DataTable.Cell>
                              <DataTable.Cell>{row.marital_status_display}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'8'}>  
+                         <DataTable.Row key={8}>  
                              <DataTable.Cell>Fax</DataTable.Cell>
                              <DataTable.Cell>{row.fax}</DataTable.Cell>
                          </DataTable.Row>
-                         <DataTable.Row key={row.patient_id+'9'}>  
+                         <DataTable.Row key={9}>  
                              <DataTable.Cell>E-Mail</DataTable.Cell>
                              <DataTable.Cell>{row.email}</DataTable.Cell>
-                         </DataTable.Row>
+                         </DataTable.Row> 
                      </DataTable>   
                     ) )}     
                 

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView } from 'react-native'
 import { DataTable } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements'
 // tools
 import { loading,messageDisplay } from '../../utils/misc_tools'
 // data
@@ -16,6 +18,13 @@ const LabResultCompare = () => {
 
     const user = useContext (UserContext)
     const [state,DataLabResultGraphGet] = useLabResultGraph()
+    const navigation = useNavigation();
+    //=============================================================================
+    // goback (goes back to the calling screen)
+    //=============================================================================
+    const goBack = () => {
+        navigation.goBack()
+    }    
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
@@ -61,7 +70,16 @@ const LabResultCompare = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text> Laboratory Result Compare Values</Text>
+           
+            <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                 <Text style={appStyles.h3}> Compare Values</Text>
+            </View>
             {state.loading ? loading(true) : loading(false)} 
             {state.error ? messageDisplay('error',state.error) : <View></View> }  
             <LabcompareDisplay labtestdata={state.data} /> 

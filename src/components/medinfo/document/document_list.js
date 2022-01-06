@@ -43,7 +43,6 @@ const DocumentList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            <Text>Medical Documents</Text>
             {state.loading ? loading(true) : loading(false)} 
             <DocumentDisplay documentdata={state.data} /> 
         </ScrollView>

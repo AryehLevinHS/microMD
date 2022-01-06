@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Button, Menu, Divider} from 'react-native-paper';
 import { Icon } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
  //=============================================================================
  // SettingsIcon  - the settings icon and menu
@@ -63,7 +63,7 @@ const SettingsIcon = () => {
  // headerEdit  - the application header for edit windows
  //=============================================================================
  export const headerEdit = {
-      
+   
   headerTitleAlign:'center',
   headerTintColor: 'white',
   headerStyle:{
@@ -89,3 +89,20 @@ const SettingsIcon = () => {
                      </View>)
 }  
  //=============================================================================
+ /*
+ import { Appbar, Button } from 'react-native-paper';
+
+   const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = query => setSearchQuery(query);
+  const _goBack = () => console.log('Went back');
+  const _handleSearch = () => console.log('Searching');
+  const _handleMore = () => console.log('Shown more');
+
+<Appbar.Header>
+              <Appbar.BackAction onPress={_goBack} />
+              <Appbar.Content title="User" subtitle="Subtitle" />
+              <Appbar.Action icon="magnify" onPress={_handleSearch} />
+              <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
+          </Appbar.Header>
+
+          */

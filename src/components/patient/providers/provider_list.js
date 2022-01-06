@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity, Button } from 'react-native'
 import {List,Divider }from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading } from '../../utils/misc_tools'
 // data
@@ -8,6 +9,8 @@ import { UserContext } from '../../../store/UserContext'
 import {useProviderList} from '../../../store/hooks/usePatientData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
+// navigation
+import {NAV_MAIL_MESSAGE,NAV_APPT_REQ,NAV_APPT_NEW,NAV_APPT_NAVIGATOR,NAV_MAIL_MESSAGE_LINK} from '../../../navigation/route_types' 
 //=============================================================================
 // Get ProviderList data
 //=============================================================================
@@ -15,6 +18,26 @@ const ProviderList = () => {
 
     const user = useContext (UserContext)
     const [state,stateWorkplace,DataProviderGetList] = useProviderList()
+    const navigation = useNavigation();
+    //=============================================================================
+    // sendMessage - opens the send message screen
+    //=============================================================================
+    const sendMessage = (provider_id) => {
+        navigation.navigate(NAV_MAIL_MESSAGE_LINK)
+    }
+    //=============================================================================
+    // requestAppt - opens the request appt screen
+    //=============================================================================
+    const requestAppt = (provider_id) => {
+        navigation.navigate(NAV_APPT_REQ)
+    }
+    //=============================================================================
+    // createAppt - opens the create appt screen
+    //=============================================================================
+    const createAppt = (provider_id) => {
+        navigation.navigate(NAV_APPT_NEW)
+    }
+    
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
@@ -59,9 +82,9 @@ const ProviderList = () => {
                      <WorkplaceDisplay providerRow ={row} workplace={workplace} />
                      <Text>  </Text>
                      <View style={{ flexDirection: 'row',justifyContent:'flex-end'}} >
-                        <Button style={{margin:20}} title='Send Message'/>
+                        <Button style={{margin:20}} title='Send Message' onPress={()=>{sendMessage(row.provider_id)}}/>
                         <Text>  </Text>
-                        <Button title='Request Appt'/>
+                        <Button title='Request Appt' onPress={()=>{requestAppt(row.provider_id)}}/>
                     </View>
                    </TouchableOpacity> 
                ))}

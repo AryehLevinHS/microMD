@@ -11,7 +11,7 @@ import {useLabResultTests} from '../../../store/hooks/useMedinfoData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
 // navigation
-import {NAV_MEDINFO_LABRESULT_GRAPH} from '../../../navigation/route_types' 
+import {NAV_MEDINFO_LABRESULT_GRAPH,NAV_MEDINFO_LABRESULT_COMPARE} from '../../../navigation/route_types' 
 //=============================================================================
 // Get LabResultTests data
 //=============================================================================
@@ -23,15 +23,23 @@ const LabResultTests = () => {
     //=============================================================================
     // graphItem - graphing lab results
     //=============================================================================
-    const graphItem = () =>{
+    const graphItem = (labresult_id) =>{
+        user.localStorage.labresult_id = labresult_id
         navigation.navigate(NAV_MEDINFO_LABRESULT_GRAPH)
-     }
+    }
     //=============================================================================
     // compareResult - compare test results
     //=============================================================================
-    const compareResult = () =>{
+    const compareResult = (labresult_id) =>{
+        user.localStorage.labresult_id = labresult_id
         navigation.navigate(NAV_MEDINFO_LABRESULT_COMPARE)
-      }
+    }
+    //=============================================================================
+    // goback (goes back to the calling screen)
+    //=============================================================================
+    const goBack = () => {
+        navigation.goBack()
+    }    
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
@@ -55,44 +63,37 @@ const LabResultTests = () => {
                             <DataTable.Title>Test</DataTable.Title>
                             <DataTable.Title>Result</DataTable.Title>
                             <DataTable.Title>Flag</DataTable.Title>
+                            <DataTable.Title numeric> </DataTable.Title> 
                         </DataTable.Header>
                         {labtestdata.recordset.map((row) => (
                             <DataTable.Row key={row.labresult_id}>
                                 <DataTable.Cell>{row.test_performed}</DataTable.Cell>
                                 <DataTable.Cell>{row.result_value}</DataTable.Cell>
                                 <DataTable.Cell>{row.abnormal_flag_display}</DataTable.Cell>
+                                <DataTable.Cell numeric> 
+                                                  {/* <Icon name='bar-graph' type='entypo' color='#517fa4'
+                                                  onPress={() => graphItem(row.labresult_id)} />  */}
+                                                 <Icon name='compare' type='materialcommunityicons' color='#517fa4'
+                                                  onPress={() => compareResult(row.labresult_id)} /> </DataTable.Cell>
+                                                   
                             </DataTable.Row>
                          ))}     
                     </DataTable>   
-                    <View style={appStyles.addButton}>
-                        <Icon 
-                            name='bar-graph'
-                            type='Entypo'
-                            color='#517fa4'
-                            onPress={() => graphItem()}
-                        />
-                    </View> 
-                    <View style={appStyles.addButton}>
-                        <Icon 
-                            name='compare'
-                            type='MaterialCommunityIcons'
-                            color='#517fa4'
-                            onPress={() => compareResult()}
-                        />
-                    </View> 
-                {/* {labtestdata.recordset.map((row) => (
-                <TouchableOpacity key={row.labresult_id} style={appStyles.item}>
-                    <Text >{row.test_performed}</Text>
-                    <Text >{'Result: '+row.result_value}</Text>
-                    <Text >{'Flag: '+row.abnormal_flag_display}</Text> 
-                </TouchableOpacity> 
-               ))} */}
            </View>
         )
     }
 //=============================================================================
     return (
         <ScrollView>
+            <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                <Text style={appStyles.h3}> Lab Tests</Text>
+            </View>
             {/* <Text> Laboratory Tests</Text> */}
             {state.loading ? loading(true) : loading(false)} 
             <LabtestDisplay labtestdata={state.data} /> 

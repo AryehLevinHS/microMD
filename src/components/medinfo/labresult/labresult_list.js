@@ -22,7 +22,8 @@ const LabresultList = () => {
     //=============================================================================
     // viewTestResult - test result
     //=============================================================================
-    const LabTestView = () =>{
+    const LabTestView = (labresultcat_id) =>{
+        user.localStorage.labresultcat_id = labresultcat_id
         navigation.navigate(NAV_MEDINFO_LABRESULT_TESTS)
       }
     //=============================================================================
@@ -42,18 +43,18 @@ const LabresultList = () => {
         return (
             <View>
                 {labresultdata.recordset.map((row) => (
-                <TouchableOpacity key={row.labresultcat_id} style={appStyles.item}>
-                    <Text >{row.tests_ordered}</Text>
+                <TouchableOpacity key={row.labresultcat_id} style={appStyles.item} onPress={() => LabTestView(row.labresultcat_id)}>
+                    <Text style={appStyles.bold}>{row.tests_ordered}</Text>
                     <Text >{'Date: '+row.date_reported_display}{'  By:'+row.ordered_by}</Text>
                     <Text >{'Status: '+row.status_description}</Text> 
-                    <View style={appStyles.addButton}>
+                    {/* <View style={appStyles.addButton}>
                         <Icon 
                             name='open-in-new'
                             type='MaterialCommunityIcons'
                             color='#517fa4'
                             onPress={() => LabTestView()}
                         />
-                    </View> 
+                    </View>  */}
                 </TouchableOpacity> 
                 
                ))}

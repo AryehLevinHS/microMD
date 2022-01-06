@@ -71,7 +71,6 @@ const ReferralList = () => {
 //=============================================================================
     return (
         <ScrollView>
-            {/* <Text> Referrals</Text> */}
               <View style={appStyles.addButton}>
                 <Icon 
                     name='pluscircleo'

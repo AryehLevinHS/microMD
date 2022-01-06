@@ -14,6 +14,7 @@ export const loading = (isLoading) => {
 // AppButton Custom Button
 //=============================================================================
 export const AppButton = ({type,title,onPress}) =>{
+
     switch (type) {
          case 'send':
               return(<Button title={title} onPress={onPress} 
@@ -28,7 +29,7 @@ export const AppButton = ({type,title,onPress}) =>{
                               backgroundColor: 'darkblue',
                               borderColor: 'transparent',
                               borderWidth: 0,
-                              borderRadius: 15,
+                              borderRadius: 10,
                          }}
                          containerStyle={{
                               width: '95%',
@@ -38,7 +39,30 @@ export const AppButton = ({type,title,onPress}) =>{
               
                 />)
               break;
-         default:
+              case 'save':
+               return(<Button title={title} onPress={onPress} 
+                          icon={{
+                               name: 'save',
+                               type: 'material-icons',
+                               size: 15,
+                               color: 'white',
+                          }}
+                          iconRight
+                          buttonStyle={{
+                               backgroundColor: 'darkblue',
+                               borderColor: 'transparent',
+                               borderWidth: 0,
+                               borderRadius: 15,
+                          }}
+                          containerStyle={{
+                               width: '95%',
+                               marginHorizontal: 10,
+                               marginVertical: 10,
+                          }}
+               
+                 />)
+               break;
+          default:
               break;
     }
 
@@ -51,6 +75,8 @@ export const AppMessage = ({type,message,onPress}) =>{
      const [visible, setVisible] = React.useState(true);
      const onToggleSnackBar = () => setVisible(!isVisible);
      const onDismissSnackBar = () => setVisible(false);
+
+
 
      switch (type) {
           case 'error':

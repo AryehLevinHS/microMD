@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { TextInput, Divider, Button }from 'react-native-paper'
+import { Text, View,ScrollView} from 'react-native'
+import {Icon} from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,MessageDisplay } from '../../utils/misc_tools'
+import { loading,AppButton,AppMessage } from '../../utils/misc_tools';
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -55,6 +55,7 @@ const NoteEditForm = () => {
         let note_id = user.localStorage.note_id
         if (note_id > 0) {  // edit
            DataNoteGetDetails(user.portal_user_id,note_id)  // see useeffect below
+           user.localStorage.note_id = 0
         } else {            // add 
             resetFields(newFormdata,'note')
             setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
@@ -105,7 +106,15 @@ const NoteEditForm = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-            <Text style={appStyles.form_title}> Edit User Notes</Text>
+            <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                <Text style={appStyles.form_title}> Edit User Notes</Text>
+            </View>
             <Formfield id={'note_type'} formdata={formdata.note_type}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'status'} formdata={formdata.status}
@@ -114,12 +123,11 @@ const NoteEditForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />            
             <Formfield id={'note'} formdata={formdata.note}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? MessageDisplay('success','Note Successfully Saved') : <View></View> }  
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
-                Save User Note
-            </Button>
-           
+
+            {state.sendSuccess ? <AppMessage type ='success' message='Note Successfully Saved' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} visible={true} /> : <View></View> } 
+            <AppButton type='save' title='Save User Note' onPress={submitForm}/>
+
         </ScrollView>
     )
 }
