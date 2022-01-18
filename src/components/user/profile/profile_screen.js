@@ -6,7 +6,7 @@ import { loading } from '../../utils/misc_tools'
 import { UserContext } from '../../../store/UserContext'
 import {useUserProfile} from '../../../store/hooks/useUserData'
 import AuthNoList from '../authentication/authno_list'
-import ProxyScreen  from '../proxy/proxy_screen'
+import ProxyList  from '../proxy/proxy_list'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
 //=============================================================================
@@ -49,11 +49,11 @@ const ProfileScreen = () => {
 //=============================================================================
     return (
         <ScrollView>
-             <Text> Profile Details</Text> 
+             <Text style={{padding:10,fontWeight:'bold'}}> Profile Details</Text> 
             {state.loading ? loading(true) : loading(false)} 
             <ProfileDisplay profiledata={state.data} /> 
             <AuthNoList />
-            <ProxyScreen />
+            <ProxyList />
         </ScrollView>
     )
 }

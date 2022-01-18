@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Button }from 'react-native-paper'
+import { Icon } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native';
 
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../utils/forms/form_actions';
 import Formfield from '../utils/forms/form_fields';
 // tools
-import { loading,MessageDisplay } from '../utils/misc_tools'
+import { loading,AppMessage,AppButton } from '../utils/misc_tools'
 // data
 import { UserContext } from '../../store/UserContext'
 import { RefContext } from '../../store/RefContext'
@@ -16,7 +17,6 @@ import { useMessageForm } from '../../store/hooks/useMailData'
 import {messageData}   from './msg_data'
 // styles
 import {appStyles} from '../../resources/styles/main_styles'
-import { AppButton } from '../utils/misc_tools';
 //=============================================================================
 // MsgForm - create a new msg
 //=============================================================================
@@ -27,11 +27,12 @@ const MsgForm = () => {
     const [state,DataMailSendMsg,DataValidationFailure,
            DataValidationReset] = useMessageForm()
     const [formdata,setFormdata] = useState (messageData)
+    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
-        //history.goBack()
+        navigation.goBack()
     }    
     //=============================================================================
     // useEffect to close form once sent
@@ -73,9 +74,7 @@ const MsgForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+        
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'message');
          setFormdata(newFormdata)    
@@ -87,7 +86,7 @@ const MsgForm = () => {
  
         let dataToSubmit   = generateData(formdata,'message');
         let formIsValidRet = isFormValid(formdata,'message')
-      //  console.log('data to submit',dataToSubmit)
+        console.log('data to submit',formIsValidRet,dataToSubmit)
          if(formIsValidRet.formIsValid){
             DataMailSendMsg(dataToSubmit)
          } else {
@@ -96,8 +95,17 @@ const MsgForm = () => {
     }
 //=============================================================================
     return (
-        <ScrollView>
-            {/* <Text> New Message</Text> */}
+        <ScrollView style={appStyles.form_container}>
+              <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                <Text style={appStyles.form_title}> New Message</Text>
+            </View> 
+
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
            <Formfield id={'message_type'} formdata={formdata.message_type}
@@ -106,10 +114,11 @@ const MsgForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />            
             <Formfield id={'message'} formdata={formdata.message}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? MessageDisplay('success','Message Successfully Send') : <View></View> }  
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <AppButton type='send' title='Send Message' onPress={submitForm}/>
            
+            {state.sendSuccess ? <AppMessage type ='success' message='Message Sent Successfully' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+             <AppButton type='send' title='Send Message' onPress={submitForm}/> 
+                   
         </ScrollView>
     )
 }

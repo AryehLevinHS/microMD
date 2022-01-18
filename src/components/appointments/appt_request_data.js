@@ -78,7 +78,7 @@ export const apptrequestData ={
         showlabel: true
     },
     from_date: {
-        element: 'input',
+        element: 'date',
         value: '',
         config:{
             label: "From Date",

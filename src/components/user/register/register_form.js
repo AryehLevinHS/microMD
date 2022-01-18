@@ -1,12 +1,13 @@
 import React,{useState, useContext, useEffect} from 'react'
-import { ScrollView, SafeAreaView,View, Text} from 'react-native' //TextInput Button
-import { Appbar, Button } from 'react-native-paper';
+import { ScrollView, View, Text} from 'react-native' //TextInput Button
+import { Appbar, } from 'react-native-paper';
 
 // form tools
 import { updateField, generateData, setDefaultValue} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 //tools
 import { passwordCheck,passwordSingleCheck } from '../password/password_validation';
+import { AppMessage,AppButton } from '../../utils/misc_tools'
 // Data
 import { UserContext } from '../../../store/UserContext'
 import {usePatientRegister} from '../../../store/hooks/usePatientData'
@@ -121,10 +122,8 @@ const RegisterForm = () => {
           <Formfield id={'default_clinic'} formdata={formdata.default_clinic}
                         changefunction={(id,action,value) => updateFormField(id,action,value)} />
                        
-          {stateRegister.sendSuccess ? MessageDisplay('success','Note Successfully Saved') : <View></View> }               
-          <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
-              Register
-              </Button>
+          {stateRegister.sendSuccess ? <AppMessage type ='success' message='Patient Successfully Registered' /> : <View></View> }  
+          <AppButton type='send' title='Register' onPress={submitForm}/> 
           <Text>We hope you enjoy using the Patient Portal!</Text> 
     </ScrollView>
     )

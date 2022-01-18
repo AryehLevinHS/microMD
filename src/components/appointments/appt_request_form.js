@@ -1,12 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Button }from 'react-native-paper'
+import { Text, View,ScrollView,TouchableOpacity, Button } from 'react-native'
+import { Icon } from 'react-native-elements'
+import moment from 'moment'
+import { useNavigation } from '@react-navigation/native';
+
+// A CALANDER APP for react native
+//https://reactnativeexample.com/timetable-schedule-component-for-react-native-applications/
+
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
        } from '../utils/forms/form_actions'
 import Formfield from '../utils/forms/form_fields';
 // tools
-import { MessageDisplay } from '../utils/misc_tools'
+import { AppMessage,AppButton } from '../utils/misc_tools'
 // data
 import { UserContext } from '../../store/UserContext'
 import { RefContext } from '../../store/RefContext'
@@ -25,11 +31,12 @@ const ApptRequestForm = () => {
     const [state,DataApptRequest,DataValidationFailure,
            DataValidationReset] = useApptRequest()
     const [formdata,setFormdata] = useState (apptrequestData)
+    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
-        //history.goBack()
+        navigation.goBack()
     }    
     //=============================================================================
     // useEffect to close form once sent
@@ -56,7 +63,7 @@ const ApptRequestForm = () => {
         setDefaultValue(newFormdata,'sender_name',user.portal_user_name)
         setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
         setDefaultValue(newFormdata,'patient_id',user.patient_id)
-     //   setDefaultValue(newFormdata,'from_date', moment(currentDate).format('YYYY-MM-DD'))
+        setDefaultValue(newFormdata,'from_date', moment(new Date).format('YYYY-MM-DD'))
      //   setDefaultValue(newFormdata,'time_sent',timeSent)
         setDefaultValue(newFormdata,'appt_type','office')
         setDefaultValue(newFormdata,'preferred_time','any')
@@ -64,18 +71,16 @@ const ApptRequestForm = () => {
 
         setFormdata(newFormdata)    
         DataValidationReset() 
-
+        
     },[])
     //=============================================================================
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+       
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'apptreq');
-         setFormdata(newFormdata)    
+        setFormdata(newFormdata)    
     }
     //=============================================================================
     // submit form (update information)
@@ -91,9 +96,19 @@ const ApptRequestForm = () => {
             DataValidationFailure(formIsValidRet.errorMsg)
          }     
     }
+
 //=============================================================================
     return (
-        <ScrollView>
+         <ScrollView style={appStyles.form_container}>
+             <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                {/* <Text style={appStyles.form_title}>Appointment Request</Text> */}
+            </View>
             <Formfield id={'appt_for_id'} formdata={formdata.appt_for_id}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'from_date'} formdata={formdata.from_date}
@@ -108,13 +123,10 @@ const ApptRequestForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'comment'} formdata={formdata.comment}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? MessageDisplay('success','Request Sent Successfully') : <View></View> }  
-             
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <Button icon="content-save" mode="contained" onPress={submitForm} compact>
-                Send Request
-            </Button>
            
+            {state.sendSuccess ? <AppMessage type ='success' message='Appt Request Sent Successfully' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+             <AppButton type='send' title='Send Request' onPress={submitForm}/> 
         </ScrollView>
     )
 }

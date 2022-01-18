@@ -7,14 +7,8 @@ export const messageData ={
         touched: false
     },
     patient_id: {
-        element: 'input',
+        element: 'db',
         value: '',
-        config:{
-            label: "Patient",
-            name: 'patient_input',
-            type: 'text',
-            placeholder: ''
-        },
         validation:{required: false},
         valid: true,
         touched: false,
@@ -39,22 +33,16 @@ export const messageData ={
             color:'green'
         },
         validation:{required: true},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
     receiver_name: {
-        element: 'select',
+        element: 'db',
         value: '',
-        config:{
-            name: 'receiver_name_input',
-            label:'To',
-            options:[],
-            placeholder: 'Enter the receiver'
-        },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
@@ -77,15 +65,8 @@ export const messageData ={
         
     },
     time_sent: {
-        element: 'input',
+        element: 'db',
         value: '',
-        config:{
-            label: "Time Sent",
-            name: 'sent_input',
-            type: 'text',
-            placeholder: 'Enter the time sent',
-            disabled: true
-        },
         validation:{ required: false },
         valid: true,
         touched: false,

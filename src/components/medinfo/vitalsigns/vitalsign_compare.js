@@ -7,17 +7,17 @@ import { Icon } from 'react-native-elements'
 import { loading,AppMessage } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
-import {useLabResultGraph} from '../../../store/hooks/useMedinfoData'
+import {useVitalsignGraph} from '../../../store/hooks/useMedinfoData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
 
 //=============================================================================
-// Get LabResultCompare data
+// Get VitalsignCompare data
 //=============================================================================
-const LabResultCompare = () => {
+const VitalsignCompare = () => {
 
     const user = useContext (UserContext)
-    const [state,DataLabResultGraphGet] = useLabResultGraph()
+    const [state,DataVitalsignsGetForGraph] = useVitalsignGraph()
     const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
@@ -29,27 +29,26 @@ const LabResultCompare = () => {
     // useEffect - retrieve the data
     //=============================================================================
     useEffect(()=>{
-        let labresult_id = user.localStorage.labresult_id
-        DataLabResultGraphGet(user.patient_id,labresult_id)
+        DataVitalsignsGetForGraph(user.patient_id)
     },[])
     //=============================================================================
-    // LabcompareDisplay - displays a comparison of the test results
+    // VitalsignCompareDisplay - displays a comparison of the test results
     //=============================================================================
-    const LabcompareDisplay = ({labtestdata}) => {
-        if (!labtestdata || !labtestdata.recordset || labtestdata.recordset.length === 0)
+    const VitalsignCompareDisplay = ({vitalsigndata}) => {
+        if (!vitalsigndata || !vitalsigndata.recordset || vitalsigndata.recordset.length === 0)
            return (<View>
                    </View>)
      
         return (
             <View>
-                <Text style={appStyles.h3} >{labtestdata.recordset[0].cat_test_name}</Text>
+                <Text style={appStyles.h3} >{vitalsigndata.recordset[0].cat_test_name}</Text>
                     <DataTable style={appStyles.table_frame}>
                         <DataTable.Header style={{backgroundColor:'lightblue'}}>
                             <DataTable.Title>Date</DataTable.Title>
                             <DataTable.Title>Result</DataTable.Title>
                             <DataTable.Title>Flag</DataTable.Title>
                         </DataTable.Header>
-                        {labtestdata.recordset.map((row) => (
+                        {vitalsigndata.recordset.map((row) => (
                             <DataTable.Row key={row.labresult_id}>
                                 <DataTable.Cell>{row.date_reported_display}</DataTable.Cell>
                                 <DataTable.Cell>{row.result_value}</DataTable.Cell>
@@ -57,7 +56,7 @@ const LabResultCompare = () => {
                             </DataTable.Row>
                          ))}     
                     </DataTable>   
-                {/* {labtestdata.recordset.map((row) => (
+                {/* {vitalsigndata.recordset.map((row) => (
                 <TouchableOpacity key={row.labresult_id} style={appStyles.item}>
                     <Text >{row.date_reported_display}</Text>
                     <Text >{'Result: '+row.result_value}</Text>
@@ -82,10 +81,10 @@ const LabResultCompare = () => {
             </View>
             {state.loading ? loading(true) : loading(false)} 
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
-          <LabcompareDisplay labtestdata={state.data} /> 
+          <VitalsignCompareDisplay vitalsigndata={state.data} /> 
         </ScrollView>
     )
 }
  
-export default LabResultCompare;
+export default VitalsignCompare;
 //=============================================================================

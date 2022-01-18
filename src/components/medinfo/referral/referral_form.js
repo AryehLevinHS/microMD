@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
@@ -90,7 +91,15 @@ const ReferralForm = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-            {/* <Text style={appStyles.form_title}> Edit User Notes</Text> */}
+             <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                 <Text style={appStyles.h3}> Referral Request</Text>
+            </View>
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
            <Formfield id={'referral_type'} formdata={formdata.referral_type}

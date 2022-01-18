@@ -3,6 +3,10 @@ import {  ScrollView, TextInput,Text,Button,Image,View } from 'react-native'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 //import {REACT_APP_PROXYSERVER} from "@env" // using 
+
+// tools
+import { loading,AppButton,AppMessage } from '../utils/misc_tools';
+
 // form tools
 import Formfield from '../utils/forms/form_fields';
 import { updateField, generateData, isFormValid,resetFields } from '../utils/forms/form_actions';
@@ -19,7 +23,7 @@ import {LoginData} from './login_data'
 import {appStyles} from '../../resources/styles/main_styles'
 import login_image from '../../resources/images/login/login_page.png'
 // navigation
-import  {NAV_HOME,NAV_USER_REGISTER,NAV_USER_FORGOTPASSWORD} from '../../navigation/route_types'
+import  {NAV_HOME,NAV_HOME_NAVIGATOR,NAV_USER_REGISTER,NAV_USER_FORGOTPASSWORD} from '../../navigation/route_types'
 //=============================================================================
 // Copyright
 //=============================================================================
@@ -77,7 +81,9 @@ const LoginScreen = () => {
    
           }
           // go to the home screen
-          navigation.navigate(NAV_HOME)
+         // navigation.navigate(NAV_HOME_NAVIGATOR)
+          user.is_authenticated = 'Y'
+          //navigation.ref()
          
       }
   },[stateStore.loading]) // do not put user as a dependancy - infinite loop
@@ -95,9 +101,9 @@ const LoginScreen = () => {
                   // axios.baseURL = REACT_APP_PROXYSERVER
                   //console.log('test env',REACT_APP_PROXYSERVER)
                   //user.baseURL = REACT_APP_PROXYSERVER
-                  setConfirmOpen(true) 
-                  setConfirmData({email:state.data.email,sms:state.data.sms})
-              
+                  //setConfirmOpen(true) 
+                  //setConfirmData({email:state.data.email,sms:state.data.sms})
+              //console.log('token',user.token)
                // REMOVE for testing
                DataLoginSetStores(user.patient_id,user.portal_user_id )
           }
@@ -139,7 +145,7 @@ const LoginScreen = () => {
        <Text  style={appStyles.login_forgot_password}>{'Forgot password ?'}</Text>         
       
       <View style={appStyles.form_button}>
-          <Button title="Login" onPress={submitForm}/>
+          <AppButton type='regular' title='LOGIN' onPress={submitForm}/>
       </View>
       
     </ScrollView>

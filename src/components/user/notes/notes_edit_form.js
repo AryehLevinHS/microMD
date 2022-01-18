@@ -82,9 +82,7 @@ const NoteEditForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+     
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'notes');
          setFormdata(newFormdata)    

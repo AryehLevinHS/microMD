@@ -1,17 +1,25 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
+import { color } from 'react-native-reanimated';
+import colors from '../themes/colors'
 
 //=============================================================================
 // Main Applicatin Styles
 //=============================================================================
 export const appStyles = StyleSheet.create({
+    /* list item */
     item: {
-      backgroundColor: '#6fbcdc',//'#2196F3', //"#f9c2ff",
+      backgroundColor: colors.listitem_background,
       padding: 10,
       marginVertical: 8,
       margin:8,
       borderRadius:5,
     },
+    listItem_textWithDelete: {
+      flexDirection: "row",
+      justifyContent:'space-between',
+    },
+
     header: {
       fontSize: 32,
       backgroundColor: "#fff"
@@ -26,17 +34,20 @@ export const appStyles = StyleSheet.create({
       alignItems:'center',
       alignSelf: 'flex-end'
     },
+    addButtonWithTitle: {
+      marginHorizontal:10,
+      flexDirection: "row",
+      justifyContent:'space-between',
+    },
     deleteButton: {
       right: 5,
       flexDirection: "row",
       alignSelf: 'flex-end',
       color: '#841584'
     },
-    goBackButton: {
+   goBackButton: {
       margin:10,
       flexDirection: "row",
-      //justifyContent:'center',
-      //alignItems:'center',
       alignSelf: 'flex-start'
     },
    
@@ -107,12 +118,13 @@ export const appStyles = StyleSheet.create({
     //=============================================================================
     form_container:{
       flex: 1,
-      backgroundColor:'lightgray'
+      backgroundColor:colors.form_background,
      },
      form_title:{
-      fontSize:30,
-      height: 40,  
-      justifyContent:'center',
+      fontSize:25,
+      color:'white',
+      //alignSelf:'center'
+       marginLeft:50,
     },
     form_input_field:{
       fontSize:15,
@@ -131,7 +143,7 @@ export const appStyles = StyleSheet.create({
       marginTop: 5,
       borderWidth: 1,
       borderRadius:5,
-      justifyContent:'center',
+     // justifyContent:'center',
      // textAlign:'center'
     },
     form_button:{
@@ -167,10 +179,10 @@ export const appStyles = StyleSheet.create({
     //=============================================================================
     login_container:{
       flex: 1,
-      backgroundColor:'lightgray'
+      backgroundColor:colors.login_background,
      },
     login_title:{
-      color: "darkblue",
+      color: colors.login_practice,
       fontSize:30,
       height: 40,
       width: '100%',
@@ -179,7 +191,7 @@ export const appStyles = StyleSheet.create({
       textAlign: "center",  
     },
     login_header:{
-      color: "black",
+      color: colors.login_header,
       fontSize:25,
       fontWeight:'bold',
       height: 40,
@@ -188,17 +200,17 @@ export const appStyles = StyleSheet.create({
       marginLeft:10,
     },
     login_image:{
-      height: 80,
-      width: 80,
+      height: 100,
+      width: 100,
       alignSelf:"center",
       borderRadius: 15
      } ,
      login_forgot_password:{
-      color: "blue",
+      color: colors.login_forgot,
       textDecorationLine: 'underline' ,
       textAlign:'right',
-      marginRight:10,
-      marginBottom:20 
+      marginRight:15,
+      marginBottom:0 
      },
     //=============================================================================
     // Home Page
@@ -253,5 +265,24 @@ export const appStyles = StyleSheet.create({
     flex: 1,
     backgroundColor:'lightgray'
    },
+  //=============================================================================
+  // Mail 
+  //=============================================================================
+  mail_patient: {
+    backgroundColor: '#6fbcdc',
+    padding: 10,
+    marginVertical: 8,
+    marginLeft:8,
+    marginRight:28,
+    borderRadius:5,
+  },
+  mail_practice: {
+    backgroundColor: 'lightgreen',
+    padding: 10,
+    marginVertical: 8,
+    marginLeft:28,
+    marginRight:8,
+    borderRadius:5,
+  },
 //=============================================================================
 });

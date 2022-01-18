@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useCallback } from 'react'
-import { Text, View,ScrollView,TouchableOpacity,Linking} from 'react-native'
-
+import { Text, View,ScrollView,TouchableOpacity,Linking,StyleSheet} from 'react-native'
+//import YouTube from 'react-native-youtube';
 // tools
 import { loading } from '../../utils/misc_tools'
 // data
@@ -52,8 +52,23 @@ const ResourceList = () => {
             .filter(rowdetail => rowdetail.resource_group_id === resource_group_id)
             .map(rowdetail => (
                      rowdetail.resource_type === 'LINK' 
-                    ?  <Text key={rowdetail.resource_id} onPress={()=>OpenUrl(rowdetail.url)} style={appStyles.general_link}>{rowdetail.description}</Text>
-                    :  <Text  key={rowdetail.resource_id}>{rowdetail.description}</Text>
+                    ?  <Text key={rowdetail.resource_id} 
+                             onPress={()=>OpenUrl(rowdetail.url)} 
+                             style={appStyles.general_link}>{rowdetail.description}
+                       </Text>
+                    :  <View style={{width:50,padding:5,}}
+                             key={rowdetail.resource_id}
+                        >
+                                   {/* spanish guy lecture 77 
+                                     AIzaSyC5rjc_816TEmxFNVz5qehrh-u_1nFCyRk
+                           apiKey='AIzaSyAw7dmlSLQamGdq7noiZCiMxIP0UzCc-Ao */}
+                          {/* <YouTube apiKey ='AIzaSyC5rjc_816TEmxFNVz5qehrh-u_1nFCyRk'
+                                   videoId ='ANdSdIlgsEw' 
+                                   style={{alignSelf:'stretch',height:300}}
+                          />   */}
+                        
+                        </View> 
+                       
             ))
           }
        return display
@@ -92,6 +107,7 @@ const ResourceList = () => {
  )
 
 }
- 
+
 export default ResourceList;
+
 //=============================================================================

@@ -15,7 +15,7 @@ export const UserContext = React.createContext({
     patient_id:'1000001',
     patient_name:  'Danny Lee Smith',
     is_admin:'Y',
-    is_authenticated:'Y',
+    is_authenticated:'N',
     reset_password:'N',
     consent_touse:'Y',
     authError: '',
@@ -52,13 +52,15 @@ export const UserContext = React.createContext({
 // Local Storage
 //=============================================================================
      localStorage: {
-        labresult_id: '408594',
-        labresultcat_id: '117069',
-        note_id:5,
-        msg_id:4,
+        labresult_id: 0,
+        labresultcat_id: 0,
+        note_id:0,
+        msg_id:0,
         authentication_id:13,
-        patcontact_id:168156,
-        immunization_id:6515,
+        contact_id:0,
+        immunization_id:0,
+        careplan_id:0,
+        careplan_name:''
      }
 })
 //=============================================================================
@@ -148,7 +150,8 @@ export const UserChangePatientData = (user,patientData) => {
 // UserLogout - user logout 
 //=============================================================================
 export const UserLogout = (user) =>{
-  
+    user.is_authenticated = 'N'
+    user.token  = ''
    let queryString = `${USER_SERVER}/logout?portal_user_id=${user.portal_user_id}`
     axios.post(queryString)
     .then(response=>{

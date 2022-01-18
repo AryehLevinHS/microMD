@@ -32,6 +32,14 @@ const CareplanList = () => {
         navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
     }
     //=============================================================================
+    // ItemEdit - edits an item
+    //=============================================================================
+    const ItemEdit = (careplan_id,careplan_name) =>{
+        user.localStorage.careplan_id = careplan_id
+        user.localStorage.careplan_name = careplan_name
+        navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
+    }
+    //=============================================================================
     // CareplanDisplay - displays the list of careplans
     //=============================================================================
     const CareplanDisplay = ({careplandata}) => {
@@ -42,7 +50,8 @@ const CareplanList = () => {
         return (
             <View>
                 {careplandata.recordset.map((row,index) => (
-                <TouchableOpacity key={index} style={appStyles.item}>
+                <TouchableOpacity key={index} style={appStyles.item}
+                                  onPress={()=>{ItemEdit(row.careplan_id,row.description)}}>
                     <Text >{row.description}</Text>
                     <Text >{'Created On:'+row.careplan_date_display}{'  By:'+row.provider_name}</Text>
                 </TouchableOpacity> 

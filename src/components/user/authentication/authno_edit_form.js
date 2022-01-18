@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { TextInput, Divider, Button }from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native';
+import {Icon} from 'react-native-elements'
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,MessageDisplay } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -24,11 +25,12 @@ const AuthNoEditForm = () => {
     const [state,loadingState,DataAuthenticationUpdate,DataAuthenticationGetDetails,
            DataValidationFailure,DataValidationReset] = useAuthenicationForm()
     const [formdata,setFormdata] = useState (AuthenticationData)
+    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
-        //history.goBack()
+        navigation.goBack()
     }    
     //=============================================================================
     // useEffect to close form once sent
@@ -58,7 +60,7 @@ const AuthNoEditForm = () => {
             setDefaultValue(newFormdata,'number_type','SMS')
         }
 
-        setFormdata(newFormdata)    
+        setFormdata(newFormdata)  
         DataValidationReset() 
 
     },[])
@@ -79,12 +81,10 @@ const AuthNoEditForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
-        // DataValidationReset()
+   
+        DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'authNo');
-         setFormdata(newFormdata)    
+        setFormdata(newFormdata)    
     }
     //=============================================================================
     // submit form (update information)
@@ -95,6 +95,7 @@ const AuthNoEditForm = () => {
         let formIsValidRet = isFormValid(formdata,'authNo')
        
          if(formIsValidRet.formIsValid){
+             console.log('datatosubmit',dataToSubmit)
             DataAuthenticationUpdate(dataToSubmit)
          } else {
             DataValidationFailure(formIsValidRet.errorMsg)
@@ -102,18 +103,25 @@ const AuthNoEditForm = () => {
     }
 //=============================================================================
     return (
-        <ScrollView>
-            <Text>  Authentication Number</Text>
+        <ScrollView style={appStyles.form_container}>
+            <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                <Text style={appStyles.form_title}> Authentication Number</Text>
+            </View>
             <Formfield id={'description'} formdata={formdata.description}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-           <Formfield id={'number'} formdata={formdata.number}
+            <Formfield id={'number'} formdata={formdata.number}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-             {state.sendSuccess ? MessageDisplay('success','Authentication No Updated Successfully') : <View></View> }  
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <Button icon="content-save" mode="contained" onPress={submitForm} compact>
-               Update Authentication Number
-            </Button>
            
+           {state.sendSuccess ? <AppMessage type ='success' message='Authentication No Updated Successfully' /> : <View></View> }  
+           {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+           <AppButton type='save' title=' Update Authentication Number' onPress={submitForm}/> 
+
         </ScrollView>
     )
 }

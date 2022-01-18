@@ -7,26 +7,25 @@ import { updateField, generateData, isFormValid, setDefaultValue,populateOptionF
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { AppButton,AppMessage } from '../../utils/misc_tools';
+import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
-import {useCareplanForm}     from '../../../store/hooks/useMedinfoData'
-import {careplanData}   from './careplan_data'
+
+import {useVitalsignForm} from '../../../store/hooks/useMedinfoData'
+import {vitalsignData}   from './vitalsign_edit_data'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
-
 //=============================================================================
-// CarePlanProgress - edit the careplan progress
+// VitalSignEditForm - edit the vitalsign data
 //=============================================================================
-const CarePlanProgress = () => {
+const VitalSignEditForm = () => {
 
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
-    const [loadingState,state,DataCarePlanSendProgress,DataCarePlanGetbyId,
-        DataValidationFailure,DataValidationReset]  = useCareplanForm()
-    const [formdata,setFormdata] = useState (careplanData)
-    const [careplanName,setCareplanName] = useState ('')
+    const [state,DataVitalsignSend,DataValidationFailure,
+           DataValidationReset] = useVitalsignForm()
+    const [formdata,setFormdata] = useState (vitalsignData)
     const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
@@ -48,55 +47,38 @@ const CarePlanProgress = () => {
     //=============================================================================
     useEffect(()=>{
 
-         navigation.setOptions({
-             headerLeft:()=> (<TouchableOpacity  onPress={()=>{navigation.toggleDrawer()}  }>
-                              <Text>NAV</Text>
-                             
-                             </TouchableOpacity>)
-         })
-
         let newFormdata = formdata
         // set dropdowns
-        newFormdata = populateOptionFields(newFormdata,ref.careplanProgress,'progress_level')  
+        newFormdata = populateOptionFields(newFormdata,ref.painSeverity,'pain_severity')  
         newFormdata = populateOptionFields(newFormdata,ref.providerList,'provider_id')   
-    
-        // set default values 
+
+       // set default values 
         setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
-        setDefaultValue(newFormdata,'sender_name',user.portal_user_name)
         setDefaultValue(newFormdata,'patient_id',user.patient_id)
-         
+        
         setFormdata(newFormdata)    
         DataValidationReset() 
 
-        let careplanId = user.localStorage.careplan_id
-        if (careplanId > 0 ) {
-            setCareplanName( user.localStorage.careplan_name)
-            user.localStorage.careplan_id = 0 // clear data
-            user.localStorage.careplan_name = '' // clear data
-            /* existing care plan header */
-            DataCarePlanGetbyId(user.patient_id,careplanId)     
-        }
     },[])
-    
     //=============================================================================
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        
+      
         // DataValidationReset()
-        const newFormdata = updateField(formdata,id,action,value,'careplanprogress');
-         setFormdata(newFormdata)    
+        const newFormdata = updateField(formdata,id,action,value,'vitalsign');
+        setFormdata(newFormdata)    
     }
     //=============================================================================
     // submit form (update information)
     //=============================================================================
     const submitForm = () =>{
  
-        let dataToSubmit   = generateData(formdata,'careplanprogress');
-        let formIsValidRet = isFormValid(formdata,'careplanprogress')
+        let dataToSubmit   = generateData(formdata,'vitalsign');
+        let formIsValidRet = isFormValid(formdata,'vitalsign')
        
          if(formIsValidRet.formIsValid){
-            DataReferralSend(dataToSubmit)
+            DataVitalsignSend(dataToSubmit)
          } else {
             DataValidationFailure(formIsValidRet.errorMsg)
          }     
@@ -104,32 +86,69 @@ const CarePlanProgress = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-              <View style={appStyles.goBackButton}>
+             <View style={appStyles.goBackButton}>
                 <Icon 
                     name='arrowleft'
                     type='antdesign'
                     color='#517fa4'
                     onPress={() => goBack()}
                 />
-                <Text style={appStyles.form_title}> Careplan Progress</Text>
+                <Text style={appStyles.form_title}>Add Vital Signs</Text>
             </View>
-            <Text style={{color:'white',alignSelf:'center'}}> {careplanName}</Text>
-          
             <Formfield id={'provider_id'} formdata={formdata.provider_id}
-                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
-           <Formfield id={'progress_level'} formdata={formdata.progress_level}
-                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'progress_notes'} formdata={formdata.progress_notes}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />            
+            <View style={{flexDirection: "row" }} >
+                <View style={{flex:1} }>
+                   <Formfield id={'systolic'} formdata={formdata.systolic}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                 </View>
+                 <View style={{flex:1} }>
+                    <Formfield id={'diastolic'} formdata={formdata.diastolic}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                 </View>           
+            </View>
+            <Formfield id={'pulse_rate'} formdata={formdata.pulse_rate}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />            
+            <Formfield id={'temperature'} formdata={formdata.temperature}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'blood_sugar'} formdata={formdata.blood_sugar}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'respiratory_rate'} formdata={formdata.respiratory_rate}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'oxygen'} formdata={formdata.oxygen}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <View style={{flexDirection: "row" }} >
+                <View style={{flex:1} }>
+                      <Formfield id={'height_ft'} formdata={formdata.height_ft} 
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                 </View>
+                 <View style={{flex:1} }>
+                    <Formfield id={'height_in'} formdata={formdata.height_in}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                 </View>           
+            </View>
+            <View style={{flexDirection: "row"}} >
+                <View style={{flex:1} }>
+                  <Formfield id={'weight_lb'} formdata={formdata.weight_lb}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                 </View>
+                 <View style={{flex:1} }>
+                 <Formfield id={'weight_oz'} formdata={formdata.weight_oz}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                       </View>
+            </View>
+            <Formfield id={'pain_severity'} formdata={formdata.pain_severity}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'comment'} formdata={formdata.comment}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-
-             {state.sendSuccess ? <AppMessage type ='success' message='Careplan Progress Sent Successfully' /> : <View></View> }  
-             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={state.error = null} /> : <View></View> } 
-             <AppButton type='send' title='Send Careplan Progress' onPress={submitForm}/>
+         
+            {state.sendSuccess ? <AppMessage type ='success' message='Vitalsigns Successfully sent' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+            <AppButton type='send' title='Send Vitalsigns' onPress={submitForm}/> 
+           
         </ScrollView>
     )
 }
  
-export default CarePlanProgress;
+export default VitalSignEditForm;
 //=============================================================================

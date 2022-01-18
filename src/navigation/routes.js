@@ -33,14 +33,15 @@ import {
   NAV_MEDINFO_VITALSIGNS,NAV_MEDINFO_VITALSIGN_GRAPH,NAV_MEDINFO_VITALSIGN_EDIT,NAV_MEDINFO_VITALSIGN_NAVIGATOR,
   NAV_MEDINFO_ALERTS,NAV_MEDINFO_DASHBOARD,
  
-  NAV_MAIL_NAVIGATOR,
+  NAV_MAIL_NAVIGATOR,NAV_MAIL_INBOX_NAVIGATOR,
   NAV_MAIL_INBOX,NAV_MAIL_MESSAGE,NAV_MAIL_OUTBOX,NAV_MAIL_MSGDISPLAY,
  
   NAV_PATIENT_NAVIGATOR,
   NAV_PATIENT_PROVIDERS,NAV_PATIENT_PERSONAL,NAV_PATIENT_CHARGES,NAV_PATIENT_INSURANCE,
   NAV_PATIENT_INSURANCE_EDIT,NAV_PATIENT_PERSONAL_EDIT,NAV_PATIENT_PAYMENTS,NAV_PATIENT_STATEMENTS,
   NAV_PATIENT_CONTACT_NAVIGATOR,NAV_PATIENT_CONTACTS,NAV_PATIENT_CONTACTS_EDIT,
-  NAV_USER_NOTES_NAVIGATOR,NAV_USER_NOTES,NAV_USER_NOTES_EDIT,NAV_USER_PROFILE,
+  NAV_USER_NOTES_NAVIGATOR,NAV_USER_NOTES,NAV_USER_NOTES_EDIT,
+  NAV_USER_PROFILE_NAVIGATOR,NAV_USER_PROFILE,
   NAV_USER_AUTHENTICATION_EDIT,
  
   NAV_PRACTICE_NAVIGATOR,
@@ -75,8 +76,8 @@ import ReferralList     from '../components/medinfo/referral/referral_list'
 import ReferralForm     from '../components/medinfo/referral/referral_form'
 import NoticeList       from '../components/medinfo/notices/notice_list';
 import VitalSignList    from '../components/medinfo/vitalsigns/vitalsign_list';
-import VitalSignEdit    from '../components/medinfo/vitalsigns/vitalsign_list';
-import VitalSignCompare from '../components/medinfo/vitalsigns/vitalsign_list';
+import VitalSignEdit    from '../components/medinfo/vitalsigns/vitalsign_edit_form';
+import VitalSignCompare from '../components/medinfo/vitalsigns/vitalsign_compare';
 
 // Appt
 import ApptPastList     from '../components/appointments/appt_past_list';
@@ -101,7 +102,7 @@ import ChangePassword   from '../components/user/password/password_change';
 import AuthNoList       from '../components/user/authentication/authno_list';
 import AuthNoEditForm   from '../components/user/authentication/authno_edit_form';
 import TermsofUse       from '../components/user/register/terms_of_use';
-import ProxyScreen      from '../components/user/proxy/proxy_screen'; 
+import ProxyScreen      from '../components/user/proxy/proxy_list'; 
 import RegisterForm     from '../components/user/register/register_form'; 
 import UserProfile      from '../components/user/profile/profile_screen'; 
 
@@ -111,7 +112,7 @@ import ResourceList     from '../components/practice/resources/resource_list';
 import PracticeInfo     from '../components/practice/info/practice_info';
 
 import {headerOptions,headerEdit}   from './application_header'
-//import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 // const [isAuth,SetIsAuth] = useState(false)
 const Stack = createNativeStackNavigator();
@@ -142,8 +143,8 @@ export const Routes = () => {
      const LabResultStack = createNativeStackNavigator();
      const VitalSignStack = createNativeStackNavigator();
      const ImmunizationStack = createNativeStackNavigator();
-     
-     
+     const ProfileStack   = createNativeStackNavigator();
+     const MailMsgStack   = createNativeStackNavigator();
     //=============================================================================
     // HomeNavigator - navigator for home
     //=============================================================================
@@ -247,9 +248,9 @@ export const Routes = () => {
                    screenOptions={{  headerShown: false  }}>
                   <CarePlanStack.Screen name={NAV_MEDINFO_CAREPLAN}          component={CareplanList} />
                   <CarePlanStack.Screen name={NAV_MEDINFO_CAREPLAN_PROGRESS} component={CarePlanProgress} 
-                    //  screenOptions={{...headerEdit}} /> 
+                    //?note: options not screenOptions  options={{...headerEdit}} /> 
                     screenOptions={{  headerShown: true  }}
-                    setOptions={{...headerEdit}} /> 
+                    options={{...headerEdit}} /> 
               </CarePlanStack.Navigator>
       )
     }
@@ -336,7 +337,7 @@ export const Routes = () => {
               </ContactStack.Navigator>
       )
     }
-     //=============================================================================
+    //=============================================================================
     // PatientNotesNavigator Patient Notes
     //=============================================================================
     const PatientNotesNavigator = () => {
@@ -347,6 +348,19 @@ export const Routes = () => {
                   <NotesStack.Screen name={NAV_USER_NOTES}      component={NoteList} />
                   <NotesStack.Screen name={NAV_USER_NOTES_EDIT} component={NoteEditForm} />
               </NotesStack.Navigator>
+      )
+    }
+    //=============================================================================
+    // PatientProfileNavigator Patient Notes
+    //=============================================================================
+    const PatientProfileNavigator = () => {
+
+      return (
+              <ProfileStack.Navigator InitialRouteName={NAV_USER_PROFILE} 
+                    screenOptions={{  headerShown: false  }}>
+                  <ProfileStack.Screen name={NAV_USER_PROFILE}      component={UserProfile} />
+                  <ProfileStack.Screen name={NAV_USER_AUTHENTICATION_EDIT} component={AuthNoEditForm} />
+              </ProfileStack.Navigator>
       )
     }
     //=============================================================================
@@ -363,7 +377,7 @@ export const Routes = () => {
                   <PatientDrawer.Screen name={NAV_PATIENT_INSURANCE}      component={InsuranceList} />
                   <PatientDrawer.Screen name={NAV_USER_NOTES_NAVIGATOR}   component={PatientNotesNavigator} />
                   <PatientDrawer.Screen name={NAV_PATIENT_PERSONAL}       component={PersonalInfo} />
-                  <PatientDrawer.Screen name={NAV_USER_PROFILE}           component={UserProfile} /> 
+                  <PatientDrawer.Screen name={NAV_USER_PROFILE_NAVIGATOR} component={PatientProfileNavigator} /> 
                   {/* <PatientDrawer.Screen name={NAV_MAIL_MESSAGE_LINK}    component={MsgForm}
                      tabBarStyle= {{ display: 'none' }} /> */}
               </PatientDrawer.Navigator>
@@ -387,6 +401,19 @@ export const Routes = () => {
        )
     }  
     //=============================================================================
+    // MailMsg Navigator
+    //=============================================================================
+    const MailMsgNavigator = () => {
+
+      return (
+              <MailMsgStack.Navigator InitialRouteName={NAV_MAIL_INBOX} 
+                    screenOptions={{  headerShown: false  }}>
+                  <MailMsgStack.Screen name={NAV_MAIL_INBOX}      component={MailInbox} />
+                  <MailMsgStack.Screen name={NAV_MAIL_MSGDISPLAY} component={MsgDisplay} />
+              </MailMsgStack.Navigator>
+      )
+    }
+    //=============================================================================
     // MailNavigator - Navigator for mail messages
     //=============================================================================
     const MailNavigator = () => {
@@ -395,9 +422,9 @@ export const Routes = () => {
               <MailDrawer.Navigator InitialRouteName={NAV_MAIL_INBOX}
                  screenOptions={{  ...headerOptions,}}
               >
-                    <MailDrawer.Screen name={NAV_MAIL_INBOX}                component={MailInbox} />
+                    <MailDrawer.Screen name={NAV_MAIL_INBOX_NAVIGATOR}      component={MailMsgNavigator} />
                     <MailDrawer.Screen name={NAV_MAIL_OUTBOX}               component={MailOutbox} />
-                    <MailDrawer.Screen name={NAV_MAIL_MSGDISPLAY}           component={MsgDisplay} />
+                    {/* <MailDrawer.Screen name={NAV_MAIL_MSGDISPLAY}           component={MsgDisplay} /> */}
                     <MailDrawer.Screen name={NAV_MAIL_MESSAGE}              component={MsgForm} /> 
               </MailDrawer.Navigator>
       )

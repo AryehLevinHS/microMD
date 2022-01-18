@@ -3,6 +3,7 @@ export const LoginData ={
         element: 'input',
         value: '',
         config:{
+            label: 'User Name:',
             name: 'userName_input',
             type: 'text',
             placeholder: 'Enter your User Name'
@@ -16,6 +17,7 @@ export const LoginData ={
         element: 'input',
         value: '',
         config:{
+            label: 'Password:',
             name: 'password_input',
             type: 'password',
             placeholder: 'Enter your password'

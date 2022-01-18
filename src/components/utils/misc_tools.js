@@ -1,8 +1,9 @@
 import React from 'react'
-import {ActivityIndicator,Text,View} from 'react-native'
+import {ActivityIndicator,Text,TouchableOpacity,View,Alert} from 'react-native'
 import {appStyles} from '../../resources/styles/main_styles'
 import { Snackbar ,Chip  } from 'react-native-paper';
-import {Button} from 'react-native-elements'
+import {Button,Icon} from 'react-native-elements'
+import colors from '../../resources/themes/colors';
 //=============================================================================
 // Loading  - determinins if its loading
 // need to pass in if loading 
@@ -26,7 +27,7 @@ export const AppButton = ({type,title,onPress}) =>{
                          }}
                          iconRight
                          buttonStyle={{
-                              backgroundColor: 'darkblue',
+                              backgroundColor: colors.button_background,
                               borderColor: 'transparent',
                               borderWidth: 0,
                               borderRadius: 10,
@@ -40,7 +41,7 @@ export const AppButton = ({type,title,onPress}) =>{
                 />)
               break;
               case 'save':
-               return(<Button title={title} onPress={onPress} 
+                    return(<Button title={title} onPress={onPress} 
                           icon={{
                                name: 'save',
                                type: 'material-icons',
@@ -49,10 +50,10 @@ export const AppButton = ({type,title,onPress}) =>{
                           }}
                           iconRight
                           buttonStyle={{
-                               backgroundColor: 'darkblue',
+                               backgroundColor: colors.button_background,
                                borderColor: 'transparent',
                                borderWidth: 0,
-                               borderRadius: 15,
+                               borderRadius: 10,
                           }}
                           containerStyle={{
                                width: '95%',
@@ -60,111 +61,110 @@ export const AppButton = ({type,title,onPress}) =>{
                                marginVertical: 10,
                           }}
                
-                 />)
+                    />)
                break;
-          default:
+          default: /* no icon */
+               return(<Button title={title} onPress={onPress} 
+                    buttonStyle={{
+                         backgroundColor: colors.button_background,
+                         borderColor: 'transparent',
+                         borderWidth: 0,
+                         borderRadius: 10,
+                    }}
+                    containerStyle={{
+                         width: '95%',
+                         marginHorizontal: 10,
+                         marginVertical: 10,
+                    }}
+         
+               />)
+         break;
               break;
     }
 
   
 }
 //=============================================================================
+// getAppMessageColor - Gets the app message color
+//=============================================================================
+const getAppMessageColor = (msgType) => {
+   switch (msgType) {
+        case 'error': return ('red')
+        case 'success': return ('green') 
+        case 'info': return ('gray') 
+        default: return ('black') 
+   }
+}
+//=============================================================================
 // AppMessage - Display message
 //=============================================================================
-export const AppMessage = ({type,message,onPress}) =>{
-     const [visible, setVisible] = React.useState(true);
-     const onToggleSnackBar = () => setVisible(!isVisible);
-     const onDismissSnackBar = () => setVisible(false);
+export const AppMessage = ({type,message,onDismiss,onPress}) =>{
+  
+    if (type==='error' || type === 'info') { 
+       setTimeout(()=>{ onDismiss() },5000)
+    }
 
-
-
-     switch (type) {
-          case 'error':
-               //style={styles.container}
-               return(<View >
-                         {/* <Button onPress={onToggleSnackBar}>{visible ? 'Hide' : 'Show'}</Button> */}
-                           <Snackbar 
-                              style={{backgroundColor:'red'}}
-                              visible={visible}
-                              onDismiss={onDismissSnackBar}
-                              action={{label: 'X', onPress: () => {onDismissSnackBar}, }}
-                           >
-                             <Text style={{alignContent:'center'}}> {message} </Text>
-                           </Snackbar>
-                    </View> )
-               break;
-          case 'success':
-              // style={styles.container}
-                    return(<View style={{backgroundColor:'green'}} >
-                              {/* <Button onPress={onToggleSnackBar}>{visible ? 'Hide' : 'Show'}</Button> */}
-                                <Snackbar
-                                   visible={visible}
-                                   onDismiss={onDismissSnackBar}
-                                   // action={{
-                                   //     label: 'Undo',
-                                   //     onPress: () => {onPress},
-                                   //     }}
-                                   >
-                                    {message}
-                                </Snackbar>
-                         </View> )
-                    break;
-               default:
-               break;
-     }
- 
-     <Snackbar visible={visible}
-     onDismiss={onDismissSnackBar}
-     action={{ label: 'Close',// onPress: () => { Do something },
-          }}>
-     Hey there! I'm a Error.
-  </Snackbar> 
+   return (
+          <TouchableOpacity style={{backgroundColor:getAppMessageColor(type),
+               width: '95%', alignSelf:'center' ,borderRadius:5, }}>
+               <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    <Text onPress={onPress}
+                         style ={{ color: 'white',
+                                   paddingLeft: 5,
+                                   paddingTop:5,
+                                   height:30,
+                                   }} >
+                    {message}
+                    </Text>
+                    {typeof onDismiss==='function'&&
+                    <Icon 
+                         name='close'
+                         type='antdesign'
+                         color='white'
+                         onPress={() => { onDismiss()}}
+                    /> }
+               </View>
+          </TouchableOpacity>
+                     
+   )
  }
 //=============================================================================
-// Display Message  - 
+// AppMessage - Display message
 //=============================================================================
-export const MessageDisplay = (msgType,msg) => {
-     const [visible, setVisible] = React.useState(true);
-     const onToggleSnackBar = () => setVisible(!visible);
-     const onDismissSnackBar = () => setVisible(false);
-     let   message = ''
+// export const AppMessage2 = ({type,message,onDismiss}) =>{
+//      const [visible, setVisible] = React.useState(true);
+//      const onToggleSnackBar = () => setVisible(!isVisible);
+//      const onDismissSnackBar = () => setVisible(false);
 
-     switch (msgType) {
-     case 'error':
-          message =  (<Snackbar visible={visible}
-                         onDismiss={onDismissSnackBar}
-                         action={{ label: 'Close',// onPress: () => { Do something },
-                              }}>
-                         Hey there! I'm a Error.
-                      </Snackbar>  )
-     break;
-     case 'success':
-          message =  (<Snackbar visible={visible}
-                         onDismiss={() => onDismissSnackBar()}
-                         // action={{ label: 'Close',// onPress: () => { Do something },
-                         //      }}
-                          >
-                          {msg}
-                      </Snackbar>  )
-      break;
-     default:
-           message = <Text>{msg}</Text>      
-     }
+//      return(<View >
+//                 <Snackbar 
+//                     style={{backgroundColor:getAppMessageColor(type)}}
+//                     onDismiss={onDismiss}
+//                     visible={true}
+//                     action={{
+//                          label: 'Close',
+//                          onPress: () => {onDismiss() }
+//                          }}
+//                     >
+//                     <Text style={{alignContent:'center'}}> {message} </Text>
+//                 </Snackbar>
+//           </View> )
 
-   return message
-
-
-     //    //     <Text style={appStyles.error_msg}>{msg}</Text>
-      
-     // Toast.show({
-     //      type: 'success',
-     //      text1: 'Hello',
-     //      text2: 'This is some something 👋'
-     //    });
-     //<Chip icon="information" onPress={() => console.log('Pressed')}>Example Chip</Chip>
-     // <View>
-     //<Text  style={appStyles.success_msg} >{msg}</Text>
-     //</View>
-  
+//  }
+//=============================================================================
+// Confirm Dialog 
+//=============================================================================
+export const ConfirmDialog = (msgType,msgHeader,msg,onPress) => {
+   
+     return Alert.alert(
+          msgHeader,
+          msg,
+          [// The "Yes" button
+            { text: "Yes", onPress: () =>{onPress(true)}  },
+            // The "No" button
+            { text: "No",  },
+          ]
+        );
+ 
 }
 //=============================================================================r

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { TextInput, Divider, Button }from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements'
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,MessageDisplay } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -25,11 +26,12 @@ const ContactEditForm = () => {
     const [state,loadingState,DataContactGetDetails,DataContactUpdate,
            DataValidationFailure,DataValidationReset] = useContactForm()
     const [formdata,setFormdata] = useState (ContactData)
+    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
-        //history.goBack()
+        navigation.goBack()
     }    
     //=============================================================================
     // useEffect to close form once sent
@@ -109,7 +111,16 @@ const ContactEditForm = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-            <Text style={appStyles.form_title}> Edit Contact Information</Text>
+              <View style={appStyles.goBackButton}>
+                <Icon 
+                    name='arrowleft'
+                    type='antdesign'
+                    color='#517fa4'
+                    onPress={() => goBack()}
+                />
+                 <Text style={appStyles.h3}> Edit Contact Information</Text>
+            </View>
+           
             <Formfield id={'contact_type'} formdata={formdata.contact_type}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
            <Formfield id={'relationship'} formdata={formdata.relationship}
@@ -147,11 +158,9 @@ const ContactEditForm = () => {
             <Formfield id={'gender'} formdata={formdata.gender}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
                    
-             {/* {state.sendSuccess ? MessageDisplay('success',' Contact Information Sent Successfully') : <View></View> }   */}
-             {/* {state.error ? MessageDisplay('error','Error: '+state.error) : <View></View> }     */}
-            <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
-               Update Contact Information
-            </Button>
+            {state.sendSuccess ? <AppMessage type ='success' message='Contact Information Updated Successfully' /> : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+            <AppButton type='save' title='Update Contact Information' onPress={submitForm}/> 
            
         </ScrollView>
     )
@@ -159,9 +168,3 @@ const ContactEditForm = () => {
  
 export default ContactEditForm;
 //=============================================================================
-/*
- <TextInput label="Note Type" value={formdata.note_type.value} mode="outlined"
-                       onChangeText={(text) => updateFormField('note_type','changed',text)} 
-                       placeholder={formdata.subject.config.placeholder} />
-           
-                       */

@@ -5,7 +5,7 @@ import { DataTable } from 'react-native-paper';
 //import { LineChart, Grid } from 'react-native-svg-charts'
 import { LineChart} from "react-native-chart-kit";
 // tools
-import { loading,messageDisplay } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useLabResultGraph} from '../../../store/hooks/useMedinfoData'
@@ -111,11 +111,12 @@ const LabResultGraph = () => {
         <ScrollView>
             <Text> Laboratory Result Graph</Text>
             {state.loading ? loading(true) : loading(false)} 
-            {state.error ? messageDisplay('error',state.error) : <View></View> }  
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{state.error = null}}/> : <View></View> }  
             <LabResultGraph labtestdata={state.data} /> 
         </ScrollView>
     )
 }
+
  
 export default LabResultGraph;
 //=============================================================================

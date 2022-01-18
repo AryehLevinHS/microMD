@@ -1,31 +1,40 @@
-import * as React from 'react';
+import React , {useContext} from 'react';
 import { View } from 'react-native';
 import { Button, Menu, Divider} from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+//data
+import { UserContext } from '../store/UserContext'
+// style
+import colors from '../resources/themes/colors'
 
  //=============================================================================
  // SettingsIcon  - the settings icon and menu
  //=============================================================================
 const SettingsIcon = () => {
-    // const navigation = useNavigation()
+    const navigation = useNavigation()
+    const user = useContext (UserContext)
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
-
+    //=============================================================================
+    const logout = () => {
+      user.UserLogout(user)
+    }
+va //=============================================================================
+   
      return(
          <View style={{margin:10}}>
             <Menu
               visible={visible}
               onDismiss={closeMenu}
-              anchor={  <Icon
-                name="settings"
-                type= "Feather" //"antdesign"
-                color= 'white'
-                onPress={openMenu} />
+              anchor={  <Icon  name="settings"
+                               type= "Feather" //"antdesign"
+                               color= 'white'
+                               onPress={openMenu} />
               }
                >
-              <Menu.Item icon="logout" onPress={() => {}} title="Logout" />
+              <Menu.Item icon="logout" onPress={() => {logout()}} title="Logout" />
               <Menu.Item icon="account"  onPress={() => {}} title="Profile" />
               <Divider />
               <Menu.Item onPress={() => {}} title="Bart Smith" />
@@ -40,22 +49,22 @@ const SettingsIcon = () => {
   export const headerOptions = {
       
     headerTitleAlign:'center',
-    headerTintColor: 'white',
+    headerTintColor: colors.header_title,
     headerStyle:{
-        backgroundColor: 'rgb(0,140,189)',
+        backgroundColor: colors.header_background,
         borderBottomWidth:5,
-        borderBottomColor:'blue',
+        borderBottomColor: colors.header_border,
         height: Platform.OS === 'ios' ? 110 : 60
     },
     headerRight: (props)=> <SettingsIcon/>,
 
       // headerTitle:()=> 'Fred'
-        // headerTitle: () =>
-        //     <View>
-        //         <Text>Title</Text>
-        //         <Text>subtitle</Text>
-        //     </View>,
-    // headerLeft:()=> (<TouchableOpacity  onPress={()=>{navigation.toggleDrawer()}  }>
+    // headerTitle: () =>
+    //        <View>
+    //              <Text>Title</Text>
+    //              <Text>subtitle</Text>
+    //          </View>,
+    // headerLeft:()=> (<TouchableOpacity  onPress={()=>{navigation.toggleDrawer()} or navigation.openDrawer() }>
     //                   <Text>NAV</Text> 
     //                 </TouchableOpacity>)
 }  
@@ -65,21 +74,21 @@ const SettingsIcon = () => {
  export const headerEdit = {
    
   headerTitleAlign:'center',
-  headerTintColor: 'white',
+  headerTintColor:  colors.header_title,
   headerStyle:{
-      backgroundColor: 'rgb(0,140,189)',
+      backgroundColor:  colors.header_background,
       borderBottomWidth:5,
-      borderBottomColor:'blue',
+      borderBottomColor:colors.header_border,
       height: Platform.OS === 'ios' ? 110 : 60
   },
   headerRight: (props)=> <SettingsIcon/>,
 
     // headerTitle:()=> 'Fred'
-      // headerTitle: () =>
-      //     <View>
-      //         <Text>Title</Text>
-      //         <Text>subtitle</Text>
-      //     </View>,
+      //  headerTitle: () =>
+      //      <View>
+      //          <Text>Title</Text>
+      //          <Text>subtitle</Text>
+      //      </View>,
   headerLeft:()=> (<View>
                     <Icon
                         name="arrow-left"

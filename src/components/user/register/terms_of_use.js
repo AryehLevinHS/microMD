@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import {  ScrollView,View, Text } from 'react-native' //TextInput Button
 import { Button } from 'react-native-paper';
-//import {Dialog,IconButton,Tooltip} from '@material-ui/core';
-//import CloseIcon from '@material-ui/icons/Cancel';
 
+// tools
+import { AppMessage,AppButton } from '../../utils/misc_tools'
 
 // data
 import {UserContext} from '../../../store/UserContext'
@@ -261,7 +261,13 @@ function TermsofUse () {
                             THAT THE PORTAL WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE
                       </Text>
                       <Text style={appStyles.bold}>*** IF YOU DO NOT AGREE TO OUR TERMS, PLEASE IMMEDIATELY DISCONTINUE USE OF THIS PORTAL ***</Text>
-                       {state.sendSuccess ? MessageDisplay('success','Terms of Use Submitted Sucessfully') : <View></View> }              
+                      
+                      
+                              
+                    {state.sendSuccess ? <AppMessage type ='success' message='Terms of Use Submitted Sucessfully' /> : <View></View> }  
+                    {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
+                    {/* <AppButton type='send' title='Agree' onPress={submitForm}/> 
+                    <AppButton type='send' title='Agree' onPress={closeDialog}/>  */}
                         <>
                             <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
                                Agree

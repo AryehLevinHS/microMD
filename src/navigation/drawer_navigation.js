@@ -1,17 +1,17 @@
 import React from 'react';
-
+import { View,Text,ScrollView,StyleSheet,TouchableOpacity } from 'react-native';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
+import {Button} from 'react-native-elements'
+import {appStyles} from '../resources/styles/main_styles'
 import { useNavigation } from '@react-navigation/native';
+
 // import { DrawerActions } from "react-navigation";
 import {NAV_HOME,NAV_MAIL_INBOX,NAV_PATIENT_INSURANCE,NAV_PATIENT_CONTACT_NAVIGATOR,NAV_PATIENT_PROVIDERS,
     NAV_APPT_CURRENT,NAV_MEDINFO_REFILLS,NAV_MEDINFO_DASHBOARD,NAV_MEDINFO_ALLERGIES,NAV_MEDINFO_CAREPLAN_NAVIGATOR,NAV_MEDINFO_DOCUMENTS,
     NAV_MEDINFO_VITALSIGN_NAVIGATOR,NAV_MEDINFO_VISITS,NAV_MEDINFO_LABRESULT_NAVIGATOR,
     NAV_MEDINFO_MEDICATIONS,NAV_MEDINFO_REFERRALS_NAVIGATOR, NAV_MEDINFO_IMMUNIZATION_NAVIGATOR} 
- 
     from './route_types'
-import { View,Text,ScrollView,StyleSheet,TouchableOpacity } from 'react-native';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-import {Button} from 'react-native-elements'
-import {appStyles} from '../resources/styles/main_styles'
+
 
 //=============================================================================
 // PatientSideDrawerCustom
