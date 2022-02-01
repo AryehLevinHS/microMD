@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect} from 'react'
 import { View,Text,TouchableOpacity,ImageBackground,Image } from 'react-native'
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { useNavigation } from '@react-navigation/native';
@@ -12,8 +12,7 @@ import homepage_rxreq   from '../../resources/images/homepage/medication.png'
 import homepage_pratice from  '../../resources/images/homepage/Practice.png'
 import homepage_appt    from  '../../resources/images/homepage/Appintment.png'
 import { homeGridData } from './home_griddata';
-import {NAV_MAIL_INBOX,NAV_MEDINFO_DASHBOARD,NAV_PRACTICE_NEWS,NAV_PATIENT_PROVIDERS,
-        NAV_APPT_CURRENT,NAV_MEDINFO_REFILLS,
+import {NAV_MEDINFO_REFILLS,NAV_USER_TERMSOFUSE,
         NAV_MAIL_NAVIGATOR,NAV_APPT_NAVIGATOR,NAV_MEDINFO_NAVIGATOR,
         NAV_PATIENT_NAVIGATOR,NAV_PRACTICE_NAVIGATOR} from '../../navigation/route_types'
 // data
@@ -25,12 +24,22 @@ const practice = 0
 const HomeScreen = () => {
      
     const user = useContext (UserContext)
-    const navigation = useNavigation();
+    const navigation = useNavigation();   
+
+    //=============================================================================
+    // useEffect - if terms of use not Y then open terms of use screen
+    //=============================================================================
+    useEffect(()=>{
+     
+        if (user.consent_touse === 'N'){
+            navigation.navigate(NAV_USER_TERMSOFUSE)
+        }
+    },[])
     //=============================================================================
     // Card Pressed
     //=============================================================================
     const cardPressed= (key) => {
-      console.log('card presseed',key)
+  
       switch (key) {
         case 'mail': navigation.navigate(NAV_MAIL_NAVIGATOR);
         break;

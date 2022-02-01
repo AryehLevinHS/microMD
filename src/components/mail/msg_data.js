@@ -23,7 +23,7 @@ export const messageData ={
         touched: false
     },
     receiver_id: {
-        element: 'select',
+        element: 'dropdownlookup', //'select',
         value: '',
         config:{
             name: 'receiver_input',

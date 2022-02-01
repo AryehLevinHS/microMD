@@ -21,7 +21,6 @@ export const validateField = (element, formdata= [],id) => {
     }
 
     if(element.validation.required){
-        console.log('got to reqired')
         const valid = element.value.trim() !== '';
         const message = `${!valid ? 'This field is required':''}`;
         error = !valid ? [valid,message] : error;

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { Text, View,ScrollView,TouchableOpacity, Image,Button } from 'react-native'
 import { DataTable } from 'react-native-paper';
-import { Icon } from 'react-native-elements'
+import { Icon,BottomSheet,ListItem } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { usePersonaleDetails } from '../../../store/hooks/usePatientData'
@@ -21,6 +22,59 @@ const PersonalInfo = () => {
     const user = useContext (UserContext)
     const navigation = useNavigation();
     const [state,DataPersonalInfoGetDetails] = usePersonaleDetails()
+    const [avatar,setAvatar] = useState('../../resources/images/homepage/Appintment.png')
+    //=============================================================================
+
+    const [selectImage, setSelectImage] = useState(false);
+    const list = [
+      { title: 'Open Camera',
+        icon :<Icon name="camera"   type='antdesign' />,
+        onPress: ()=>addImageFromCamera()},
+      { title: 'Choose from gallery',
+        icon:<Icon name="photograph"  type='fontisto' />,
+        onPress: ()=>{ addImageFromLibrary()},
+      },
+      {
+        title: 'Cancel',
+        containerStyle: { backgroundColor: 'orange' },
+        titleStyle: { color: 'white' },
+        onPress: () => setSelectImage(false),
+        // icon :<Icon name="camera" />,
+      },
+    ];
+    //=============================================================================
+    // addImageFromLibrary - adds the picture from a library
+    //=============================================================================
+    const addImageFromLibrary = () =>{
+        setSelectImage(false)
+        // launchImageLibrary({}, (response)=> {
+        //     if(response.didCancel) {
+        //        console.log('No Pics') 
+        //     } else if (response.error) {
+        //         console.log('Image Picker Failed: ',response.error) 
+            
+        //     } else {
+        //         setAvatar(respose.uri)
+        //     }
+        // })
+      }
+    //=============================================================================
+    // addImageFromCamera - adds the picture from a library
+    //=============================================================================
+    const addImageFromCamera = async () =>{
+        setSelectImage(false)
+        // const response = await launchCamera({})
+        //     if(response.didCancel) {
+        //        console.log('No Pics') 
+        //     } else if (response.error) {
+        //         console.log('Image Picker Failed: ',response.error) 
+            
+        //     } else {
+        //         setAvatar(respose.uri)
+        //     }
+        
+      }
+    
     //=============================================================================
     // editData - edits the data
     //=============================================================================
@@ -43,9 +97,10 @@ const PersonalInfo = () => {
 
         return (
             <View>
-                <TouchableOpacity style={appStyles.item}>
+                <Image source = {{uri:avatar}} style={{width:100, height:100}} />
+                <TouchableOpacity style={appStyles.item} >
                   {personaldata.recordset.map(row => (
-                     <DataTable style={appStyles.table_frame}>
+                     <DataTable style={appStyles.table_frame} key={11}>
                          <DataTable.Row key={10}>
                              <DataTable.Cell>First Name</DataTable.Cell>
                              <DataTable.Cell>{row.first_name}</DataTable.Cell>
@@ -95,36 +150,37 @@ const PersonalInfo = () => {
         )
     }
 
-     //  <TouchableOpacity key={row.patient_id} style={appStyles.item}>
-                //     <Text >{row.first_name+ ' '+row.last_name}</Text>
-                //     <Text></Text>
-                //     <Text >{'First Name: '+row.first_name}</Text>
-                //     <Text >{'Last Name: '+row.last_name}</Text>
-                //     <Text >{'Address: '+row.street_address +' '+row.street_address2}</Text>
-                //     <Text >{row.city +' '+row.state_code+' '+row.zip}</Text>  
-                //     <Text >{'Home Phone: '+row.home_phone }</Text>
-                //     <Text >{'Mobile: '+row.mobile}</Text>
-                //     <Text >{'Date of Birth: '+row.date_of_birth }</Text>
-                //     <Text >{'Marital status: '+row.marital_status_display}</Text>
-                //     <Text >{'Fax: '+row.fax }</Text>
-                //     <Text >{'Email: '+row.email}</Text>
-                //     onPress={() => editData()}
-               // </TouchableOpacity> 
-               //))}
+     
 //=============================================================================
     return (
         <ScrollView>
                 <View style={appStyles.addButton}>
                 <Icon 
-                    name='edit'
-                    type='materialicons'
+                    name='person'
+                    type='ionicons'
                     color='#517fa4'
-                    onPress={() => editData()}
+                    onPress={() => setSelectImage(true)}
                 />
-              </View>
+                <IconButton type = 'EDIT' onPress={() => editData()} />
+                </View>
             {/* <Text> Personal Information</Text> */}
             {state.loading ? loading(true) : loading(false)} 
             <PersonalInfoDisplay personaldata={state.data} /> 
+             
+            <BottomSheet modalProps={{}} isVisible={selectImage}>
+                {list.map((l, i) => (
+                <ListItem
+                    key={i}
+                    containerStyle={l.containerStyle}
+                    onPress={l.onPress}
+                >
+                    {l.icon}
+                    <ListItem.Content>
+                    <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+                    </ListItem.Content>
+                </ListItem>
+                ))}
+             </BottomSheet>
         </ScrollView>
     )
 }

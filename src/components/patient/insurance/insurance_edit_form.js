@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Text, View,ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'
 
@@ -8,7 +8,7 @@ import { updateField, generateData, isFormValid, setDefaultValue,populateOptionF
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppButton,AppMessage } from '../../utils/misc_tools';
+import { loading,AppButton,AppMessage,IconButton } from '../../utils/misc_tools';
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -22,19 +22,19 @@ import {appStyles} from '../../../resources/styles/main_styles'
 //=============================================================================
 const InsuranceEditForm = () => {
 
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
     // for loading and sending the data
     const [state,loadingState,DataInsuranceGetDetails,DataInsuranceUpdate,
         DataValidationFailure,DataValidationReset] = useInsuranceForm()
     const [formdata,setFormdata] = useState (InsuranceData)
-    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
         navigation.goBack()
-    }    
+    } 
     //=============================================================================
     // useEffect to close form once sent
     // if state.sendSuccess then display success message for 2 seconds and close the form
@@ -55,6 +55,8 @@ const InsuranceEditForm = () => {
         newFormdata = populateOptionFields(newFormdata,ref.relationship,'policy_holder_relationship')    
         newFormdata = populateOptionFields(newFormdata,ref.states,'policy_holder_state')   
 
+        let insurance_id = user.localStorage.insurance_id
+        //console.log('insuranceid',insurance_id)
         if (insurance_id > 0) {  // edit
             DataInsuranceGetDetails(user.portal_user_id,insurance_id)  // see useeffect below
         } else {            // add 
@@ -63,8 +65,6 @@ const InsuranceEditForm = () => {
             setDefaultValue(newFormdata,'patient_id',user.patient_id)
             setDefaultValue(newFormdata,'effective_date',moment(new Date()).format('YYYY-MM-DD'))
             setDefaultValue(newFormdata,'terminate_date',moment(new Date()).format('YYYY-MM-DD'))
-           
-       
         }
 
         setFormdata(newFormdata)    
@@ -76,10 +76,10 @@ const InsuranceEditForm = () => {
     //=============================================================================
     useEffect(()=>{
         if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
-            let noteData    = loadingState.data.recordset[0]
+            let isnuranceData    = loadingState.data.recordset[0]
             let newFormData = formdata
             
-            newFormData = populateFields(formdata,noteData)
+            newFormData = populateFields(formdata,isnuranceData)
             setFormdata(newFormData) 
             DataValidationReset()  //otherwize does not refresh
         }
@@ -88,12 +88,10 @@ const InsuranceEditForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+      
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'insurance');
-         setFormdata(newFormdata)    
+        setFormdata(newFormdata)    
     }
     //=============================================================================
     // submit form (update information)
@@ -104,7 +102,7 @@ const InsuranceEditForm = () => {
         let formIsValidRet = isFormValid(formdata,'insurance')
        
          if(formIsValidRet.formIsValid){
-            DataNoteUpdate(dataToSubmit)
+            DataInsuranceUpdate(dataToSubmit)
          } else {
             DataValidationFailure(formIsValidRet.errorMsg)
          }     
@@ -112,19 +110,58 @@ const InsuranceEditForm = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-            <Text style={appStyles.form_title}> Edit Patient Insurance</Text>
-            <Formfield id={'note_type'} formdata={formdata.note_type}
+              <View style={appStyles.goBackButton}>
+              <IconButton type = 'GOBACK' onPress={() => goBack()} />
+              <Text style={appStyles.form_title}>Edit Insurance</Text>
+            </View>
+            <Formfield id={'insurance_plan_name'} formdata={formdata.insurance_plan_name}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'status'} formdata={formdata.status}
+            <Formfield id={'policy_number'} formdata={formdata.policy_number}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'subject'} formdata={formdata.subject}
+            <Formfield id={'group_number'} formdata={formdata.group_number}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />            
-            <Formfield id={'note'} formdata={formdata.note}
+            <Formfield id={'effective_date'} formdata={formdata.effective_date}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'terminate_date'} formdata={formdata.terminate_date}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'carrier_name'} formdata={formdata.carrier_name}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'accept_assignment'} formdata={formdata.accept_assignment}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'copay'} formdata={formdata.copay}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_first_name'} formdata={formdata.policy_holder_first_name}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_last_name'} formdata={formdata.policy_holder_last_name}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_middle_name'} formdata={formdata.policy_holder_middle_name}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_phone'} formdata={formdata.policy_holder_phone}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_work_phone'} formdata={formdata.policy_holder_work_phone}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_mobile'} formdata={formdata.policy_holder_mobile}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_relationship'} formdata={formdata.policy_holder_relationship}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_email'} formdata={formdata.policy_holder_email}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_street_address'} formdata={formdata.policy_holder_street_address}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_street_address2'} formdata={formdata.policy_holder_street_address2}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_city'} formdata={formdata.policy_holder_city}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_state'} formdata={formdata.policy_holder_state}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_zip'} formdata={formdata.policy_holder_zip}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            <Formfield id={'policy_holder_additional_info'} formdata={formdata.policy_holder_additional_info}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
 
-            {state.sendSuccess ? <AppMessage type ='success' message='Insurance Sent Successfully' /> : <View></View> }  
+            {state.sendSuccess ? <AppMessage type ='success' message='Insurance Saved Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} /> : <View></View> } 
-            <AppButton type='send' title='Save User Note' onPress={submitForm}/>
+            <AppButton type='send' title='Save Insurance Details' onPress={submitForm}/>
 
         </ScrollView>
     )

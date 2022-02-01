@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { color } from 'react-native-reanimated';
 import colors from '../themes/colors'
 
 //=============================================================================
@@ -34,6 +33,17 @@ export const appStyles = StyleSheet.create({
       alignItems:'center',
       alignSelf: 'flex-end'
     },
+    addButtonContainer : {
+       backgroundColor: 'green',
+       width:25,
+       height:25,
+       borderRadius:100,
+       justifyContent:'center',
+       alignItems:'center',
+      // position:'absolute',
+      // bottom:45,
+     //  right:10,
+  },
     addButtonWithTitle: {
       marginHorizontal:10,
       flexDirection: "row",
@@ -45,12 +55,31 @@ export const appStyles = StyleSheet.create({
       alignSelf: 'flex-end',
       color: '#841584'
     },
+    deleteButtonContainer : {
+      backgroundColor: '#ee7d81', //red
+      width:25,
+      height:25,
+      borderRadius:100,
+      justifyContent:'center',
+      alignItems:'center',
+      //position:'absolute',
+  },
    goBackButton: {
       margin:10,
       flexDirection: "row",
       alignSelf: 'flex-start'
     },
-   
+    providerButtonContainer : {
+      backgroundColor: '#44419e', //'darkblue',
+      width:40,
+      height:40,
+      borderRadius:100,
+      justifyContent:'center',
+      alignItems:'center',
+     // position:'absolute',
+     // bottom:45,
+    //  right:10,
+ },
     //=============================================================================
     // General Settings
     //=============================================================================
@@ -126,6 +155,16 @@ export const appStyles = StyleSheet.create({
       //alignSelf:'center'
        marginLeft:50,
     },
+    form_subTitle:{
+      fontSize:16,
+      color:'white',
+      marginLeft:15,
+    },
+    form_text:{
+      fontSize:14,
+      color:'white',
+      marginLeft:15,
+    },
     form_input_field:{
       fontSize:15,
       backgroundColor:'white',
@@ -148,6 +187,40 @@ export const appStyles = StyleSheet.create({
     },
     form_button:{
       margin: 10,
+    },
+    //=============================================================================
+    // lookup 
+    //=============================================================================
+    lookup_screen: {
+      flex: 1,
+      marginTop: 10,
+      backgroundColor:'#c8e9fc',
+      borderWidth:2,
+      margin:10
+    },
+
+    lookup_container: {
+      flex: 1,
+      borderRadius:5,
+      borderWidth:1,
+      marginHorizontal:15
+    },
+    lookup_title:{
+      fontSize:25,
+      color:'darkblue',
+      alignSelf:'center',
+       
+    },
+    lookup_item: {
+        backgroundColor: colors.lookup_background,
+        height: 24,
+        justifyContent: 'center',
+        marginVertical: 1,
+        // marginHorizontal: 16,
+        padding: 5,
+    },
+    lookup_item_text: {
+      fontSize: 16,
     },
     //=============================================================================
     // tables 

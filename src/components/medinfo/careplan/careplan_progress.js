@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements'
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { AppButton,AppMessage } from '../../utils/misc_tools';
+import { AppButton,AppMessage,IconButton } from '../../utils/misc_tools';
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -104,14 +103,9 @@ const CarePlanProgress = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-              <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
-                <Text style={appStyles.form_title}> Careplan Progress</Text>
+            <View style={appStyles.goBackButton}>
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
+                <Text style={appStyles.form_title}>Careplan Progress</Text>
             </View>
             <Text style={{color:'white',alignSelf:'center'}}> {careplanName}</Text>
           

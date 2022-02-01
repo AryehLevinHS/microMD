@@ -7,7 +7,7 @@ import { updateField, generateData, isFormValid, setDefaultValue,populateOptionF
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -58,9 +58,10 @@ const ContactEditForm = () => {
 
         setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
         
-        let patcontact_id = user.localStorage.patcontact_id
-        if (patcontact_id > 0) {  // edit
-            DataContactGetDetails(user.patient_id,patcontact_id)  // see useeffect below
+        let contact_id = user.localStorage.contact_id
+        //console.log('contact_id',contact_id)
+        if (contact_id > 0) {  // edit
+            DataContactGetDetails(user.patient_id,contact_id)  // see useeffect below
         } else {            // add 
             resetFields(newFormdata,'contact')
             setDefaultValue(newFormdata,'patient_id',user.patient_id)
@@ -87,9 +88,7 @@ const ContactEditForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+       
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'contact');
          setFormdata(newFormdata)    
@@ -112,13 +111,8 @@ const ContactEditForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
               <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
-                 <Text style={appStyles.h3}> Edit Contact Information</Text>
+              <IconButton type = 'GOBACK' onPress={() => goBack()} />
+              <Text style={appStyles.form_title}> Edit Contact</Text>
             </View>
            
             <Formfield id={'contact_type'} formdata={formdata.contact_type}

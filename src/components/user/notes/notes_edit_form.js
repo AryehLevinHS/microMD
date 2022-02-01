@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView} from 'react-native'
-import {Icon} from 'react-native-elements'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppButton,AppMessage } from '../../utils/misc_tools';
+import { loading,AppButton,AppMessage,IconButton } from '../../utils/misc_tools';
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -20,13 +19,12 @@ import {appStyles} from '../../../resources/styles/main_styles'
 // NoteEditForm - edit the note
 //=============================================================================
 const NoteEditForm = () => {
-
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
     const [state,loadingState,DataNoteGetDetails,DataNoteUpdate,
            DataValidationFailure,DataValidationReset] = useUserNoteEditForm()
     const [formdata,setFormdata] = useState (NoteData)
-    const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
@@ -105,12 +103,7 @@ const NoteEditForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
             <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
                 <Text style={appStyles.form_title}> Edit User Notes</Text>
             </View>
             <Formfield id={'note_type'} formdata={formdata.note_type}
@@ -123,7 +116,7 @@ const NoteEditForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
 
             {state.sendSuccess ? <AppMessage type ='success' message='Note Successfully Saved' /> : <View></View> }  
-            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} visible={true} /> : <View></View> } 
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}} /> : <View></View> } 
             <AppButton type='save' title='Save User Note' onPress={submitForm}/>
 
         </ScrollView>

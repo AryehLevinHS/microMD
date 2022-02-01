@@ -1,19 +1,50 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading,IconButton,ConfirmDialog } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useInsuranceList} from '../../../store/hooks/usePatientData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
+import colors from '../../../resources/themes/colors'
+// Navigation
+import {NAV_PATIENT_INSURANCE_EDIT} from '../../../navigation/route_types' 
 //=============================================================================
 // Get InsuranceList data
 //=============================================================================
 const InsuranceList = () => {
 
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const [state,DataInsuranceGetList,DataInsurancetDelete] = useInsuranceList()
+    //=============================================================================
+    // ItemAdd - adds a new item
+    //=============================================================================
+    const ItemAdd = () =>{
+        navigation.navigate(NAV_PATIENT_INSURANCE_EDIT)
+    }
+    //=============================================================================
+    // ItemEdit - edits an item
+    //=============================================================================
+    const ItemEdit = (insurance_id) =>{
+        user.localStorage.insurance_id = insurance_id
+        navigation.navigate(NAV_PATIENT_INSURANCE_EDIT)
+    }
+    //=============================================================================
+    // ItemDeiete - deletes an item
+    //=============================================================================
+    const ConfirmDelete = (insurance_id) => {
+         ConfirmDialog('yesno','Delete Insurance Plan','Are you sure you want to delete the Insurance Plan?',
+         (istrue)=>{ItemDelete(istrue,insurance_id)} )
+    }
+    const ItemDelete = (confirmed,insurance_id) =>{
+       if (confirmed) { 
+        DataInsurancetDelete(user.portal_user_id,insurance_id)
+       }
+    }   
+   
     //=============================================================================
     // useEffect - retrieve the data
     //=============================================================================
@@ -31,9 +62,14 @@ const InsuranceList = () => {
         return (
             <View>
                 {insurancedata.recordset.map(row => (
-                 <TouchableOpacity key={row.insurance_id} style={appStyles.item}>
-                    <Text >{'Plan: '+row.plan_name}{' Policy No: '+row.policy_number}</Text>
-                    <Text >{'From: '+row.begin_date_display +' To: '+row.end_date_display}</Text>
+                 <TouchableOpacity key={row.insurance_id} style={appStyles.item}
+                                   onPress={()=>{ItemEdit(row.insurance_id)}}>
+                    <View style={appStyles.listItem_textWithDelete}>                 
+                        <Text >{row.carrier_name}</Text>
+                        <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.insurance_id)} />
+                    </View>
+                    <Text >{'Group No: '+row.group_number}{' Policy No: '+row.policy_number}</Text>
+                    <Text >{'From: '+row.effective_date_display +' To: '+row.terminate_date_display}</Text>
                 </TouchableOpacity> 
                ))}
            </View>
@@ -42,6 +78,9 @@ const InsuranceList = () => {
 //=============================================================================
     return (
         <ScrollView>
+            <View style={appStyles.addButton}>
+               <IconButton type = 'ADD' onPress={() => ItemAdd()} />
+            </View>
             {state.loading ? loading(true) : loading(false)} 
             <InsuranceListDisplay insurancedata={state.data} /> 
         </ScrollView>

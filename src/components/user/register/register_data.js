@@ -1,6 +1,6 @@
 export const RegisterData ={
     portal_user_id: {
-        element: 'input',
+        element: 'db',
         value: '',
         validation:{required: false},
         valid: true,
@@ -8,7 +8,7 @@ export const RegisterData ={
         enabled: false
     },
     practice_id: {
-        element: 'input',
+        element: 'db',
         value: '',
         validation:{required: false},
         valid: true,
@@ -16,7 +16,7 @@ export const RegisterData ={
         enabled: false
     },
     updated_by: {
-        element: 'input',
+        element: 'db',
         value: '',
         validation:{required: false},
         valid: true,
@@ -24,7 +24,7 @@ export const RegisterData ={
         enabled: false
     },
     patient_id: {
-        element: 'input',
+        element: 'db',
         value: '',
         validation:{required: false},
         valid: true,
@@ -66,7 +66,7 @@ export const RegisterData ={
             placeholder: 'Login Name'
         },
         validation:{required: true},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
@@ -81,7 +81,7 @@ export const RegisterData ={
             label:'New Password'
         },
         validation:{ required: true },
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:''
     },          
@@ -95,7 +95,7 @@ export const RegisterData ={
             label:'Confirm Password'
         },
         validation:{confirm: 'new_password'},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:''
         },
@@ -110,7 +110,7 @@ export const RegisterData ={
             disabled: true
         },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
@@ -126,7 +126,7 @@ export const RegisterData ={
             disabled: true
         },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
@@ -158,7 +158,7 @@ export const RegisterData ={
             options: []
         },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:''
     },

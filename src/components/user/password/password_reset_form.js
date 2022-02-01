@@ -15,11 +15,12 @@ import { usePasswordChange } from '../../../store/hooks/useUserData';
 import {PasswordData} from './password_resst_data'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
-
+// navigation
+import  {NAV_USER_LOGIN} from '../../../navigation/route_types' 
 //=============================================================================
-// PasswordChange
+// PasswordReestForm
 //=============================================================================
-const PasswordChange = () => {
+const PasswordReestForm = () => {
   const navigation = useNavigation();
   const user = useContext (UserContext)
   const [state,DataPasswordChange,DataValidationFailure,DataValidationReset] = usePasswordChange()
@@ -27,12 +28,22 @@ const PasswordChange = () => {
   const [formdata,setFormdata] = useState (PasswordData)
   const checkIcon = <Icon name="check" size={20} color="green" type='antdesign' />
 
-   //=============================================================================
-   // goback (goes back to the calling screen)
-   //=============================================================================
-   const goBack = () => {
-      navigation.goBack()
-   }    
+    //=============================================================================
+    // goback (goes back to the login screen)
+    //=============================================================================
+      const goBack = () => {
+        //navigation.goBack()
+        navigation.navigate(NAV_USER_LOGIN);
+    }    
+    //=============================================================================
+    // useEffect to close form
+    //    if state.sendSuccess  the display success message and close the form
+    //=============================================================================
+    useEffect(()=>{
+        if (state.sendSuccess) {
+            setTimeout(()=>{goBack()},2000)
+        }
+    },[state.sendSuccess])  
    //=============================================================================
    // useEffect = sets the data when entering this screen
    //=============================================================================
@@ -41,10 +52,10 @@ const PasswordChange = () => {
      setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
      setFormdata(newFormdata)
   },[])
-   //=============================================================================
-   // updateFormField (update fields on the form)
-   //=============================================================================
-   const updateFormField = (id,action,value) => {
+  //=============================================================================
+  // updateFormField (update fields on the form)
+  //=============================================================================
+  const updateFormField = (id,action,value) => {
     
       // DataValidationReset()
       const newFormdata = updateField(formdata,id,action,value,'password');
@@ -88,12 +99,12 @@ const PasswordChange = () => {
   return (
        <SafeAreaView style={appStyles.form_container}>
          <View style={appStyles.goBackButton}>
-                <IconButton type = 'GOBACK' onPress={() => goBack()} />
-                <Text style={appStyles.form_title}> Change Password</Text>
+               <IconButton type = 'GOBACK' onPress={() => goBack()} />
+               <Text style={appStyles.form_title}> Reset Password</Text>
           </View>
           <Text style={{height:50}}></Text>
           <Text style={appStyles.form_text}>Your password: </Text> 
-              <View style={{flexDirection:'row'}}>
+          <View style={{flexDirection:'row'}}>
                 {passwordValid.size ? checkIcon :null}  
                 <Text style={appStyles.form_text}>must be between 6 and 12 characters</Text>
           </View>
@@ -116,7 +127,7 @@ const PasswordChange = () => {
 
 }
 
-export default PasswordChange
+export default PasswordReestForm
 //=============================================================================
 
 

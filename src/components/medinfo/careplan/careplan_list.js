@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
+
 import { useNavigation } from '@react-navigation/native';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading} from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useCareplanList} from '../../../store/hooks/useMedinfoData'
@@ -26,9 +26,9 @@ const CareplanList = () => {
         DataCareplanGetList(user.patient_id)
     },[])
     //=============================================================================
-    // addItem - adds a new item
+    // ItemAdd - adds a new item
     //=============================================================================
-    const addItem = () =>{
+    const ItemAdd = () =>{
         navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
     }
     //=============================================================================
@@ -63,14 +63,6 @@ const CareplanList = () => {
     return (
         <ScrollView>
             {/* <Text> Care Plan</Text> */}
-            <View style={appStyles.addButton}>
-                <Icon 
-                    name='pluscircleo'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => addItem()}
-                />
-              </View>
             {state.loading ? loading(true) : loading(false)} 
             <CareplanDisplay careplandata={state.data} /> 
         </ScrollView>

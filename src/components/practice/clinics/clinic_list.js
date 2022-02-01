@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading } from '../../utils/misc_tools'
@@ -48,14 +47,6 @@ const ClinicList = () => {
 //=============================================================================
     return (
         <ScrollView>
-          {/*  <View style={appStyles.addButton}>
-                 <Icon 
-                    name='pluscircleo'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => addItem()}
-                /> 
-              </View> */}
             {state.loading ? loading(true) : loading(false)} 
             <ClinicListDisplay clinicdata={state.data} /> 
         </ScrollView>

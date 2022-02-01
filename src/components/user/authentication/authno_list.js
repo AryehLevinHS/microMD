@@ -1,9 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading,IconButton,ConfirmDialog } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useAuthenticationNumbers} from '../../../store/hooks/useUserData'
@@ -48,7 +47,7 @@ const AuthNoList = () => {
         }
     }
     const ConfirmDelete = (authentication_id) => {
-        ConfirmDialog('yesno','Delete Authorization No','Are you sure you want to delete the authorization No?',
+         ConfirmDialog('yesno','Delete Authorization No','Are you sure you want to delete the authorization No?',
          (confirmed)=>{ItemDelete(confirmed,authentication_id)} )
     }
     //=============================================================================
@@ -68,12 +67,7 @@ const AuthNoList = () => {
                                    onPress={()=>{ItemEdit(row.authentication_id)}}>
                      <View style={appStyles.listItem_textWithDelete}>                 
                             <Text>{row.description}</Text>
-                            <Icon 
-                                name='closecircleo'
-                                type='antdesign'
-                                color='red'
-                                onPress={() => ConfirmDelete(row.authentication_id)}
-                            />
+                            <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.authentication_id)} />
                      </View>  
                     <Text >{'No: '+row.number}</Text>
                 </TouchableOpacity> 
@@ -86,12 +80,7 @@ const AuthNoList = () => {
         <ScrollView >
             <View style={appStyles.addButtonWithTitle}>
                 <Text style={{fontWeight:'bold'}}> Authentication Numbers</Text>
-                <Icon 
-                    name='pluscircleo'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => ItemAdd()}
-                />
+                <IconButton type = 'ADD' onPress={() => ItemAdd()} />
             </View>
             {state.loading ? loading(true) : loading(false)} 
             <AuthNoListDisplay authNodata={state.data} /> 

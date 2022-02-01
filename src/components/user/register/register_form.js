@@ -1,35 +1,51 @@
 import React,{useState, useContext, useEffect} from 'react'
 import { ScrollView, View, Text} from 'react-native' //TextInput Button
-import { Appbar, } from 'react-native-paper';
+import {Icon} from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native';
 
 // form tools
 import { updateField, generateData, setDefaultValue} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 //tools
 import { passwordCheck,passwordSingleCheck } from '../password/password_validation';
-import { AppMessage,AppButton } from '../../utils/misc_tools'
+import { AppMessage,AppButton,IconButton } from '../../utils/misc_tools'
 // Data
 import { UserContext } from '../../../store/UserContext'
 import {usePatientRegister} from '../../../store/hooks/usePatientData'
 import {RegisterData} from './register_data'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+// navigation
+import  {NAV_USER_LOGIN} from '../../../navigation/route_types' 
 //=============================================================================
 // RegisterForm
 //=============================================================================
 const RegisterForm = () => {
+  const navigation = useNavigation();
   const user = useContext (UserContext)
      // for registering the patient etc
   const [stateRegister,statePatient,DataPatientRegister,DataPatientRegisterGetDetails,
       DataPatientRegisterLoginNameVerify, DataValidationFailure,DataValidationReset] = usePatientRegister()
   const [formdata,setFormdata] = useState (RegisterData)
   const [passwordValid,setPasswordValid] = useState(false)
-  const loginnameVerified = useState(false)
-  const checkIcon = <Icon name="check-circle" size={30} color="green" />;
-  const verifyUserIcon = <Icon name="check-circle" size={30} color="red" />;
-  const verifiedUserIcon = <Icon name="check-circle" size={30} color="green" />;
+  const [loginnameVerified,setLoginnameVerified] = useState(false)
+  const checkIcon = <Icon name="check" size={20} color="green" type='antdesign' />
+    
+  //=============================================================================
+  // goback (goes back to the calling screen)
+  //=============================================================================
+  const goBack = () => {
+     navigation.navigate(NAV_USER_LOGIN);
+     // navigation.goBack()
+   }  
+   //=============================================================================
+   // verifyLoginName - check the data to see if login name is ok
+   //=============================================================================
+   const verifyLoginName = () => {
+      let loginName = formdata.login_name.value
+      DataPatientRegisterLoginNameVerify(loginName)
+      setLoginnameVerified(true) // TEMP
+   }    
    //=============================================================================
    // useEffect = sets the data when entering this screen
    //=============================================================================
@@ -85,35 +101,38 @@ const RegisterForm = () => {
     }     
   }
   //=============================================================================
-  
- 
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const onChangeSearch = query => setSearchQuery(query);
-  const _goBack = () => console.log('Went back');
-  const _handleSearch = () => console.log('Searching');
-  const _handleMore = () => console.log('Shown more');
   return (
-       <ScrollView style={appStyles.password_container}>
-           <Appbar.Header>
-              <Appbar.BackAction onPress={_goBack} />
-              <Appbar.Content title="User" subtitle="Subtitle" />
-              <Appbar.Action icon="magnify" onPress={_handleSearch} />
-              <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
-          </Appbar.Header>
-          <Text  style={appStyles.main_title}>{'Patient Registration'}</Text>
-          <Text style={appStyles.h3}> Wecome {formdata.first_name.value + ' ' + formdata.last_name.value}</Text>
-          <Text>Please choose a login name and set your password. The default login name is 'last name.first name'.
+       <ScrollView style={appStyles.form_container} >
+         <View style={appStyles.goBackButton}>
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
+                <Text style={appStyles.form_title}>Patient Registration</Text>
+          </View>
+          <Text style={appStyles.form_subTitle}>Wecome {formdata.first_name.value + ' ' + formdata.last_name.value}</Text>
+          <Text style={appStyles.form_text}>Please choose a login name and set your password. The default login name is 'last name.first name'.
                 Click the 'Verfy Login Name' button to verify the Login Name
           </Text>
-           <Formfield id={'login_name'} formdata={formdata.login_name}
-                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-                        {loginnameVerified? verifyUserIcon  : verifiedUserIcon}
-                         
-          <Text>Your password: </Text> 
-          {passwordValid.size ? {checkIcon} :null}  
-             <Text>must be between 6 and 12 characters</Text>
-          {passwordValid.chars ? {checkIcon} :null} 
-             <Text>must contain at least one special character [!@#$%^&*()_+]</Text>
+           <View style={{flexDirection:'row'}}>
+                  <View style={{flex:1}}>
+                  <Formfield id={'login_name'} formdata={formdata.login_name} 
+                             changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                  </View>
+                  <View style={{marginTop:40, marginRight:10}}>
+                      {loginnameVerified === true ? 
+                        <Icon name="checkcircle" size={20} color="green" type='antdesign' 
+                              />  
+                       : <Icon name="checkcircle" size={20} color="red" type='antdesign'
+                           onPress = {()=>{verifyLoginName()}} />  }
+                  </View>
+         </View>              
+          <Text style={appStyles.form_text}>Your password: </Text> 
+          <View style={{flexDirection:'row'}}>
+                {passwordValid.size ? checkIcon :null}  
+                <Text style={appStyles.form_text}>must be between 6 and 12 characters</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+              {passwordValid.chars ? checkIcon :null}  
+              <Text style={appStyles.form_text}>must contain at least one special character [!@#$%^&*()_+]</Text>
+          </View>
       
           <Formfield id={'new_password'} formdata={formdata.new_password}
                         changefunction={(id,action,value) => updateFormField(id,action,value)} />
@@ -124,7 +143,7 @@ const RegisterForm = () => {
                        
           {stateRegister.sendSuccess ? <AppMessage type ='success' message='Patient Successfully Registered' /> : <View></View> }  
           <AppButton type='send' title='Register' onPress={submitForm}/> 
-          <Text>We hope you enjoy using the Patient Portal!</Text> 
+          <Text style={appStyles.form_text}>We hope you enjoy using the Patient Portal!</Text> 
     </ScrollView>
     )
 

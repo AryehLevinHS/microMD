@@ -1,139 +1,62 @@
-export const InsuranceData ={
+export const PatientData ={
     portal_user_id: {
-        element: 'db',
+        element: 'input',
         value: '',
         validation:{required: false},
-        valid: true,
-        touched: false
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: false
     },
     patient_id: {
-        element: 'db',
+        element: 'input',
         value: '',
         validation:{required: false},
-        valid: true,
-        touched: false
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: false
     },
-    insurance_id: {
-        element: 'db',
-        value: '',
-        validation:{required: false},
-        valid: true,
-        touched: false
-    },
-    policy_number: {
+    first_name: {
         element: 'input',
         value: '',
         config:{
-            name: 'policy_number_input',
-            label:'Policy Number',
+            name: 'first_name_input',
+            label:'First Name',
             type: 'text',
-            placeholder: 'Policy Number'
+            placeholder: 'First Name',
+            disabled:false
         },
-        validation:{required: false},
-        valid: true,
+        validation:{required: true},
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    group_number: {
+    last_name: {
         element: 'input',
         value: '',
         config:{
-            name: 'group_number_input',
-            label:'Group Number',
+            label: "Last Name",
+            name: 'last_name_input',
             type: 'text',
-            placeholder: 'Group Number'
+            placeholder: 'Last Name'
         },
-        validation:{required: false},
-        valid: true,
+        validation:{required: true},
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    effective_date: {
+    date_of_birth: {
         element: 'input',
         value: '',
         config:{
-            name: 'begin_date_input',
-            label:'Effective Date',
+            label: "Date of Birth",
+            name: 'dob_input',
             type: 'date',
-            placeholder: 'Effective Date'
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-    terminate_date: {
-        element: 'input',
-        value: '',
-        config:{
-            name: 'end_date_input',
-            label:'Coverage Lapse Date',
-            type: 'date',
-            placeholder: 'Coverage Lapse Date'
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-    carrier_name: {
-        element: 'input',
-        value: '',
-        config:{
-            name: 'title_input',
-            label:'Insurance Company',
-            type: 'text',
-            placeholder: 'Insurance Company'
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-    insurance_plan_name: {
-        element: 'input',
-        value: '',
-        config:{
-            name: 'plan_name_input',
-            label:'Plan Name',
-            type: 'text',
-            placeholder: 'Plan Name'
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-    accept_assignment: {
-        element: 'select',
-        value: '',
-        config:{
-            label: "Accept Assignment",
-            name: 'assignment_input',
-            type: 'text',
-            placeholder: 'Accept Assignment"',
-            options:[]
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-    copay: {
-        element: 'input',
-        value: '',
-        config:{
-            label: "Copay",
-            name: 'copay_input',
-            type: 'text',
-            placeholder: 'Copay'
+            placeholder: 'Date of birth',
+            disabled: false
         },
         validation:{required: false},
         valid: true,
@@ -142,14 +65,14 @@ export const InsuranceData ={
         showlabel: true,
         enabled: false
     },
-    copay_level: {
+    gender: {
         element: 'select',
         value: '',
         config:{
-            label: "Copay Level",
-            name: 'copaylevel_input',
+            label: "Gender (sex at birth)",
+            name: 'gender_input',
             type: 'text',
-            placeholder: 'Copay Level',
+            placeholder: 'Gender',
             options:[],
             disabled: false
         },
@@ -159,14 +82,15 @@ export const InsuranceData ={
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_first_name: {
-        element: 'input',
+    gender_identity: {
+        element: 'select',
         value: '',
         config:{
-            label: "Policy Holder First Name",
-            name: 'ph_first_name_input',
+            label: "Gender Identity",
+            name: 'genderidentity_input',
             type: 'text',
-            placeholder: 'Policy Holder First Name',
+            placeholder: 'Gender Identity',
+            options:[],
             disabled: false
         },
         validation:{ required: false },
@@ -175,67 +99,90 @@ export const InsuranceData ={
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_last_name: {
-        element: 'input',
+    race: {
+        element: 'select',
         value: '',
         config:{
-            label: "Policy Holder Last Name",
-            name: 'ph_last_name_input',
+            label: "race",
+            name: 'race_input',
             type: 'text',
-            placeholder: 'Policy Holder last Name'
+            placeholder: 'Race',
+            options:[],
+            disabled: false
         },
-        validation:{required: false},
+        validation:{ required: false },
         valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_middle_name: {
-        element: 'input',
+    primary_language: {
+        element: 'select',
         value: '',
         config:{
-            label: "Middle Name",
-            name: 'mi_input',
+            label: "Primary Language",
+            name: 'language_input',
             type: 'text',
-            placeholder: 'Middle Name'
+            placeholder: 'Primary Language',
+            options:[],
+            disabled: false
         },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },  
-  policy_holder_phone: {
-        element: 'input',
-        value: '',
-        config:{
-            label: "Home Phone",
-            name: 'home_phone_input',
-            type: 'text',
-            placeholder: 'Home Phone'
-        },
-        validation:{required: false},
+        validation:{ required: false },
         valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_work_phone: {
+    maiden_name: {
         element: 'input',
         value: '',
         config:{
-            label: "Work Phone",
-            name: 'work_phone_input',
+            label: "Maiden Name",
+            name: 'maiden_name_input',
             type: 'text',
-            placeholder: 'Work Phone'
+            placeholder: 'Maiden Name'
         },
         validation:{required: false},
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: true
+    },
+    marital_status: {
+        element: 'select',
+        value: '',
+        config:{
+            label: "Marital Status",
+            name: 'maritalstatus_input',
+            type: 'text',
+            placeholder: 'Marital Status',
+            options:[],
+            disabled: false
+        },
+        validation:{ required: false },
         valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_mobile: {
+    family_size: {
+        element: 'input',
+        value: '',
+        config:{
+            label: "Family Size",
+            name: 'family_size_input',
+            type: 'text',
+            placeholder: 'Family Size',
+            options:[],
+            disabled: false
+        },
+        validation:{ required: false },
+        valid: true,
+        touched: false,
+        validationMessage:'',
+        showlabel: true
+    },
+    mobile: {
         element: 'input',
         value: '',
         config:{
@@ -245,28 +192,27 @@ export const InsuranceData ={
             placeholder: 'Mobile'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_relationship: {
-        element: 'select',
+    fax: {
+        element: 'input',
         value: '',
         config:{
-            label: "Relationship to Insured",
-            name: 'relationshipo_input',
+            label: "Fax",
+            name: 'fax_input',
             type: 'text',
-            options:[],
-            placeholder: 'Relationship to Insured'
+            placeholder: 'Fax'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_email: {
+    email: {
         element: 'input',
         value: '',
         config:{
@@ -276,12 +222,59 @@ export const InsuranceData ={
             placeholder: 'Email'
         },
         validation:{required: false},
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: true
+    },
+    home_phone: {
+        element: 'input',
+        value: '',
+        config:{
+            label: "Home Phone",
+            name: 'home_phone_input',
+            type: 'text',
+            placeholder: 'Home Phone'
+        },
+        validation:{required: false},
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: true
+    },  
+    work_phone: {
+        element: 'input',
+        value: '',
+        config:{
+            label: "Work Phone",
+            name: 'workphone_input',
+            type: 'text',
+            placeholder: 'Work Phone'
+        },
+        validation:{required: false},
+        valid: false,
+        touched: false,
+        validationMessage:'',
+        showlabel: true
+    },
+    patient_primary_phone: {
+        element: 'select',
+        value: '',
+        config:{
+            label: "Primary Phone",
+            name: 'primaryphone_input',
+            type: 'text',
+            placeholder: 'Primary Phone',
+            options:[],
+            disabled: false
+        },
+        validation:{ required: false },
         valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_street_address: {
+    street_address: {
         element: 'input',
         value: '',
         config:{
@@ -291,12 +284,12 @@ export const InsuranceData ={
             placeholder: 'Address Line 1'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_street_address2: {
+    street_address2: {
         element: 'input',
         value: '',
         config:{
@@ -306,12 +299,12 @@ export const InsuranceData ={
             placeholder: 'Address Line 2'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_city: {
+    city: {
         element: 'input',
         value: '',
         config:{
@@ -321,12 +314,12 @@ export const InsuranceData ={
             placeholder: 'City'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_state: {
+    state_code: {
         element: 'select',
         value: '',
         config:{
@@ -336,12 +329,12 @@ export const InsuranceData ={
             placeholder: 'State'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
-    policy_holder_zip: {
+    zip: {
         element: 'input',
         value: '',
         config:{
@@ -351,25 +344,10 @@ export const InsuranceData ={
             placeholder: 'Zip'
         },
         validation:{required: false},
-        valid: true,
+        valid: false,
         touched: false,
         validationMessage:'',
         showlabel: true
-    },
-    policy_holder_additional_info: {
-        element: 'textarea',
-        value: '',
-        config:{
-            label: "Additional Information",
-            name: 'additionalInfo_input',
-            type: 'text',
-            placeholder: 'Additional Information',
-        },
-        validation:{required: false},
-        valid: true,
-        touched: false,
-        validationMessage:'',
-        showlabel: true
-    },
-   
+    }
+  
 }

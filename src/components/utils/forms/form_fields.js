@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { View,Text ,StyleSheet, TextInput} from 'react-native';
 import { HelperText, } from 'react-native-paper'; //TextInput
-import {Input} from 'react-native-elements'
+import {Icon} from 'react-native-elements'
 import {Picker} from '@react-native-picker/picker';
 //import moment from 'moment';
 //npm install react-native-dropdown-picker --save
@@ -9,10 +9,11 @@ import {Picker} from '@react-native-picker/picker';
 
 import {appStyles} from '../../../resources/styles/main_styles'
 import colors from '../../../resources/themes/colors';
+
 //=============================================================================
 // Formfield - various functions for setting up the forls
 //=============================================================================
-const Formfield = ({formdata,id,changefunction}) => {
+const Formfield = ({formdata,id,changefunction,lookupfn}) => {
 
     //=============================================================================
     // showError - displays the error
@@ -22,18 +23,13 @@ const Formfield = ({formdata,id,changefunction}) => {
 
         if(formdata.validation && !formdata.valid &&formdata.touched){
              errorMessage = (
-                <HelperText type="error" visible={true}>
+                <HelperText type="error" visible={true} style={{fontWeight:'bold'}}> 
                    {formdata.validationMessage} 
                 </HelperText>
              )
+             //style={{backgroundColor:'white'}}
         }
         return errorMessage;
-    }
-     //=============================================================================
-    // handlePasswordVisible 
-    //=============================================================================
-    const handlePasswordVisible = () => {
-        formdata.showPassword = !formdata.showPassword
     }
     //=============================================================================
     // renderTemplate - setsup the form field based on type
@@ -41,51 +37,62 @@ const Formfield = ({formdata,id,changefunction}) => {
     const renderTemplate = () => {
         let formTemplate = null;
         const [date, setDate] = useState(new Date(1598051730000));
+        const [pwdShow,setPwdShow] = useState(false)
 
         const onChange = (event, selectedDate) => {
             const currentDate = selectedDate || date;
           //  setShow(Platform.OS === 'ios');
             setDate(currentDate);
           };
-       // console.log('fordata',formdata.config.label)
+        //=============================================================================
+        const getBorderColor = () =>{
+              if (!formdata.valid) 
+                 return 'red'
+              else 
+                return colors.fieldborder
+          }
+        //=============================================================================
+        const displayLabel = () =>{
+            if (formdata.config.label) {
+               return (
+                        <View  style={formStyles.form_input_field_label}>
+                            <Text style={formStyles.form_input_label_text}>{formdata.config.label}</Text>
+                        </View>    
+                )
+            }
 
-        switch(formdata.element){
-            case 'input': 
+        }
+      //=============================================================================
+      switch(formdata.element){
+            case 'input': case 'input_number': 
             //case 'date':
                 formTemplate = (
                     <View >   
-                          {formdata.config.label && 
-                               <View  style={formStyles.form_input_field_label}>
-                                      <Text style={formStyles.form_input_label_text}>{formdata.config.label}</Text>
-                                </View>    
-                          }
-                          <View style={formStyles.form_input_field_wrapper}>
+                          {displayLabel()}
+                          {/* change border color to red if error */}
+                          <View style={[formStyles.form_input_field_wrapper,{borderColor:getBorderColor()}]}>
                             <TextInput  
                                 error = {!formdata.valid}
                                 // placeholder = {formdata.config.placeholder}
-                                style={formStyles.form_input_field_text}
-                                value = {formdata.value}
-                                onBlur= {()=> changefunction(id,'onblur',formdata.value)}
-                                onChangeText={(text)=> changefunction(id,'changed',text) }
+                                style  = {formStyles.form_input_field_text}
+                                value  = {formdata.value}
+                                onBlur = {()=> changefunction(id,'onblur',formdata.value)}
+                                onChangeText = {(text)=> changefunction(id,'changed',text) }
+                                keyboardType={formdata.element === 'input_number'? "number-pad":'default'}                                //keyboardType="number-pad"
+                                //maxLengh={4}  
                             />
                           </View>
                           {showError()}
                     </View>
-
-                  
                 )
                 break;
             /* --------------------------------------------------------------*/
             case 'select':
                     formTemplate = (
-                        <View  >
-                              {formdata.config.label && 
-                               <View  style={formStyles.form_input_field_label}>
-                                      <Text style={formStyles.form_input_label_text}>{formdata.config.label}</Text>
-                                </View>    
-                              }
+                        <View>
+                             {displayLabel()}
                              <View style={formStyles.form_input_field_wrapper}>
-                                <Picker 
+                               <Picker 
                                 style={formStyles.form_input_picker}
                                     selectedValue = {formdata.value}
                                     onValueChange={(itemValue)=> changefunction(id,'changed',itemValue) }
@@ -96,21 +103,16 @@ const Formfield = ({formdata,id,changefunction}) => {
                                     ))  
                                 }
                                 </Picker>
-                             </View>
-                        {/* {showError()} */}
+                          </View>
+                         {showError()}
                     </View>
-                  
-                )
+                    )
                 break; 
                 /* --------------------------------------------------------------*/
                 case 'date':
                     formTemplate = (
                         <View  >
-                              {formdata.config.label && 
-                               <View  style={formStyles.form_input_field_label}>
-                                      <Text style={formStyles.form_input_label_text}>{formdata.config.label}</Text>
-                                </View>    
-                              }
+                             {displayLabel()}
                              <View style={formStyles.form_input_field_wrapper}>
                                 {/* <DateTimePicker
                                     testID="dateTimePicker"
@@ -149,13 +151,9 @@ const Formfield = ({formdata,id,changefunction}) => {
             case 'textarea':
                     formTemplate = (
                         <View  >
-                          {formdata.config.label && 
-                               <View  style={formStyles.form_input_field_label}>
-                                      <Text style={formStyles.form_input_label_text}>{formdata.config.label}</Text>
-                                </View>    
-                              }
-                           <View style={formStyles.form_input_field_wrapper}>
-                            <TextInput  
+                          {displayLabel()}
+                          <View style={[formStyles.form_input_field_wrapper,{borderColor:getBorderColor()}]}>
+                          <TextInput  
                                 mode= "flat"
                                 multiline
                                 numberOfLines={4}
@@ -176,23 +174,99 @@ const Formfield = ({formdata,id,changefunction}) => {
             /* --------------------------------------------------------------*/
             case 'password':
                 formTemplate = (
-                    <View   >
-                         <TextInput   
-                            mode="flat"
-                            error = {!formdata.valid}
-                            //label = {formdata.config.label}
-                            placeholder = {formdata.config.placeholder}
-                            style={appStyles.form_input_field}
-                            value = {formdata.value}
-                            onBlur= {()=> changefunction(id,'onblur',formdata.value)}
-                            onChangeText={(text)=> changefunction(id,'changed',text) }
-                            secureTextEntry = { formdata.showPassword}
-                            right={<TextInput.Icon name="eye" onPress = {() =>handlePasswordVisible()} />}
-                        />
-                        {showError()}
+                    <View >   
+                          {displayLabel()}
+                          <View style={[formStyles.form_input_field_wrapper_icon,{borderColor:getBorderColor()}]}>
+                            <View style={{flex:1}}>
+                            <TextInput  
+                                    error = {!formdata.valid}
+                                    //placeholder = {formdata.config.placeholder}
+                                    style={formStyles.form_input_field_text}
+                                    value = {formdata.value}
+                                    onBlur= {()=> changefunction(id,'onblur',formdata.value)}
+                                    onChangeText={(text)=> changefunction(id,'changed',text) }
+                                    secureTextEntry = {!pwdShow}
+                                    maxLength={15}
+                                />
+                            </View>    
+                            <Icon name= {!pwdShow ? 'eye' :'eyeo'} type='antdesign'
+                                  onPress={() => {setPwdShow(!pwdShow)}}  />
+                          </View>
+                          {showError()}
                     </View>
                 )
             break;
+            /* --------------------------------------------------------------*/
+            case 'lookup':
+                formTemplate = (
+                    <View >   
+                          {displayLabel()}
+                          <View style={[formStyles.form_input_field_wrapper_icon,{borderColor:getBorderColor()}]}>
+                            <TextInput  
+                                error = {!formdata.valid}
+                                //placeholder = {formdata.config.placeholder}
+                                style={formStyles.form_input_field_text}
+                                value = {formdata.value}
+                                onBlur= {()=> changefunction(id,'onblur',formdata.value)}
+                                onChangeText={(text)=> changefunction(id,'changed',text) }
+                            />
+                            <Icon name= 'search1' type='antdesign'  onPress={() => {lookupfn()}}  />
+                          </View>
+                          {showError()}
+                    </View>
+                )
+            break;
+            /* --------------------------------------------------------------*/
+            case 'dropdownlookup':
+                    formTemplate = (
+                        <View>
+                             {displayLabel()}
+                             <View style={{flexDirection:'row',marginRight:15}}>
+                                <View style={[formStyles.form_input_field_wrapper,{flex:1}]}>
+                                <Picker 
+                                    style={formStyles.form_input_picker}
+                                        selectedValue = {formdata.value}
+                                        onValueChange={(itemValue)=> changefunction(id,'changed',itemValue) }
+                                    >
+                                    {                            
+                                        formdata.config.options.map(item=>(
+                                        <Picker.Item label={item.value} value= {item.key} key={item.key} />
+                                        ))  
+                                    }
+                                    </Picker>
+                                </View>
+                                  {typeof lookupfn ==='function' &&
+                                  <Icon name= 'search1' type='antdesign' color='white'  onPress={() => lookupfn()  }  /> }  
+                    
+                              </View>
+                              {showError()}
+                         
+                    </View>
+                    )
+
+                    // <View >   
+                    //       {displayLabel()}
+                    //       <View style={[formStyles.form_input_field_wrapper_icon,{borderColor:getBorderColor()}]}>
+                    //          <Picker 
+                    //             style={formStyles.form_input_picker}
+                    //                 selectedValue = {formdata.value}
+                    //                 onValueChange={(itemValue)=> changefunction(id,'changed',itemValue) }
+                    //             >
+                    //             {                            
+                    //                 formdata.config.options.map(item=>(
+                    //                 <Picker.Item label={item.value} value= {item.key} key={item.key} />
+                    //                 ))  
+                    //             }
+                    //         </Picker>
+                    //         {/* {typeof lookupfn ==='function' &&
+                    //           <Icon name= 'search1' type='antdesign'  onPress={() => lookupfn()  }  /> }  
+                    //     */}
+                    //       </View>
+                    //       {showError()}
+                    // </View>
+               // )
+            break;
+          
             /* --------------------------------------------------------------*/
         }
     return formTemplate
@@ -219,6 +293,16 @@ const formStyles = StyleSheet.create({
         borderWidth:1,
         borderRadius:4,
         marginHorizontal:15,
+    },
+    form_input_field_wrapper_icon:{
+        backgroundColor: colors.field,
+        borderColor: colors.fieldborder,
+        borderWidth:1,
+        borderRadius:4,
+        marginHorizontal:15,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
     },
     form_input_field_text:{
         fontSize:15,

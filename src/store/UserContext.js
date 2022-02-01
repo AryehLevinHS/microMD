@@ -58,6 +58,7 @@ export const UserContext = React.createContext({
         msg_id:0,
         authentication_id:13,
         contact_id:0,
+        insurance_id:0,
         immunization_id:0,
         careplan_id:0,
         careplan_name:''
@@ -80,7 +81,7 @@ export const UserDataReset = (user) => {
    user.patient_name     = ''
 
    user.is_admin         = 'N'
-   user.is_authenticated = 'N'
+   user.is_authenticated = 'Y'
    user.reset_password   = 'N'
    user.consent_touse    = 'Y'
   

@@ -3,10 +3,10 @@ export const LoginData ={
         element: 'input',
         value: '',
         config:{
-            label: 'User Name:',
+            label: 'Username:',
             name: 'userName_input',
             type: 'text',
-            placeholder: 'Enter your User Name'
+            placeholder: 'Enter your Username'
         },
         validation:{required: true},
         valid: true,
@@ -14,7 +14,7 @@ export const LoginData ={
         validationMessage:''
     },
     password: {
-        element: 'input',
+        element: 'password',
         value: '',
         config:{
             label: 'Password:',

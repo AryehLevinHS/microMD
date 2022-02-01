@@ -9,10 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
-       } from '../utils/forms/form_actions'
+         addtoOptionFields,setValue,setProperty,} from '../utils/forms/form_actions'
 import Formfield from '../utils/forms/form_fields';
 // tools
-import { AppMessage,AppButton } from '../utils/misc_tools'
+import { AppMessage,AppButton,IconButton } from '../utils/misc_tools'
+import LookupForm  from '../utils/lookup/lookup_form';
 // data
 import { UserContext } from '../../store/UserContext'
 import { RefContext } from '../../store/RefContext'
@@ -26,12 +27,14 @@ import {appStyles} from '../../resources/styles/main_styles'
 //=============================================================================
 const ApptRequestForm = () => {
 
-    const user = useContext (UserContext)
-    const ref = useContext(RefContext)
+    const navigation = useNavigation();
+    const user       = useContext (UserContext)
+    const ref        = useContext(RefContext)
     const [state,DataApptRequest,DataValidationFailure,
            DataValidationReset] = useApptRequest()
     const [formdata,setFormdata] = useState (apptrequestData)
-    const navigation = useNavigation();
+    const [lookupOpen,setLookupOpen] = useState(false)
+    
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
@@ -47,6 +50,19 @@ const ApptRequestForm = () => {
             setTimeout(()=>{ goBack() },2000)
         }
      },[state.sendSuccess])  
+    //=============================================================================
+    // apptforHandle - set the reciptient
+    //=============================================================================
+    const apptforHandle = (lookupValue) => {
+        setLookupOpen(false)
+        if (lookupValue.id){
+            let newFormdata = formdata
+            addtoOptionFields(newFormdata,'appt_for_id',[{key:lookupValue.id,value:lookupValue.description}])
+            setValue(newFormdata,'appt_for_id',lookupValue.id)
+            setProperty(newFormdata,'appt_for_id','valid','')
+            setFormdata(newFormdata)   
+        }
+    }
     //=============================================================================
     // useEffect - retrieve the data and setup the form
     //=============================================================================
@@ -101,17 +117,12 @@ const ApptRequestForm = () => {
     return (
          <ScrollView style={appStyles.form_container}>
              <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
-                {/* <Text style={appStyles.form_title}>Appointment Request</Text> */}
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
+               {/* <Text style={appStyles.form_title}>Appointment Request</Text> */}
             </View>
-            <Formfield id={'appt_for_id'} formdata={formdata.appt_for_id}
+            <Formfield id={'appt_for_id'} formdata={formdata.appt_for_id} lookupfn={()=>{setLookupOpen(true)}}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'from_date'} formdata={formdata.from_date}
+            <Formfield id={'from_date'} formdata={formdata.from_date} 
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'appt_type'} formdata={formdata.appt_type}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
@@ -126,7 +137,9 @@ const ApptRequestForm = () => {
            
             {state.sendSuccess ? <AppMessage type ='success' message='Appt Request Sent Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
-             <AppButton type='send' title='Send Request' onPress={submitForm}/> 
+            <AppButton type='send' title='Send Request' onPress={submitForm}/> 
+            { lookupOpen ?   <LookupForm lookupset='staff' onOk={(lookupvalue)=>{apptforHandle(lookupvalue)}} onDismiss={()=>{setLookupOpen(false)}}/> : null} 
+    
         </ScrollView>
     )
 }

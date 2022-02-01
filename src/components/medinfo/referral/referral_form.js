@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -92,13 +91,8 @@ const ReferralForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
              <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
-                 <Text style={appStyles.h3}> Referral Request</Text>
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
+                <Text style={appStyles.h3}> Referral Request</Text>
             </View>
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />

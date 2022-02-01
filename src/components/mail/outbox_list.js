@@ -46,7 +46,7 @@ const MailOutbox = () => {
                 <TouchableOpacity key={row.msg_id} style={appStyles.item}
                                   onPress={()=>{OpenMail(row.msg_id)}}>
                     <Text >{'Subject: '+row.subject}</Text> 
-                    <Text >{'Time: '+row.time_sent_display}{'  From: '+row.sender_name}</Text>
+                    <Text >{'Time: '+row.time_sent_display}{'  To: '+row.receiver_name}</Text>
                 </TouchableOpacity> 
                ))}
            </View>

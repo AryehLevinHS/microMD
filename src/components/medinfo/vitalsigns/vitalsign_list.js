@@ -3,6 +3,8 @@ import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 //import { Card } from 'react-native-elements'
+import { IconButton } from '../../utils/misc_tools'
+
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useVitalsignList} from '../../../store/hooks/useMedinfoData'
@@ -18,9 +20,9 @@ const VitalSignList = () => {
   const [state, DataVitalsignlistGet] = useVitalsignList();
   const navigation = useNavigation();
   //=============================================================================
-  // addItem - adds a new item
+  // ItemAdd - adds a new item
   //=============================================================================
-  const addItem = () => {
+  const ItemAdd = () => {
     navigation.navigate(NAV_MEDINFO_VITALSIGN_EDIT);
   };
   //=============================================================================
@@ -70,12 +72,7 @@ const VitalSignList = () => {
           onPress={() => graphItem()}
         />
         <Text> </Text>
-        <Icon
-          name="pluscircleo"
-          type="antdesign"
-          color="#517fa4"
-          onPress={() => addItem()}
-        />
+        <IconButton type = 'ADD' onPress={() => ItemAdd()} /> 
       </View>
       <VitalsignDisplay vitalsigndata={state.data} />
     </ScrollView>

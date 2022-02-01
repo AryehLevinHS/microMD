@@ -1,23 +1,43 @@
-import React, { useContext} from 'react'; 
+import React, { useContext, useState} from 'react'; 
 import {MaterialCommunityIcons}       from 'react-native-vector-icons/';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator }   from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator }      from '@react-navigation/drawer';
 
-// user context
+// data user context
 import { UserContext } from '../store/UserContext'
+// style
+import colors from '../resources/themes/colors';
 // custom navigation
 import { MedinfoSideDrawerCustom,PatientSideDrawerCustom } from './drawer_navigation';
 
-// Navigation
+// Navigation routes
 import {
-  NAV_USER_LOGIN,NAV_USER_REGISTER,
-  NAV_HOME_NAVIGATOR,
-  NAV_HOME,NAV_DEFAULT,
+  NAV_HOME_NAVIGATOR,NAV_HOME,
+
+  NAV_USER_LOGIN,NAV_USER_LOGOUT,
+  NAV_USER_REGISTER,NAV_USER_REGISTERCONFIRM,
+  NAV_USER_PASSWORDRESET,NAV_USER_PASSWORDRESETCONFIRM,NAV_USER_PASSWORDCHANGE,
+  NAV_USER_NOTES_NAVIGATOR,NAV_USER_NOTES,NAV_USER_NOTES_EDIT,
+  NAV_USER_PROFILE_NAVIGATOR,NAV_USER_PROFILE,NAV_USER_PROFILE_LINK,
+  NAV_USER_AUTHENTICATION_EDIT,NAV_USER_TERMSOFUSE,
+
+  NAV_PATIENT_NAVIGATOR,
+  NAV_PATIENT_PROVIDERS,
+  NAV_PATIENT_PERSONAL_NAVIGATOR,NAV_PATIENT_PERSONAL, NAV_PATIENT_PERSONAL_EDIT,
+  NAV_PATIENT_CHARGES,NAV_PATIENT_PAYMENTS,NAV_PATIENT_STATEMENTS,
+  NAV_PATIENT_INSURANCE_NAVIGATOR,NAV_PATIENT_INSURANCE,NAV_PATIENT_INSURANCE_EDIT,
+  NAV_PATIENT_CONTACT_NAVIGATOR,NAV_PATIENT_CONTACTS,NAV_PATIENT_CONTACTS_EDIT,
   
+  NAV_PRACTICE_NAVIGATOR,
+  NAV_PRACTICE_NEWS,NAV_PRACTICE_NEWS_VIEW,NAV_PRACTICE_RESOURCES,NAV_PRACTICE_INFO,NAV_PRACTICE_EDU,
+
   NAV_APPT_NAVIGATOR,
   NAV_APPT_CURRENT,NAV_APPT_PAST,NAV_APPT_REQ,NAV_APPT_NEW,NAV_MAIL_MESSAGE_LINK,
   
+  NAV_MAIL_NAVIGATOR,NAV_MAIL_INBOX_NAVIGATOR,
+  NAV_MAIL_INBOX,NAV_MAIL_MESSAGE,NAV_MAIL_OUTBOX,NAV_MAIL_MSGDISPLAY,
+
   NAV_MEDINFO_NAVIGATOR,
   NAV_MEDINFO_ALLERGIES,
   NAV_MEDINFO_CAREPLAN_NAVIGATOR,NAV_MEDINFO_CAREPLAN,NAV_MEDINFO_CAREPLAN_PROGRESS,
@@ -32,29 +52,39 @@ import {
   NAV_MEDINFO_VISITS,NAV_MEDINFO_VISITS_VIEW,
   NAV_MEDINFO_VITALSIGNS,NAV_MEDINFO_VITALSIGN_GRAPH,NAV_MEDINFO_VITALSIGN_EDIT,NAV_MEDINFO_VITALSIGN_NAVIGATOR,
   NAV_MEDINFO_ALERTS,NAV_MEDINFO_DASHBOARD,
- 
-  NAV_MAIL_NAVIGATOR,NAV_MAIL_INBOX_NAVIGATOR,
-  NAV_MAIL_INBOX,NAV_MAIL_MESSAGE,NAV_MAIL_OUTBOX,NAV_MAIL_MSGDISPLAY,
- 
-  NAV_PATIENT_NAVIGATOR,
-  NAV_PATIENT_PROVIDERS,NAV_PATIENT_PERSONAL,NAV_PATIENT_CHARGES,NAV_PATIENT_INSURANCE,
-  NAV_PATIENT_INSURANCE_EDIT,NAV_PATIENT_PERSONAL_EDIT,NAV_PATIENT_PAYMENTS,NAV_PATIENT_STATEMENTS,
-  NAV_PATIENT_CONTACT_NAVIGATOR,NAV_PATIENT_CONTACTS,NAV_PATIENT_CONTACTS_EDIT,
-  NAV_USER_NOTES_NAVIGATOR,NAV_USER_NOTES,NAV_USER_NOTES_EDIT,
-  NAV_USER_PROFILE_NAVIGATOR,NAV_USER_PROFILE,
-  NAV_USER_AUTHENTICATION_EDIT,
- 
-  NAV_PRACTICE_NAVIGATOR,
-  NAV_PRACTICE_NEWS,NAV_PRACTICE_NEWS_VIEW,NAV_PRACTICE_RESOURCES,NAV_PRACTICE_INFO,NAV_PRACTICE_EDU} from './route_types'  
+  
+ } from './route_types'  
 
 // import all the screens
 
 // General
 import HomeScreen from '../components/home/home_screen';
-import LoginScreen from '../components/login/login_sreen'
-// register
- 
-
+import LoginScreen from '../components/login/login_form'
+import {headerOptions,headerEdit}   from './application_header'
+// patient
+import ContactList      from '../components/patient/contacts/contact_list';
+import ContactEdit      from '../components/patient/contacts/contact_edit_form';
+import InsuranceEdit    from '../components/patient/insurance/insurance_edit_form';
+import InsuranceList    from '../components/patient/insurance/insurance_list';
+import ProviderList     from '../components/patient/providers/provider_list';
+import PersonalInfo     from '../components/patient/personal/personal_info';
+import PersonalEdit     from '../components/patient/personal/personal_edit_form';
+// user
+import NoteList         from '../components/user/notes/notes_list';
+import NoteEdit         from '../components/user/notes/notes_edit_form';
+import PasswordChange   from '../components/user/password/password_change';
+import AuthNoEditForm   from '../components/user/authentication/authno_edit_form';
+import TermsofUse       from '../components/user/register/terms_of_use';
+import ProxyScreen      from '../components/user/proxy/proxy_list'; 
+import RegisterForm     from '../components/user/register/register_form'; 
+import RegisterConfirmForm   from '../components/user/register/register_confirm_form'; 
+import UserProfile      from '../components/user/profile/profile_screen'; 
+import PasswordReestForm from '../components/user/password/password_reset_form';
+import PasswordResetConfirmForm from '../components/user/password/password_reset_confirm_form';
+// Practice
+import NewsList         from '../components/practice/news/news_list';
+import ResourceList     from '../components/practice/resources/resource_list';
+import PracticeInfo     from '../components/practice/info/practice_info';
 // Medinfo
 //import DashboardScreen from "../components/medinfo/dashboard/dashboardScreen"
 import AllergyList      from '../components/medinfo/allergies/allergy_list';
@@ -78,7 +108,6 @@ import NoticeList       from '../components/medinfo/notices/notice_list';
 import VitalSignList    from '../components/medinfo/vitalsigns/vitalsign_list';
 import VitalSignEdit    from '../components/medinfo/vitalsigns/vitalsign_edit_form';
 import VitalSignCompare from '../components/medinfo/vitalsigns/vitalsign_compare';
-
 // Appt
 import ApptPastList     from '../components/appointments/appt_past_list';
 import ApptCurrentList  from '../components/appointments/appt_current_list';
@@ -88,73 +117,65 @@ import MailInbox        from '../components/mail/inbox_list'
 import MailOutbox       from '../components/mail/outbox_list'
 import MsgDisplay       from '../components/mail/msg_display';
 import MsgForm          from '../components/mail/msg_form';
-// patient
-import ContactList      from '../components/patient/contacts/contact_list';
-import ContactEditForm  from '../components/patient/contacts/contact_edit_form';
-import InsuranceList    from '../components/patient/insurance/insurance_list';
-import ProviderList     from '../components/patient/providers/provider_list';
-import PersonalInfo     from '../components/patient/personal/personal_info';
 
-// user
-import NoteList         from '../components/user/notes/notes_list';
-import NoteEditForm     from '../components/user/notes/notes_edit_form';
-import ChangePassword   from '../components/user/password/password_change';
-import AuthNoList       from '../components/user/authentication/authno_list';
-import AuthNoEditForm   from '../components/user/authentication/authno_edit_form';
-import TermsofUse       from '../components/user/register/terms_of_use';
-import ProxyScreen      from '../components/user/proxy/proxy_list'; 
-import RegisterForm     from '../components/user/register/register_form'; 
-import UserProfile      from '../components/user/profile/profile_screen'; 
-
-// Practice
-import NewsList         from '../components/practice/news/news_list';
-import ResourceList     from '../components/practice/resources/resource_list';
-import PracticeInfo     from '../components/practice/info/practice_info';
-
-import {headerOptions,headerEdit}   from './application_header'
-
-
-// const [isAuth,SetIsAuth] = useState(false)
-const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
-
-
+//=============================================================================
+// Routes - navigator 
+//=============================================================================
 export const Routes = () => {
      const user = useContext (UserContext)
-
-    
+     const [userAuthenticated,setUserAuthenticated] = useState(true)
+   
      const LoginStack     = createNativeStackNavigator();
      // main nav panel
      const BottomTab      = createBottomTabNavigator();
+     const HomeStack      = createNativeStackNavigator();
      
      // app sections
      const ApptDrawer     = createDrawerNavigator();
      const MedinfoDrawer  = createDrawerNavigator();
      const PatientDrawer  = createDrawerNavigator();
      const PracticeDrawer = createDrawerNavigator();
+    // mail
      const MailDrawer     = createDrawerNavigator();
-     
+     const MailMsgStack   = createNativeStackNavigator();
+     // user and patient
+     const PersonalStack  = createNativeStackNavigator();
      const ContactStack   = createNativeStackNavigator();
+     const InsuranceStack = createNativeStackNavigator();
+     const ProfileStack   = createNativeStackNavigator();
+     const NotesStack     = createNativeStackNavigator();
+     // medinfo
      const CarePlanStack  = createNativeStackNavigator();
      const ReferrralStack = createNativeStackNavigator();
-     const HomeStack      = createNativeStackNavigator();
-     const NotesStack     = createNativeStackNavigator();
      const LabResultStack = createNativeStackNavigator();
      const VitalSignStack = createNativeStackNavigator();
      const ImmunizationStack = createNativeStackNavigator();
-     const ProfileStack   = createNativeStackNavigator();
-     const MailMsgStack   = createNativeStackNavigator();
     //=============================================================================
     // HomeNavigator - navigator for home
     //=============================================================================
     const HomeNavigator = () => {
+
+      console.log('top',user.is_authenticated )
+          
+      if (  user.is_authenticated === 'N') {
+    //      setUserAuthenticated(false)
+          //navigation.navigate(NAV_USER_LOGIN)
+                   
+           // 
+            // return ( <HomeStack.Navigator >
+            //            <HomeStack.Screen name={NAV_USER_LOGOUT}   component={HomeScreen}
+            //               options= {{headerShown: false}} />
+            //           </HomeStack.Navigator>
+
+            // )
+      }
+    
       return (
               <HomeStack.Navigator >
                 <HomeStack.Screen name={NAV_HOME}                component={HomeScreen}
                   options= {{headerShown: false}} />
                  <HomeStack.Screen name={NAV_MAIL_NAVIGATOR}     component={MailNavigator} 
-                  options= {{headerShown: false}} />
+                  options= {{headerShown: false}} />  
                  <HomeStack.Screen name={NAV_PATIENT_NAVIGATOR}  component={PatientNavigator}
                   options= {{headerShown: false}} />
                  <HomeStack.Screen name={NAV_APPT_NAVIGATOR}     component={AppointmentNavigator}
@@ -165,13 +186,17 @@ export const Routes = () => {
                  options= {{headerShown: false}} />
                  <HomeStack.Screen name={NAV_MEDINFO_REFILLS}    component={RefillForm} /> 
               
-                  {/* not the greatest solution 
-                    note check out path={}
-                  */}
+                  {/* not the greatest solution  note check out path={}      */}
                  <HomeStack.Screen key = {NAV_MAIL_MESSAGE_LINK} name={NAV_MAIL_MESSAGE_LINK}  
-                     component={MsgForm} />
-                     {/* component={MsgForm} options={{ ...headerEdit  }}/>
-                    options={{ title: 'Awesome app',  }} */}
+                     component={MsgForm} />   
+                 <HomeStack.Screen name={NAV_USER_PASSWORDCHANGE} component={PasswordChange}
+                     options= {{headerShown: false}} /> 
+                 <HomeStack.Screen name={NAV_USER_PROFILE_LINK} component={PatientProfileNavigator}
+                     options= {{...headerOptions}} /> 
+                 <HomeStack.Screen name={NAV_USER_TERMSOFUSE} component={TermsofUse}
+                     options= {{headerShown: false}} /> 
+              
+                  
  {/*
           
                 <HomeStack.Screen name={NAV_APPT_CURRENT}              component={ApptCurrentList} />
@@ -210,21 +235,10 @@ export const Routes = () => {
                 <HomeStack.Screen name={NAV_PRACTICE_INFO}             component={PracticeInfo} /> 
               */}
               </HomeStack.Navigator>
+              
       )
     }
-    //=============================================================================
-    // LoginNavigator - navigator for login
-    //=============================================================================
-    const LoginNavigator = () => {
-      return (
-              <LoginStack.Navigator  
-                    screenOptions={{  headerShown: false  }}>
-                <LoginStack.Screen name={NAV_USER_LOGIN}    component={LoginScreen} />
-                <LoginStack.Screen name={NAV_USER_REGISTER} component={RegisterForm} />
-              </LoginStack.Navigator>
-      )
-    }
-  
+   
     //=============================================================================
     // Referral Navigator
     //=============================================================================
@@ -248,9 +262,8 @@ export const Routes = () => {
                    screenOptions={{  headerShown: false  }}>
                   <CarePlanStack.Screen name={NAV_MEDINFO_CAREPLAN}          component={CareplanList} />
                   <CarePlanStack.Screen name={NAV_MEDINFO_CAREPLAN_PROGRESS} component={CarePlanProgress} 
-                    //?note: options not screenOptions  options={{...headerEdit}} /> 
-                    screenOptions={{  headerShown: true  }}
-                    options={{...headerEdit}} /> 
+                      screenOptions={{  headerShown: true  }}
+                      options={{...headerEdit}} /> 
               </CarePlanStack.Navigator>
       )
     }
@@ -294,6 +307,7 @@ export const Routes = () => {
                   <ImmunizationStack.Screen name={NAV_MEDINFO_IMMUNIZATION_LIST}   component={ImmunizationList} />
                   <ImmunizationStack.Screen name={NAV_MEDINFO_IMMUNIZATION_DETAIL} component={ImmunizationDetail} 
                     //  screenOptions={{...headerEdit}} /> 
+                      //?note: options not screenOptions  options={{...headerEdit}} /> 
                     screenOptions={{  headerShown: true  }}
                     setOptions={{...headerEdit}} /> 
               </ImmunizationStack.Navigator>
@@ -333,8 +347,34 @@ export const Routes = () => {
               <ContactStack.Navigator InitialRouteName={NAV_PATIENT_CONTACTS} 
                     screenOptions={{  headerShown: false  }}>
                   <ContactStack.Screen name={NAV_PATIENT_CONTACTS}      component={ContactList} />
-                  <ContactStack.Screen name={NAV_PATIENT_CONTACTS_EDIT} component={ContactEditForm} />
+                  <ContactStack.Screen name={NAV_PATIENT_CONTACTS_EDIT} component={ContactEdit} />
               </ContactStack.Navigator>
+      )
+    }
+    //=============================================================================
+    // PatientInsuranceNavigator Patient insurance
+    //=============================================================================
+    const PatientInsuranceNavigator = () => {
+
+      return (
+              <InsuranceStack.Navigator InitialRouteName={NAV_PATIENT_INSURANCE} 
+                    screenOptions={{  headerShown: false  }}>
+                  <InsuranceStack.Screen name={NAV_PATIENT_INSURANCE}      component={InsuranceList} />
+                  <InsuranceStack.Screen name={NAV_PATIENT_INSURANCE_EDIT} component={InsuranceEdit} />
+              </InsuranceStack.Navigator>
+      )
+    }
+     //=============================================================================
+    // PatientpersonalNavigator Patient Personal Info
+    //=============================================================================
+    const PatientPersonalNavigator = () => {
+
+      return (
+              <PersonalStack.Navigator InitialRouteName={NAV_PATIENT_PERSONAL} 
+                    screenOptions={{  headerShown: false  }}>
+                  <PersonalStack.Screen name={NAV_PATIENT_PERSONAL}      component={PersonalInfo} />
+                  <PersonalStack.Screen name={NAV_PATIENT_PERSONAL_EDIT} component={PersonalEdit} />
+              </PersonalStack.Navigator>
       )
     }
     //=============================================================================
@@ -346,7 +386,7 @@ export const Routes = () => {
               <NotesStack.Navigator InitialRouteName={NAV_USER_NOTES} 
                     screenOptions={{  headerShown: false  }}>
                   <NotesStack.Screen name={NAV_USER_NOTES}      component={NoteList} />
-                  <NotesStack.Screen name={NAV_USER_NOTES_EDIT} component={NoteEditForm} />
+                  <NotesStack.Screen name={NAV_USER_NOTES_EDIT} component={NoteEdit} />
               </NotesStack.Navigator>
       )
     }
@@ -372,12 +412,12 @@ export const Routes = () => {
               <PatientDrawer.Navigator InitialRouteName={NAV_PATIENT_PROVIDERS}
                   screenOptions={{  ...headerOptions}}
               >
-                  <PatientDrawer.Screen name={NAV_PATIENT_PROVIDERS}      component={ProviderList} />
-                  <PatientDrawer.Screen name={NAV_PATIENT_CONTACT_NAVIGATOR} component={PatientContactNavigator} />
-                  <PatientDrawer.Screen name={NAV_PATIENT_INSURANCE}      component={InsuranceList} />
-                  <PatientDrawer.Screen name={NAV_USER_NOTES_NAVIGATOR}   component={PatientNotesNavigator} />
-                  <PatientDrawer.Screen name={NAV_PATIENT_PERSONAL}       component={PersonalInfo} />
-                  <PatientDrawer.Screen name={NAV_USER_PROFILE_NAVIGATOR} component={PatientProfileNavigator} /> 
+                  <PatientDrawer.Screen name={NAV_PATIENT_PROVIDERS}           component={ProviderList} />
+                  <PatientDrawer.Screen name={NAV_PATIENT_CONTACT_NAVIGATOR}   component={PatientContactNavigator} />
+                  <PatientDrawer.Screen name={NAV_PATIENT_INSURANCE_NAVIGATOR} component={PatientInsuranceNavigator} />
+                  <PatientDrawer.Screen name={NAV_USER_NOTES_NAVIGATOR}        component={PatientNotesNavigator} />
+                  <PatientDrawer.Screen name={NAV_PATIENT_PERSONAL_NAVIGATOR}  component={PatientPersonalNavigator} />
+                  <PatientDrawer.Screen name={NAV_USER_PROFILE_NAVIGATOR}      component={PatientProfileNavigator} /> 
                   {/* <PatientDrawer.Screen name={NAV_MAIL_MESSAGE_LINK}    component={MsgForm}
                      tabBarStyle= {{ display: 'none' }} /> */}
               </PatientDrawer.Navigator>
@@ -391,12 +431,11 @@ export const Routes = () => {
       
        return (
                <ApptDrawer.Navigator InitialRouteName={NAV_APPT_CURRENT}
-                   screenOptions={{  ...headerOptions}}
-                   options= {{headerShown: false}}>
-                 <ApptDrawer.Screen name={NAV_APPT_CURRENT}  component={ApptCurrentList} />
-                 <ApptDrawer.Screen name={NAV_APPT_PAST}     component={ApptPastList} />   
-                 <ApptDrawer.Screen name={NAV_APPT_REQ}      component={ApptRequestForm} />   
-                 {/* <ApptDrawer.Screen name={NAV_HOME}          component={HomeNavigator} />    */}
+                     screenOptions={{  ...headerOptions}}
+                     options= {{headerShown: false}}>
+                  <ApptDrawer.Screen name={NAV_APPT_CURRENT}  component={ApptCurrentList} />
+                  <ApptDrawer.Screen name={NAV_APPT_PAST}     component={ApptPastList} />   
+                  <ApptDrawer.Screen name={NAV_APPT_REQ}      component={ApptRequestForm} />   
                </ApptDrawer.Navigator>
        )
     }  
@@ -424,7 +463,6 @@ export const Routes = () => {
               >
                     <MailDrawer.Screen name={NAV_MAIL_INBOX_NAVIGATOR}      component={MailMsgNavigator} />
                     <MailDrawer.Screen name={NAV_MAIL_OUTBOX}               component={MailOutbox} />
-                    {/* <MailDrawer.Screen name={NAV_MAIL_MSGDISPLAY}           component={MsgDisplay} /> */}
                     <MailDrawer.Screen name={NAV_MAIL_MESSAGE}              component={MsgForm} /> 
               </MailDrawer.Navigator>
       )
@@ -445,58 +483,87 @@ export const Routes = () => {
               </PracticeDrawer.Navigator>
       )
     }
-
-  //=============================================================================
-   return ( user.is_authenticated === 'N' ?
-            LoginNavigator()
-            //HomeNavigator()
-            :
-           <BottomTab.Navigator InitialRouteName={NAV_PRACTICE_NAVIGATOR}
-                                screenOptions={{  headerShown: false,
-                                                  tabBarActiveTintColor: "blue",
-                                                  tabBarInactiveTintColor: "white", 
-                                                  tabBarStyle: [{ backgroundColor: 'rgb(0,140,189)'}],
-                                              }}
-                                          
-           >
+   //=============================================================================
+    // Main  Navigation  (bottom navigation) main Navigation for app
+    //=============================================================================
+    const MainNavigator = () => {
+      /* header options is on object application_header */
+    
+      return (
+        <BottomTab.Navigator InitialRouteName={NAV_PRACTICE_NAVIGATOR}
+         screenOptions={{  headerShown: false,
+                          tabBarActiveTintColor: colors.bottomnav_active,
+                          tabBarInactiveTintColor: colors.bottomnav_inactive,
+                          tabBarStyle: [{ backgroundColor: 'rgb(0,140,189)'}],
+                      }}
+                  
+                >
                 <BottomTab.Screen name={NAV_HOME_NAVIGATOR} component={HomeNavigator} 
-                         options={{
-                            tabBarLabel: 'Home',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="home" color={color} size={size} />)
-                         }}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="home" color={color} size={size} />)
+                }}
                 /> 
                 <BottomTab.Screen name={NAV_MAIL_NAVIGATOR} component={MailNavigator} 
-                          options={{
-                            tabBarLabel: 'Mail',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="mail" color={color} size={size} />)
-                          }}
+                  options={{
+                    tabBarLabel: 'Mail',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="mail" color={color} size={size} />)
+                  }}
                 />
-               <BottomTab.Screen name={NAV_PATIENT_NAVIGATOR} component={PatientNavigator} 
-                          options={{
-                            tabBarLabel: 'Profile',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="account" color={color} size={size} />)
-                          }}
+                <BottomTab.Screen name={NAV_PATIENT_NAVIGATOR} component={PatientNavigator} 
+                  options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="account" color={color} size={size} />)
+                  }}
                 />
                 <BottomTab.Screen name={NAV_APPT_NAVIGATOR} component={AppointmentNavigator} 
-                          options={{
-                            tabBarLabel: 'Appt',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="clock-outline" color={color} size={size} />)
-                          }}
+                  options={{
+                    tabBarLabel: 'Appt',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="clock-outline" color={color} size={size} />)
+                  }}
                 />
                 <BottomTab.Screen name={NAV_MEDINFO_NAVIGATOR} component={MedinfoNavigator} 
-                          options={{
-                            tabBarLabel: 'Medical',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="run" color={color} size={size} />)
-                          }}
+                  options={{
+                    tabBarLabel: 'Medical',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="run" color={color} size={size} />)
+                  }}
                 />
                 <BottomTab.Screen name={NAV_PRACTICE_NAVIGATOR} component={PracticeNavigator} 
-                          options={{
-                            tabBarLabel: 'Practice',
-                            tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="hospital-building" color={color} size={size} />)
-                          }}
+                  options={{
+                    tabBarLabel: 'Practice',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="hospital-building" color={color} size={size} />)
+                  }}
                 /> 
-           </BottomTab.Navigator> 
-                        
+                </BottomTab.Navigator> 
+                      )
+     }
+    //=============================================================================
+    // LoginNavigator - navigator for login
+    //=============================================================================
+    const LoginNavigator = () => {
+     
+      return (
+              <LoginStack.Navigator  
+                    screenOptions={{  headerShown: false  }}>
+              
+                 <LoginStack.Screen name={NAV_USER_LOGIN}    component={LoginScreen}
+                  listeners={({ navigation, route }) => { 
+                    if (  user.is_authenticated === 'Y') {
+                          setUserAuthenticated(true)
+                      }
+                    }}/>  
+                <LoginStack.Screen name={NAV_USER_REGISTER} component={RegisterForm} />
+                <LoginStack.Screen name={NAV_USER_REGISTERCONFIRM} component={RegisterConfirmForm} /> 
+                <LoginStack.Screen name={NAV_USER_PASSWORDRESET} component={PasswordReestForm} />
+                <LoginStack.Screen name={NAV_USER_PASSWORDRESETCONFIRM} component={PasswordResetConfirmForm} />
+              </LoginStack.Navigator>
+      )
+    }
+    
+  //=============================================================================
+
+   return (
+        userAuthenticated === false ? LoginNavigator() : MainNavigator()         
    )
 }
     //=============================================================================

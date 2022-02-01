@@ -56,7 +56,7 @@ export const vitalsignData ={
         showlabel: true     
     },
     systolic: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Systolic (mmHg)",
@@ -65,13 +65,13 @@ export const vitalsignData ={
             placeholder: 'Systolic'
         },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true
     },
     diastolic: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Diastolic (mmHg)",
@@ -88,7 +88,7 @@ export const vitalsignData ={
         
     },
     pulse_rate: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Pulse Rate (/min)",
@@ -103,7 +103,7 @@ export const vitalsignData ={
         showlabel: true
     },
     oxygen: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Oxygen Saturation (%)",
@@ -118,7 +118,7 @@ export const vitalsignData ={
         showlabel: true
     },
     respiratory_rate: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Respiratory Rate (rpm)",
@@ -133,7 +133,7 @@ export const vitalsignData ={
         showlabel: true
     },
     temperature: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Temperature (F)",
@@ -148,7 +148,7 @@ export const vitalsignData ={
         showlabel: true
     },
     weight_lb: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Weight (lb)",
@@ -163,7 +163,7 @@ export const vitalsignData ={
         showlabel: true
     },
     weight_oz: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Weight (oz)",
@@ -178,7 +178,7 @@ export const vitalsignData ={
         showlabel: true
     },
     height_ft: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Height (ft)",
@@ -194,7 +194,7 @@ export const vitalsignData ={
         showlabel: true
     },
     height_in: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Height (inches)",
@@ -209,7 +209,7 @@ export const vitalsignData ={
         showlabel: true
     },
     blood_sugar: {
-        element: 'input',
+        element: 'input_number',
         value: '',
         config:{
             label: "Blood Sugar (mg/dL)",
@@ -249,7 +249,7 @@ export const vitalsignData ={
             placeholder: 'Enter your comment'
         },
         validation:{required: false},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true

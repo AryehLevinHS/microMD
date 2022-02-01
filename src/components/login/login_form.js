@@ -1,7 +1,7 @@
 import React,{useState, useContext, useEffect} from 'react'
-import {  ScrollView, TextInput,Text,Button,Image,View } from 'react-native'
+import {  ScrollView, Text,Image,View } from 'react-native'
 import axios from 'axios'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 //import {REACT_APP_PROXYSERVER} from "@env" // using 
 
 // tools
@@ -9,7 +9,7 @@ import { loading,AppButton,AppMessage } from '../utils/misc_tools';
 
 // form tools
 import Formfield from '../utils/forms/form_fields';
-import { updateField, generateData, isFormValid,resetFields } from '../utils/forms/form_actions';
+import { updateField, generateData, isFormValid} from '../utils/forms/form_actions';
 
 // Data
 import { PracticeContext } from '../../store/PracticeContext'
@@ -23,7 +23,7 @@ import {LoginData} from './login_data'
 import {appStyles} from '../../resources/styles/main_styles'
 import login_image from '../../resources/images/login/login_page.png'
 // navigation
-import  {NAV_HOME,NAV_HOME_NAVIGATOR,NAV_USER_REGISTER,NAV_USER_FORGOTPASSWORD} from '../../navigation/route_types'
+import  {NAV_USER_REGISTERCONFIRM,NAV_USER_PASSWORDRESETCONFIRM} from '../../navigation/route_types'
 //=============================================================================
 // Copyright
 //=============================================================================
@@ -45,11 +45,24 @@ const LoginScreen = () => {
    const [state,stateStore,DataLoginUser,DataLoginSetStores,
           DataValidationFailure,DataValidationReset] = useLoginForm()
    const [formdata,setFormdata] = useState (LoginData)
+   const [loadingData,setLoadingData] = useState(false)
+    //=============================================================================
+    // registerUser - open the register screen
+    //=============================================================================
+    const registerUser = () =>{
+        navigation.navigate(NAV_USER_REGISTERCONFIRM) //NAV_USER_REGISTER)
+    }
+    //=============================================================================
+    // registerUser - open the register screen
+    //=============================================================================
+    const forgotPassword = () =>{
+        navigation.navigate(NAV_USER_PASSWORDRESETCONFIRM) 
+    }
     //=============================================================================
     // useEffect to set stores onces the user has logged in
     //=============================================================================
     useEffect(()=>{
-        
+     
       if (stateStore.loading === false && !stateStore.error) {
           
           if (stateStore.data) {
@@ -78,17 +91,17 @@ const LoginScreen = () => {
               if (data.apptprefs.recordset) {
                   RefApptBookPrefs(ref, data.apptprefs.recordset)
               }
-   
+              user.is_authenticated = 'Y'
+              
           }
           // go to the home screen
-         // navigation.navigate(NAV_HOME_NAVIGATOR)
-          user.is_authenticated = 'Y'
-          //navigation.ref()
-         
+          //global.authDispatch({type: 'LOGIN',payload:{isLoggedIn:true}})
+          setLoadingData(false)
+          navigation.setParams({login:'true'})
       }
-  },[stateStore.loading]) // do not put user as a dependancy - infinite loop
+     },[stateStore.loading]) // do not put user as a dependancy - infinite loop
  
-   //=============================================================================
+    //=============================================================================
     // useEffect to set user details, and patient details after user has logged in
     //=============================================================================
     useEffect(()=>{
@@ -106,27 +119,31 @@ const LoginScreen = () => {
               //console.log('token',user.token)
                // REMOVE for testing
                DataLoginSetStores(user.patient_id,user.portal_user_id )
+           
           }
       }
-  },[state.loginSuccess]) 
-   //=============================================================================
-   // updateFormField (update fields on the form)
-   //=============================================================================
-   const updateFormField = (id,action,value) => {
+    },[state.loginSuccess]) 
+    //=============================================================================
+    // updateFormField (update fields on the form)
+    //=============================================================================
+    const updateFormField = (id,action,value) => {
 
+       DataValidationReset()
        const newFormdata = updateField(formdata,id,action,value,'login');
        setFormdata(newFormdata)    
-  }
-  //=============================================================================
-  // submit form (update information)
-  //=============================================================================
-  const submitForm = () =>{
+       setLoadingData(false)
+    }
+    //=============================================================================
+    // submit form (update information)
+    //=============================================================================
+    const submitForm = () =>{
 
       let dataToSubmit   = generateData(formdata,'login');
       let formIsValidRet = isFormValid(formdata,'login')
      
        if(formIsValidRet.formIsValid){
           DataLoginUser(dataToSubmit)
+          setLoadingData(true)
        } else {
           DataValidationFailure(formIsValidRet.errorMsg)
        }     
@@ -137,38 +154,28 @@ const LoginScreen = () => {
        <Text  style={appStyles.login_title}>{practice.practice_header}</Text>
        <Image style={appStyles.login_image} source={login_image} />
        <Text  style={appStyles.login_header}>{'Patient Login'}</Text>       
-       <Text  style={appStyles.login_forgot_password}>{'Register'}</Text>         
+               
        <Formfield id={'userName'} formdata={formdata.userName}
                   changefunction={(id,action,value) => updateFormField(id,action,value)} />
        <Formfield id={'password'} formdata={formdata.password}
                   changefunction={(id,action,value) => updateFormField(id,action,value)} />
-       <Text  style={appStyles.login_forgot_password}>{'Forgot password ?'}</Text>         
+       <View style={{flexDirection:'row',justifyContent:'space-between',marginLeft:15,marginTop:5}}>
+            <Text  style={appStyles.login_forgot_password}  onPress ={() =>{registerUser()} }>
+                {'Register'}
+            </Text> 
+            <Text  style={appStyles.login_forgot_password} onPress ={() =>{forgotPassword()} }>
+                {'Forgot password ?'}
+            </Text>         
+       </View>
       
       <View style={appStyles.form_button}>
           <AppButton type='regular' title='LOGIN' onPress={submitForm}/>
       </View>
-      
+      {loadingData ? loading(true) : loading(false)} 
     </ScrollView>
     )
 
 }
 
-
 export default LoginScreen
 //=============================================================================
-/*
-
- <TextInput
-          style={appStyles.form_input}
-          onChangeText={(value)=>handleOnChange('userName',value)}
-          placeholder="User Name"
-          value={data.userName}
-      />
-      <TextInput
-          style={appStyles.form_input}
-          onChangeText={(value)=>onSetData({...data,password:value})}
-          value={data.password}
-          placeholder="Password"
-          secureTextEntry={true}
-      />
-*/

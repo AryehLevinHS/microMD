@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity, Button } from 'react-native'
-import {List,Divider }from 'react-native-paper';
+import {List}from 'react-native-paper';
+import { Icon} from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading } from '../../utils/misc_tools'
@@ -53,14 +54,15 @@ const ProviderList = () => {
         return (<View style={{ justifyContent:'flex-start'}}> 
                 <List.Accordion 
                         title={providerRow.provider_name}
-                        left={props => <List.Icon {...props} icon="folder" />}
+                        // left={props => <List.Icon {...props} icon="folder" />}
                         expanded={expanded}
                         onPress={handlePress}>
                         {workplace.recordset
                         .filter(workrow => workrow.provider_id === providerRow.provider_id)
                         .map(workrow => (
                             <List.Item  key={workrow.dept_id}
-                                        title = {workrow.department_name +' '+ workrow.phone} />
+                                        title = {workrow.department_name +' '+ workrow.phone} 
+                                        style={{height:25}}/>
                         ))} 
                  </List.Accordion>
                  </View>
@@ -81,10 +83,17 @@ const ProviderList = () => {
                  <TouchableOpacity key={row.provider_id} style={appStyles.item}>
                      <WorkplaceDisplay providerRow ={row} workplace={workplace} />
                      <Text>  </Text>
-                     <View style={{ flexDirection: 'row',justifyContent:'flex-end'}} >
-                        <Button style={{margin:20}} title='Send Message' onPress={()=>{sendMessage(row.provider_id)}}/>
+                     <View style={{ flexDirection: 'row',justifyContent:'space-around'}} >
+                         <View style={appStyles.providerButtonContainer}>
+                            <Icon name='mail' type='antdesign' color='white' onPress={() => sendMessage(row.provider_id)} />
+                         </View>
+                         <View style={appStyles.providerButtonContainer}>
+                             <Icon name='calendar' type='antdesign' color='white' onPress={() => requestAppt(row.provider_id)} />
+                               </View>
+                        {/* <Button style={{margin:20}} title='Send Message' onPress={()=>{sendMessage(row.provider_id)}}/> 
                         <Text>  </Text>
-                        <Button title='Request Appt' onPress={()=>{requestAppt(row.provider_id)}}/>
+                        <Button title='Request Appt' onPress={()=>{requestAppt(row.provider_id)}}/> 
+                        */}
                     </View>
                    </TouchableOpacity> 
                ))}

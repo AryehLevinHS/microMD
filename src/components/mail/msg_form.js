@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState,useCallback } from 'react'
+import { Text, View,ScrollView} from 'react-native'
+import { useNavigation,useFocusEffect } from '@react-navigation/native';
 
 // form tools
-import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
-         resetFields,populateFields} from '../utils/forms/form_actions';
+import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,addtoOptionFields,
+         setValue,setProperty} from '../utils/forms/form_actions';
 import Formfield from '../utils/forms/form_fields';
 // tools
-import { loading,AppMessage,AppButton } from '../utils/misc_tools'
+import {AppMessage,AppButton,IconButton } from '../utils/misc_tools'
+import LookupForm  from '../utils/lookup/lookup_form';
 // data
 import { UserContext } from '../../store/UserContext'
 import { RefContext } from '../../store/RefContext'
@@ -22,18 +22,44 @@ import {appStyles} from '../../resources/styles/main_styles'
 //=============================================================================
 const MsgForm = () => {
 
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
     const [state,DataMailSendMsg,DataValidationFailure,
            DataValidationReset] = useMessageForm()
     const [formdata,setFormdata] = useState (messageData)
-    const navigation = useNavigation();
+    const [lookupOpen,setLookupOpen] = useState(false)
     //=============================================================================
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
         navigation.goBack()
     }    
+    //=============================================================================
+    // useFocusEffect - when get focus - will reset the data
+    //=============================================================================
+    // useFocusEffect(()=>{
+    //     useCallback(()=>{
+    //         // reset fields
+    //         return () => {
+    //             // clean up when leave 
+    //         }
+    //     })
+
+    //  },[])  
+    //=============================================================================
+    // msgforHandle - set the reciptient
+    //=============================================================================
+    const msgforHandle = (lookupValue) => {
+        setLookupOpen(false)
+        if (lookupValue.id){
+            let newFormdata = formdata
+            addtoOptionFields(newFormdata,'receiver_id',[{key:lookupValue.id,value:lookupValue.description}])
+            setValue(newFormdata,'receiver_id',lookupValue.id)
+            setProperty(newFormdata,'receiver_id','valid','')
+            setFormdata(newFormdata)   
+        }
+    }
     //=============================================================================
     // useEffect to close form once sent
     // if state.sendSuccess then display success message for 2 seconds and close the form
@@ -86,7 +112,7 @@ const MsgForm = () => {
  
         let dataToSubmit   = generateData(formdata,'message');
         let formIsValidRet = isFormValid(formdata,'message')
-        console.log('data to submit',formIsValidRet,dataToSubmit)
+        //console.log('data to submit',formIsValidRet,dataToSubmit)
          if(formIsValidRet.formIsValid){
             DataMailSendMsg(dataToSubmit)
          } else {
@@ -97,17 +123,12 @@ const MsgForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
               <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
                 <Text style={appStyles.form_title}> New Message</Text>
             </View> 
 
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}
-                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} lookupfn={()=>{setLookupOpen(true)}}/>
            <Formfield id={'message_type'} formdata={formdata.message_type}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'subject'} formdata={formdata.subject}
@@ -118,10 +139,11 @@ const MsgForm = () => {
             {state.sendSuccess ? <AppMessage type ='success' message='Message Sent Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
              <AppButton type='send' title='Send Message' onPress={submitForm}/> 
-                   
+             { lookupOpen ?   <LookupForm lookupset='staff' onOk={(lookupvalue)=>{msgforHandle(lookupvalue)}} onDismiss={()=>{setLookupOpen(false)}}/> : null} 
+           
         </ScrollView>
     )
 }
- 
+
 export default MsgForm;
 //=============================================================================

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useCallback } from 'react'
 import { Text, View,ScrollView,TouchableOpacity,Linking,StyleSheet} from 'react-native'
 //import YouTube from 'react-native-youtube';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading,AppButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useResourceList} from '../../../store/hooks/usePracticeData'
@@ -56,13 +56,14 @@ const ResourceList = () => {
                              onPress={()=>OpenUrl(rowdetail.url)} 
                              style={appStyles.general_link}>{rowdetail.description}
                        </Text>
-                    :  <View style={{width:50,padding:5,}}
+                    :  <View style={{width:250,padding:5,}}
                              key={rowdetail.resource_id}
                         >
+                       <AppButton type='regular' title='Play Video' onPress={()=>OpenUrl(rowdetail.url)}/>
                                    {/* spanish guy lecture 77 
                                      AIzaSyC5rjc_816TEmxFNVz5qehrh-u_1nFCyRk
-                           apiKey='AIzaSyAw7dmlSLQamGdq7noiZCiMxIP0UzCc-Ao */}
-                          {/* <YouTube apiKey ='AIzaSyC5rjc_816TEmxFNVz5qehrh-u_1nFCyRk'
+                           apiKey1='AIzaSyAw7dmlSLQamGdq7noiZCiMxIP0UzCc-Ao */}
+                          {/* <YouTube apiKey1 ='AIzaSyC5rjc_816TEmxFNVz5qehrh-u_1nFCyRk'
                                    videoId ='ANdSdIlgsEw' 
                                    style={{alignSelf:'stretch',height:300}}
                           />   */}

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect,useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { Text, View,ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 // tools
-import { loading } from '../../utils/misc_tools'
+import { loading, IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useImmunizationList} from '../../../store/hooks/useMedinfoData'
@@ -59,12 +58,7 @@ const ImmunizationDetail = () => {
     return (
         <ScrollView>
             <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
                 <Text style={appStyles.h3}> Vaccine Details</Text>
             </View>
             {state.loading ? loading(true) : loading(false)} 

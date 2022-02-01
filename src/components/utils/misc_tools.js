@@ -4,6 +4,7 @@ import {appStyles} from '../../resources/styles/main_styles'
 import { Snackbar ,Chip  } from 'react-native-paper';
 import {Button,Icon} from 'react-native-elements'
 import colors from '../../resources/themes/colors';
+// react_native_toast_message -for messages
 //=============================================================================
 // Loading  - determinins if its loading
 // need to pass in if loading 
@@ -39,7 +40,7 @@ export const AppButton = ({type,title,onPress}) =>{
                          }}
               
                 />)
-              break;
+          
               case 'save':
                     return(<Button title={title} onPress={onPress} 
                           icon={{
@@ -62,9 +63,24 @@ export const AppButton = ({type,title,onPress}) =>{
                           }}
                
                     />)
-               break;
+          case 'ok': case 'cancel':
+               return (
+               <Button title={title} onPress={onPress} 
+                    buttonStyle={{
+                         backgroundColor: colors.button_background,
+                         borderColor: 'transparent',
+                         borderWidth: 0,
+                         borderRadius: 10,
+                    }}
+                    containerStyle={{
+                         width: '32%',
+                         marginHorizontal: 10,
+                         marginVertical: 10,
+                    }}
+                    />)
           default: /* no icon */
-               return(<Button title={title} onPress={onPress} 
+               return(
+                  <Button title={title} onPress={onPress} 
                     buttonStyle={{
                          backgroundColor: colors.button_background,
                          borderColor: 'transparent',
@@ -78,12 +94,69 @@ export const AppButton = ({type,title,onPress}) =>{
                     }}
          
                />)
-         break;
+        
               break;
     }
 
   
 }
+//=============================================================================
+// AppMessage - Display message
+//=============================================================================
+export const IconButton = ({type,onPress}) =>{
+  
+    switch (type) {
+       case 'ADD':
+          return ( <View style={appStyles.addButtonContainer}>
+                      <Icon 
+                        reverseColor = 'green'
+                        solid={true}
+                        name= 'plus'  //'pluscircleo'
+                         type='antdesign'
+                         color = {colors.addbutton_color}
+                         onPress={onPress}
+                       />
+                    </View>  
+          )
+         case 'DELETE':
+               return ( <View style={appStyles.deleteButtonContainer}>
+                            <Icon 
+                              name= 'delete'  //'closecircleo'
+                              type='antdesign'
+                              color='white'
+                              onPress={onPress}
+                              size={15}
+                              />      
+                         </View>     
+               )
+         case 'GOBACK':
+               return ( <Icon 
+                              name='arrowleft'
+                              type='antdesign'
+                              color = {colors.header_backarrow}
+                              onPress={onPress}
+                    />
+               )
+          case 'EDIT':
+               return ( <Icon 
+                              name='edit'
+                              type='materialicons'
+                              color ='#517fa4'
+                              onPress={onPress}
+                    />
+               )
+
+         default:
+          return ( <Icon 
+                              name='arrowleft'
+                              type='antdesign'
+                              color = {colors.header_backarrow}
+                              onPress={onPress}
+                    />
+                )
+     }
+
+  }
 //=============================================================================
 // getAppMessageColor - Gets the app message color
 //=============================================================================

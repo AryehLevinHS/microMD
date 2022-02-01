@@ -7,7 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../store/UserContext'
 // style
 import colors from '../resources/themes/colors'
-
+// navigation
+import {NAV_USER_PASSWORDCHANGE,NAV_USER_PROFILE_NAVIGATOR,NAV_HOME,NAV_USER_LOGIN,
+       NAV_USER_PROFILE_LINK,NAV_USER_TERMSOFUSE} from '../navigation/route_types'
  //=============================================================================
  // SettingsIcon  - the settings icon and menu
  //=============================================================================
@@ -18,10 +20,37 @@ const SettingsIcon = () => {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     //=============================================================================
-    const logout = () => {
-      user.UserLogout(user)
+    // passwordChange - change password screen
+    //=============================================================================
+    const passwordChange = () =>{
+      closeMenu()
+      navigation.navigate(NAV_USER_PASSWORDCHANGE) 
     }
-va //=============================================================================
+    //=============================================================================
+    // termsOfUse - opens terms of use screen
+    //=============================================================================
+    const termsOfUse = () =>{
+      closeMenu()
+      navigation.navigate(NAV_USER_TERMSOFUSE) 
+    }
+    //=============================================================================
+    // myProfile - goes to my profile screen
+    //=============================================================================
+    const myProfile = () =>{
+      closeMenu()
+      navigation.navigate(NAV_USER_PROFILE_LINK) 
+    }
+    //=============================================================================
+      // passwordChange - change password screen
+    //=============================================================================  
+    const logout = () => {
+      closeMenu()
+      user.is_authenticated = 'N'
+     // navigation.setParams({login:'true'})
+      navigation.navigate(NAV_HOME) 
+      //user.UserLogout(user)
+    }
+   //=============================================================================
    
      return(
          <View style={{margin:10}}>
@@ -34,8 +63,10 @@ va //===========================================================================
                                onPress={openMenu} />
               }
                >
-              <Menu.Item icon="logout" onPress={() => {logout()}} title="Logout" />
-              <Menu.Item icon="account"  onPress={() => {}} title="Profile" />
+              <Menu.Item icon="key"      onPress={() => {passwordChange()}} title="Change Password" />
+              <Menu.Item icon="account"  onPress={() => {myProfile()}} title="My Profile" />
+              <Menu.Item icon="compass"  onPress={() => {termsOfUse()}} title="Terms of Use" />
+              <Menu.Item icon="logout"   onPress={() => {logout()}} title="Logout" /> 
               <Divider />
               <Menu.Item onPress={() => {}} title="Bart Smith" />
             </Menu>

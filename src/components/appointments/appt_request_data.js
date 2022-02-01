@@ -1,6 +1,6 @@
 export const apptrequestData ={
     appt_for_id: {
-        element: 'dropdownlookup',
+        element: 'dropdownlookup', //'select',
         value: '',
         config:{
             name: 'appt_for_id_input',
@@ -15,19 +15,12 @@ export const apptrequestData ={
         showlabel: true
     },
     portal_user_id: {
-        element: 'input',
+        element: 'db',
         value: '',
-        config:{
-            label: "Sender",
-            name: 'sender_input',
-            type: 'text',
-            placeholder: 'Enter the sender'
-        },
         validation:{required: false},
         valid: true,
         touched: false,
         validationMessage:'',
-        showlabel: true
     },
     sender_name: {
         element: 'input',

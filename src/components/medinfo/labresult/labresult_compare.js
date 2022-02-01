@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView } from 'react-native'
 import { DataTable } from 'react-native-paper';
+import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements'
 // tools
-import { loading,AppMessage } from '../../utils/misc_tools'
+import { loading,AppMessage,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import {useLabResultGraph} from '../../../store/hooks/useMedinfoData'
@@ -72,13 +72,14 @@ const LabResultCompare = () => {
         <ScrollView>
            
             <View style={appStyles.goBackButton}>
-                <Icon 
+            <Icon 
                     name='arrowleft'
                     type='antdesign'
                     color='#517fa4'
                     onPress={() => goBack()}
                 />
-                 <Text style={appStyles.h3}> Compare Values</Text>
+                {/* <IconButton type = 'GOBACK' onPress={() => goBack()} /> */}
+                <Text style={appStyles.h3}> Compare Values</Text>
             </View>
             {state.loading ? loading(true) : loading(false)} 
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  

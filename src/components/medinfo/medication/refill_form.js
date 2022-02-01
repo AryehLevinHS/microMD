@@ -87,15 +87,7 @@ const RefillForm = () => {
         let medlist = (<View>
                       </View>)
     
-    //console.log('meds','None')
-    
     if (medications && medications.length > 0) {
-    //    console.log('meds',medications)
-    //    //     let medications    = loadingState.data.recordset
-    //   //    let medications = [{description:'med1',prescription_id:1,dosage_description:"1 times per day"},
-    //   //                       {description:'med2',prescription_id:2,dosage_description:"2 times per day"},
-    //   //                       {description:'med3',prescription_id:3,dosage_description:"3 times per day"}]
-   // <CheckBox size={20} containerStyle={{backgroundColor:'#2196F3',height:35}}
             medlist =  medications.map(row => (
                              <View key={row.prescription_id} style={appStyles.item}>
                                   <CheckBox size={20} 
@@ -126,12 +118,10 @@ const RefillForm = () => {
     // updateFormField (update fields on the form)
     //=============================================================================
     const updateFormField = (id,action,value) => {
-        // NOTE: called when loading data 
-        //console.log('update field',id,action,value)
-
+    
         // DataValidationReset()
         const newFormdata = updateField(formdata,id,action,value,'rxrequest');
-         setFormdata(newFormdata)    
+        setFormdata(newFormdata)    
     }
     //=============================================================================
     // submit form (update information)
@@ -156,7 +146,7 @@ const RefillForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
 
             {state.sendSuccess ? <AppMessage type ='success' message='Request Sent Successfully' /> : <View></View> }  
-            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} visible={true} /> : <View></View> } 
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}} /> : <View></View> } 
             <AppButton type='send' title=' Send Refill Request' onPress={submitForm}/>
             
         </ScrollView>

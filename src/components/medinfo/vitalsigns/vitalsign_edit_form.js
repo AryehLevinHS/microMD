@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements'
+import moment from 'moment'
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
 import { RefContext } from '../../../store/RefContext'
@@ -54,8 +54,9 @@ const VitalSignEditForm = () => {
 
        // set default values 
         setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
+        setDefaultValue(newFormdata,'sender_name',user.portal_user_name)
         setDefaultValue(newFormdata,'patient_id',user.patient_id)
-        
+        setDefaultValue(newFormdata,'taken_on',moment(new Date).format('YYYY-MM-DD'))
         setFormdata(newFormdata)    
         DataValidationReset() 
 
@@ -76,7 +77,7 @@ const VitalSignEditForm = () => {
  
         let dataToSubmit   = generateData(formdata,'vitalsign');
         let formIsValidRet = isFormValid(formdata,'vitalsign')
-       
+       console.log ('vitals form submit',formIsValidRet,'-----',dataToSubmit)
          if(formIsValidRet.formIsValid){
             DataVitalsignSend(dataToSubmit)
          } else {
@@ -87,12 +88,7 @@ const VitalSignEditForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
              <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
                 <Text style={appStyles.form_title}>Add Vital Signs</Text>
             </View>
             <Formfield id={'provider_id'} formdata={formdata.provider_id}

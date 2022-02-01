@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import {  ScrollView,View, Text } from 'react-native' //TextInput Button
-import { Button } from 'react-native-paper';
+import { useNavigation} from '@react-navigation/native';
 
 // tools
 import { AppMessage,AppButton } from '../../utils/misc_tools'
@@ -11,30 +11,39 @@ import {useTermsofUse} from '../../../store/hooks/useUserData'
 
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
+
+// navigation
+import  {NAV_HOME} from '../../../navigation/route_types'
 //=============================================================================
 // TermsofUse (Terms of use form)
 //=============================================================================
 function TermsofUse () {
-   // const { open ,onClose} = props;
     const user = useContext (UserContext)
+    const navigation = useNavigation();
       
     // send consent confirmation
     const [state,DataConsentAdd] = useTermsofUse()
-
+    //=============================================================================
+    // closeForm (goes back to the calling screen)
+    //=============================================================================
+    const closeForm = () => {
+      navigation.navigate(NAV_HOME)
+  }    
     //=============================================================================
     // useEffect to close form
     //    if state.success   close the form
     //=============================================================================
     useEffect(()=>{
         if (state.sendSuccess) {
-            setTimeout(()=>{ onClose(true) },2000)
+            user.consent_touse = 'Y'
+            setTimeout(()=>{ closeForm(true) },2000)
         } 
     },[state.sendSuccess])  
     //=============================================================================
-    // closeDialog (close the diaglog)
+    // cancelUse (close the diaglog)
     //=============================================================================
-    const closeDialog = () => {
-        onClose(false) 
+    const cancelTermsOfUse = () => {
+        closeForm()
     }
     //=============================================================================
     // submitForm (submit the form)
@@ -49,19 +58,8 @@ function TermsofUse () {
           DataConsentAdd(dataToSubmit)
     }
 
-    //<Dialog className="modal__dialog"
-            //        open={open}
-           // >
-    //        <div className = 'modal__title'>
-    //        <h2> Terms and Conditions of Use</h2>
-    //        <div>   <Tooltip title="Exit" > 
-    //                <IconButton onClick={() => {closeDialog()}}> <CloseIcon color='primary' />  </IconButton> 
-    //            </Tooltip>  
-    //        </div>
-    //    </div>
-   
 //=============================================================================  
-    return (    <ScrollView style={{marginHorizontal:5}}>
+    return (    <ScrollView style={{marginHorizontal:10}}>
                  <Text style={appStyles.h1}>Terms of Use </Text>
                 
                      <Text>
@@ -266,18 +264,10 @@ function TermsofUse () {
                               
                     {state.sendSuccess ? <AppMessage type ='success' message='Terms of Use Submitted Sucessfully' /> : <View></View> }  
                     {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
-                    {/* <AppButton type='send' title='Agree' onPress={submitForm}/> 
-                    <AppButton type='send' title='Agree' onPress={closeDialog}/>  */}
-                        <>
-                            <Button icon="content-save" mode="contained" onPress={submitForm} compact style={{margin:5}}>
-                               Agree
-                            </Button>             
-                            <Button icon="content-save" mode="contained" onPress={closeDialog} compact style={{margin:5}}>
-                                Cancel
-                            </Button>            
-                         
-                        </>
-                  
+                    <View style={{flexDirection:'row',alignSelf:'flex-end'}}>
+                    <AppButton type='ok' title='Agree' onPress={submitForm}/>
+                    <AppButton type='cancel' title='Cancel' onPress={cancelTermsOfUse}/>
+                    </View>
                  </ScrollView>
            
     );
