@@ -6,6 +6,7 @@ import {Routes} from './src/navigation/routes'
 import { Provider as PaperProvider } from 'react-native-paper';
 import {REACT_APP_PROXYSERVER_AZURE,REACT_APP_PROXYSERVER} from '@env'; // see babel.config module name
 import { GlobalProvider } from './src/store/globalStateProvider';
+//rimport { navigationRef } from './src/navigation/root_navigator';
 //=============================================================================
 // AppSetup (custominzation and setings for a partivcular practice including login screen)
 //=============================================================================
@@ -17,8 +18,8 @@ const AppSetup = () => {
      axios.defaults.headers.common['Tenant_id'] = tenant_id
     //console.log('app',REACT_APP_PROXYSERVER_AZURE)
     // setup base URL 
-  // let baseURL =  REACT_APP_PROXYSERVER //'http://localhost:5000' 
-   let baseURL =  REACT_APP_PROXYSERVER_AZURE //'https://patportalserver.azurewebsites.net' 
+   let baseURL =  REACT_APP_PROXYSERVER //'http://localhost:5000' 
+  // let baseURL =  REACT_APP_PROXYSERVER_AZURE //'https://patportalserver.azurewebsites.net' 
    axios.defaults.baseURL =  baseURL
 
    return
@@ -27,13 +28,14 @@ const AppSetup = () => {
 // App - main app
 //=============================================================================
  function App() {
-   
+   //<NavigationContainer ref={navigationRef}>
   AppSetup()
 
    return (
     <PaperProvider>
        <GlobalProvider>
-         <NavigationContainer>
+       <NavigationContainer>
+          
             {Routes()}
          </NavigationContainer>
       </GlobalProvider>
