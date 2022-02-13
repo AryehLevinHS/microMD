@@ -6,8 +6,8 @@ import {Picker} from '@react-native-picker/picker';
 //npm install react-native-dropdown-picker --save
 // npm i react-native-neat-date-picker
 
-import {appStyles} from '../../../resources/styles/main_styles'
-import colors from '../../../resources/themes/colors';
+import {appStyles} from '../src/resources/styles/main_styles'
+import colors from '../src/resources/themes/colors';
 //=============================================================================
 // Formfield - various functions for setting up the forls
 //=============================================================================

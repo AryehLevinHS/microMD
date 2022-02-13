@@ -138,9 +138,9 @@ export const contactGetList = (dispatch,patientId) => {
 //=============================================================================
 // contactGetDetails = gets the contact details
 //=============================================================================
-export const contactGetDetails = (dispatch,patient_id,patcontact_id) => {
+export const contactGetDetails = (dispatch,patient_id,contact_id) => {
   
-   let queryString = `${PATIENT_SERVER}/contact_details?patient_id=${patient_id}&patcontact_id=${patcontact_id}`
+   let queryString = `${PATIENT_SERVER}/contact_details?patient_id=${patient_id}&contact_id=${contact_id}`
    axios.get(queryString)
    .then(response=>{
       dispatch({type: PATIENT_CONTACTS,payload:response.data}) 
@@ -230,6 +230,7 @@ export const insuranceGetDetails = (dispatch,patient_id,insurance_id) => {
 export const insuranceUpdate = (dispatch,dataToSubmit) => {
   
    let queryString = `${PATIENT_SERVER}/insurance_update`
+  // console.log('insurance update',dataToSubmit)
    axios.post(queryString,dataToSubmit)
    .then(response=>{
        let checkerror = response.data
@@ -241,6 +242,7 @@ export const insuranceUpdate = (dispatch,dataToSubmit) => {
     })
    .catch(error => {
       dispatch({type:SEND_FAILURE,payload:error })
+    //  console.log('insurance errr',error)
     })
 }
 //=============================================================================

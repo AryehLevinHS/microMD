@@ -5,7 +5,7 @@ import moment from 'moment'
 
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
-         resetFields,populateFields} from '../../utils/forms/form_actions';
+    setValue, resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
 import { loading,AppButton,AppMessage,IconButton } from '../../utils/misc_tools';
@@ -56,9 +56,8 @@ const InsuranceEditForm = () => {
         newFormdata = populateOptionFields(newFormdata,ref.states,'policy_holder_state')   
 
         let insurance_id = user.localStorage.insurance_id
-        //console.log('insuranceid',insurance_id)
         if (insurance_id > 0) {  // edit
-            DataInsuranceGetDetails(user.portal_user_id,insurance_id)  // see useeffect below
+            DataInsuranceGetDetails(user.patient_id,insurance_id)  // see useeffect below
         } else {            // add 
             resetFields(newFormdata,'insurance')
             setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
@@ -75,11 +74,12 @@ const InsuranceEditForm = () => {
     // useEffect to load the data from the server (edit)
     //=============================================================================
     useEffect(()=>{
+
         if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
             let isnuranceData    = loadingState.data.recordset[0]
             let newFormData = formdata
-            
             newFormData = populateFields(formdata,isnuranceData)
+            setValue(newFormData,'portal_user_id',user.portal_user_id)
             setFormdata(newFormData) 
             DataValidationReset()  //otherwize does not refresh
         }
@@ -125,11 +125,12 @@ const InsuranceEditForm = () => {
             <Formfield id={'terminate_date'} formdata={formdata.terminate_date}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'carrier_name'} formdata={formdata.carrier_name}
-                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} /> 
             <Formfield id={'accept_assignment'} formdata={formdata.accept_assignment}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'copay'} formdata={formdata.copay}
-                       changefunction={(id,action,value) => updateFormField(id,action,value)} />
+            {/* needs to return string not integer
+                   <Formfield id={'copay'} formdata={formdata.copay}
+                       changefunction={(id,action,value) => updateFormField(id,action,value)} /> */}
             <Formfield id={'policy_holder_first_name'} formdata={formdata.policy_holder_first_name}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'policy_holder_last_name'} formdata={formdata.policy_holder_last_name}
@@ -158,10 +159,10 @@ const InsuranceEditForm = () => {
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'policy_holder_additional_info'} formdata={formdata.policy_holder_additional_info}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-
+            {loadingState.loading ? loading(true) : loading(false)} 
             {state.sendSuccess ? <AppMessage type ='success' message='Insurance Saved Successfully' /> : <View></View> }  
-            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} /> : <View></View> } 
-            <AppButton type='send' title='Save Insurance Details' onPress={submitForm}/>
+            {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}} /> : <View></View> } 
+            <AppButton type='save' title='Save Insurance Details' onPress={submitForm}/>
 
         </ScrollView>
     )

@@ -95,7 +95,6 @@ const AuthNoEditForm = () => {
         let formIsValidRet = isFormValid(formdata,'authNo')
        
          if(formIsValidRet.formIsValid){
-             console.log('datatosubmit',dataToSubmit)
             DataAuthenticationUpdate(dataToSubmit)
          } else {
             DataValidationFailure(formIsValidRet.errorMsg)

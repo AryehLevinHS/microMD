@@ -21,6 +21,7 @@ const AppSetup = () => {
    let baseURL =  REACT_APP_PROXYSERVER //'http://localhost:5000' 
   // let baseURL =  REACT_APP_PROXYSERVER_AZURE //'https://patportalserver.azurewebsites.net' 
    axios.defaults.baseURL =  baseURL
+   console.log('base url',baseURL)
 
    return
 }

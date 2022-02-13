@@ -1,5 +1,5 @@
 import React , {useContext} from 'react';
-import { View } from 'react-native';
+import { View,Text } from 'react-native';
 import { Button, Menu, Divider} from 'react-native-paper';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,7 @@ import { UserContext } from '../store/UserContext'
 // style
 import colors from '../resources/themes/colors'
 // navigation
-import {NAV_USER_PASSWORDCHANGE,NAV_USER_PROFILE_NAVIGATOR,NAV_HOME,NAV_USER_LOGIN,
+import {NAV_USER_PASSWORDCHANGE,NAV_USER_PROFILE_NAVIGATOR,NAV_HOME,NAV_USER_LOGOUT,
        NAV_USER_PROFILE_LINK,NAV_USER_TERMSOFUSE} from '../navigation/route_types'
  //=============================================================================
  // SettingsIcon  - the settings icon and menu
@@ -45,10 +45,7 @@ const SettingsIcon = () => {
     //=============================================================================  
     const logout = () => {
       closeMenu()
-      user.is_authenticated = 'N'
-     // navigation.setParams({login:'true'})
-      navigation.navigate(NAV_HOME) 
-      //user.UserLogout(user)
+      navigation.navigate(NAV_USER_LOGOUT)
     }
    //=============================================================================
    
@@ -88,8 +85,16 @@ const SettingsIcon = () => {
         height: Platform.OS === 'ios' ? 110 : 60
     },
     headerRight: (props)=> <SettingsIcon/>,
+    // headerTitle: ({ style, children : title }) => {
+    //   return ( <View style={{alignContent:'center'}}>       
+    //             <Text style={style}>{title}</Text>
+    //             <Text style={style}>Patient Name but longer </Text>
+    //             </View>
 
-      // headerTitle:()=> 'Fred'
+    //   )
+    //},
+
+    //   headerTitle:()=> 'Fred'
     // headerTitle: () =>
     //        <View>
     //              <Text>Title</Text>
@@ -112,14 +117,21 @@ const SettingsIcon = () => {
       borderBottomColor:colors.header_border,
       height: Platform.OS === 'ios' ? 110 : 60
   },
+  
   headerRight: (props)=> <SettingsIcon/>,
 
     // headerTitle:()=> 'Fred'
-      //  headerTitle: () =>
-      //      <View>
-      //          <Text>Title</Text>
-      //          <Text>subtitle</Text>
-      //      </View>,
+    headerTitle: ({ style, children : title }) => {
+       return (
+         <Text style={{backgroundColor:'orange'}} numberOfLines={2}>Moose:{title}</Text>
+       )
+     },
+
+    //  headerTitle: () =>
+    //         <View>
+    //             <Text>Title</Text>
+    //             <Text>subtitle</Text>
+    //         </View>,
   headerLeft:()=> (<View>
                     <Icon
                         name="arrow-left"

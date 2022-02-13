@@ -144,8 +144,8 @@ export const useContactForm = () => {
     const [loadingState,dispatchLoading] = useReducer(patientReducer,initialLoadinglState)
    
     // gets the contact details
-    const DataContactGetDetails = (patient_id,patcontact_id) => {
-        contactGetDetails(dispatchLoading,patient_id,patcontact_id)
+    const DataContactGetDetails = (patient_id,contact_id) => {
+        contactGetDetails(dispatchLoading,patient_id,contact_id)
     }
 
     // update contact data

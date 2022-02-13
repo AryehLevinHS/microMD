@@ -10,7 +10,6 @@ export const appStyles = StyleSheet.create({
     item: {
       backgroundColor: colors.listitem_background,
       padding: 10,
-      marginVertical: 8,
       margin:8,
       borderRadius:5,
     },
@@ -18,6 +17,16 @@ export const appStyles = StyleSheet.create({
       flexDirection: "row",
       justifyContent:'space-between',
     },
+    itemSwipe: {
+      backgroundColor: colors.listitem_background,
+      padding: 10,
+      borderRadius:5,
+      width:'100%',
+    },
+    // itemSwipe: {
+    //   backgroundColor: colors.listitem_background,
+    //   borderRadius:5,
+    // },
 
     header: {
       fontSize: 32,
@@ -70,12 +79,15 @@ export const appStyles = StyleSheet.create({
       alignSelf: 'flex-start'
     },
     providerButtonContainer : {
-      backgroundColor: '#44419e', //'darkblue',
+      backgroundColor: 'white', //'darkblue',
+     // backgroundColor: '#44419e', //'darkblue',
       width:40,
       height:40,
       borderRadius:100,
       justifyContent:'center',
       alignItems:'center',
+      borderColor:'darkblue',
+      borderWidth:3
      // position:'absolute',
      // bottom:45,
     //  right:10,
@@ -116,12 +128,25 @@ export const appStyles = StyleSheet.create({
     italic:{
       fontStyle: 'italic'
     },
+    drawermenu_container:{
+      flex: 1,
+      backgroundColor:'rgb(255,255,250)',
+    },
     drawermenu_title:{
       textAlign: "center",  
       color: "darkblue",
-      fontSize:30,
+      fontSize:25,
       backgroundColor:"white"
     },
+    drawermenu_Button:{
+      color: "darkblue",
+    },
+    drawermenu_text:{
+      height:35,  
+      padding:7,
+      color: "black",
+    },
+   
 
     error_msg:{
       color: "white",
@@ -284,6 +309,16 @@ export const appStyles = StyleSheet.create({
       textAlign:'right',
       marginRight:15,
       marginBottom:0 
+     },
+     logout_container:{
+      flex: 1,
+      backgroundColor:colors.login_background,
+      alignItems:'center',
+      justifyContent:'center',
+     },
+     logout_message:{
+      // alignItems:'center',
+      // justifyContent:'center',
      },
     //=============================================================================
     // Home Page

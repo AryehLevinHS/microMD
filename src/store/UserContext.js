@@ -15,7 +15,7 @@ export const UserContext = React.createContext({
     patient_id:'1000001',
     patient_name:  'Danny Lee Smith',
     is_admin:'Y',
-    is_authenticated:'N',
+    is_authenticated:'Y',
     reset_password:'N',
     consent_touse:'Y',
     authError: '',
@@ -56,12 +56,15 @@ export const UserContext = React.createContext({
         labresultcat_id: 0,
         note_id:0,
         msg_id:0,
+        msg_calledfrom:'',
+        msg_to:0,
         authentication_id:13,
         contact_id:0,
         insurance_id:0,
         immunization_id:0,
         careplan_id:0,
-        careplan_name:''
+        careplan_name:'',
+        appt_for:0,
      }
 })
 //=============================================================================
@@ -81,7 +84,7 @@ export const UserDataReset = (user) => {
    user.patient_name     = ''
 
    user.is_admin         = 'N'
-   user.is_authenticated = 'Y'
+   user.is_authenticated = 'N'
    user.reset_password   = 'N'
    user.consent_touse    = 'Y'
   

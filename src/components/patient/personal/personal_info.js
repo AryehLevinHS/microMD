@@ -3,7 +3,9 @@ import { Text, View,ScrollView,TouchableOpacity, Image,Button } from 'react-nati
 import { DataTable } from 'react-native-paper';
 import { Icon,BottomSheet,ListItem } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+//import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+//import ImagePicker from 'react-native-image-crop-picker';
+
 // tools
 import { loading,IconButton } from '../../utils/misc_tools'
 // data
@@ -47,6 +49,17 @@ const PersonalInfo = () => {
     //=============================================================================
     const addImageFromLibrary = () =>{
         setSelectImage(false)
+        // ImagePicker.openPicker({
+        //     width: 300,
+        //     height: 400,
+        //     cropping: true,
+        //     freeStyleCropEnabled: true,
+        //   }).then(image => {
+        //     console.log(image);
+        //   }).catch((error) => {
+        //     console.log(error);
+        //   });
+
         // launchImageLibrary({}, (response)=> {
         //     if(response.didCancel) {
         //        console.log('No Pics') 
@@ -63,6 +76,13 @@ const PersonalInfo = () => {
     //=============================================================================
     const addImageFromCamera = async () =>{
         setSelectImage(false)
+        // ImagePicker.openCamera({
+        //     width: 300,
+        //     height: 400,
+        //     cropping: true,
+        //   }).then(image => {
+        //     console.log(image);
+        //   });
         // const response = await launchCamera({})
         //     if(response.didCancel) {
         //        console.log('No Pics') 
@@ -97,7 +117,7 @@ const PersonalInfo = () => {
 
         return (
             <View>
-                <Image source = {{uri:avatar}} style={{width:100, height:100}} />
+                {/* <Image source = {{uri:avatar}} style={{width:100, height:100}} /> */}
                 <TouchableOpacity style={appStyles.item} >
                   {personaldata.recordset.map(row => (
                      <DataTable style={appStyles.table_frame} key={11}>
@@ -155,12 +175,12 @@ const PersonalInfo = () => {
     return (
         <ScrollView>
                 <View style={appStyles.addButton}>
-                <Icon 
+                {/* <Icon 
                     name='person'
                     type='ionicons'
                     color='#517fa4'
                     onPress={() => setSelectImage(true)}
-                />
+                /> */}
                 <IconButton type = 'EDIT' onPress={() => editData()} />
                 </View>
             {/* <Text> Personal Information</Text> */}

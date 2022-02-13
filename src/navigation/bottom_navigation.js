@@ -43,7 +43,6 @@ export const BottomNav = () => {
 
     //if (lastIndex=== key)
     //  return 
-     console.log('item selected',key)
     //setActive(key)
     
     switch (key) {

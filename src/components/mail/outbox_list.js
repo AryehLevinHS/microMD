@@ -22,7 +22,9 @@ const MailOutbox = () => {
     // OpenMail - opens mail item
     //=============================================================================
     const OpenMail = (msg_id) =>{
+      
         user.localStorage.msg_id = msg_id
+        user.localStorage.msg_calledfrom = 'OUTBOX'
         navigation.navigate(NAV_MAIL_MSGDISPLAY)
     }
     //=============================================================================
@@ -55,7 +57,6 @@ const MailOutbox = () => {
 //=============================================================================
     return (
         <ScrollView>
-            {/* <Text>Outbox</Text> */}
             {state.loading ? loading(true) : loading(false)} 
             <OutboxDisplay maildata={state.data} /> 
         </ScrollView>

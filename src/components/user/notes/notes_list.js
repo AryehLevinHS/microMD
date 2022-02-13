@@ -1,5 +1,6 @@
 import React, { useContext, useEffect} from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import {ListItem,Button} from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading,ConfirmDialog,IconButton } from '../../utils/misc_tools'
@@ -34,7 +35,7 @@ const NoteList = () => {
     //=============================================================================
     // ItemDeiete - deletes an item
     //=============================================================================
-    const ConfirmDelete = (note_id) => {
+    const ConfirmDelete = (note_id,subject) => {
         ConfirmDialog('yesno','Delete Note','Are you sure you want to delete the note?',
          (istrue)=>{ItemDelete(istrue,note_id)} )
     }
@@ -60,14 +61,34 @@ const NoteList = () => {
         return (
             <View>
                 {notedata.recordset.map(row => (
-                 <TouchableOpacity key={row.note_id} style={appStyles.item} 
-                                   onPress={()=>{ItemEdit(row.note_id)}}>
-                   <View style={appStyles.listItem_textWithDelete}>                 
-                        <Text >{'Date: '+row.note_date_display}</Text>
-                        <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.note_id)} />
-                    </View>
-                   <Text>{row.subject}</Text>
-                </TouchableOpacity> 
+                     <ListItem.Swipeable style={{height:80}} key={row.note_id}
+                        rightContent={
+                            <View style={{height:'70%',marginTop:18}}>
+                                <Button 
+                                    title="Delete"
+                                    icon={{ name: 'delete', color: 'white' }}
+                                    buttonStyle={{minHeight: '100%', backgroundColor: 'red',alignItems:'center' }}
+                                    onPress={() => ConfirmDelete(row.note_id,row.subject)}
+                                />
+                            </View>
+                            }
+                        >
+                        <TouchableOpacity key={row.note_id} style={appStyles.itemSwipe}
+                            onPress={()=>{ItemEdit(row.note_id)}}>
+                            <View >
+                                    <Text style={appStyles.hightlightedText}>Date: {row.note_date_display}</Text>
+                                    <Text >{row.subject}</Text>
+                            </View>
+                        </TouchableOpacity> 
+                    </ListItem.Swipeable>
+                //  <TouchableOpacity key={row.note_id} style={appStyles.item} 
+                //                    onPress={()=>{ItemEdit(row.note_id)}}>
+                //    <View style={appStyles.listItem_textWithDelete}>                 
+                //         <Text >{'Date: '+row.note_date_display}</Text>
+                //         <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.note_id)} />
+                //     </View>
+                //    <Text>{row.subject}</Text>
+                // </TouchableOpacity> 
                ))}
            </View>
         )

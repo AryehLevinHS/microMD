@@ -124,7 +124,7 @@ const MsgForm = () => {
         <ScrollView style={appStyles.form_container}>
               <View style={appStyles.goBackButton}>
                 <IconButton type = 'GOBACK' onPress={() => goBack()} />
-                <Text style={appStyles.form_title}> New Message</Text>
+                {/* <Text style={appStyles.form_title}> New Message</Text> */}
             </View> 
 
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}

@@ -3,8 +3,8 @@ import { View,Text ,StyleSheet, TextInput} from 'react-native';
 import { HelperText, } from 'react-native-paper'; //TextInput
 import {Icon} from 'react-native-elements'
 import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 //import moment from 'moment';
-//npm install react-native-dropdown-picker --save
 // npm i react-native-neat-date-picker
 
 import {appStyles} from '../../../resources/styles/main_styles'
@@ -39,11 +39,25 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
         const [date, setDate] = useState(new Date(1598051730000));
         const [pwdShow,setPwdShow] = useState(false)
 
-        const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || date;
-          //  setShow(Platform.OS === 'ios');
-            setDate(currentDate);
-          };
+        // const onChange = (event, selectedDate) => {
+        //     const currentDate = selectedDate || date;
+        //   //  setShow(Platform.OS === 'ios');
+        //     setDate(currentDate);
+        //   };
+        //============================================================================= 
+        const [isPickerShow, setIsPickerShow] = useState(false);
+       
+        const showDatePicker = () => {
+          setIsPickerShow(true);
+        };
+      
+        const onDateChange = (event, value) => {
+          setDate(value);
+          if (Platform.OS === 'android') {
+            setIsPickerShow(false);
+          }
+        };
+       
         //=============================================================================
         const getBorderColor = () =>{
               if (!formdata.valid) 
@@ -113,9 +127,24 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                     formTemplate = (
                         <View  >
                              {displayLabel()}
-                             <View style={formStyles.form_input_field_wrapper}>
+                             <View style={[formStyles.form_input_field_wrapper,{borderColor:getBorderColor()}]}>
+                                 {/* // NEEED TO FIX */}
+                                <TextInput  
+                                    error = {!formdata.valid}
+                                    style  = {formStyles.form_input_field_text}
+                                    value  = {formdata.value}
+                                    onBlur = {()=> changefunction(id,'onblur',formdata.value)}
+                                    onChangeText = {(text)=> changefunction(id,'changed',text) }
+                                    keyboardType={formdata.element === 'input_number'? "number-pad":'default'} 
+                                    dataDetectorTypes={'calendarEvent'}
+                                />
+                             </View>
+                             {showError()}
+                        </View>
+                    )
+                       
                                 {/* <DateTimePicker
-                                    testID="dateTimePicker"
+                                    testID="dateTimePicker"r
                                     value={new Date()}
                                     mode={'date'}
                                     is24Hour={true}
@@ -134,17 +163,15 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                                  //   maximumDate="01-01-2022"
                                  //   minimumDate="01-01-2019"
                                     onChange={(date) => {
-                                        console.log('selected date',date)
                                         changefunction(id,'changed',moment(date).format('YYYY-MM-DD'))  
                                       //  changefunction(id,'changed',date)  
                                 }}
                                   /> */}
                                
-                             </View>
-                        {showError()}
-                    </View>
+                         //    </View>
+                        //{showError()}
+                    //</View>
                   
-                )
                 break; 
             /* --------------------------------------------------------------*/
             case 'messagetext':
@@ -244,27 +271,6 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                     </View>
                     )
 
-                    // <View >   
-                    //       {displayLabel()}
-                    //       <View style={[formStyles.form_input_field_wrapper_icon,{borderColor:getBorderColor()}]}>
-                    //          <Picker 
-                    //             style={formStyles.form_input_picker}
-                    //                 selectedValue = {formdata.value}
-                    //                 onValueChange={(itemValue)=> changefunction(id,'changed',itemValue) }
-                    //             >
-                    //             {                            
-                    //                 formdata.config.options.map(item=>(
-                    //                 <Picker.Item label={item.value} value= {item.key} key={item.key} />
-                    //                 ))  
-                    //             }
-                    //         </Picker>
-                    //         {/* {typeof lookupfn ==='function' &&
-                    //           <Icon name= 'search1' type='antdesign'  onPress={() => lookupfn()  }  /> }  
-                    //     */}
-                    //       </View>
-                    //       {showError()}
-                    // </View>
-               // )
             break;
           
             /* --------------------------------------------------------------*/

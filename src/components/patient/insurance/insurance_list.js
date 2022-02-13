@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import {ListItem,Button} from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 // tools
 import { loading,IconButton,ConfirmDialog } from '../../utils/misc_tools'
@@ -62,7 +63,33 @@ const InsuranceList = () => {
         return (
             <View>
                 {insurancedata.recordset.map(row => (
-                 <TouchableOpacity key={row.insurance_id} style={appStyles.item}
+                         <ListItem.Swipeable style={{height:80}} key={row.insurance_id}
+                            rightContent={
+                                <View style={{height:'70%',marginTop:18}}>
+                                    <Button 
+                                        title="Delete"
+                                        icon={{ name: 'delete', color: 'white' }}
+                                        buttonStyle={{minHeight: '100%', backgroundColor: 'red',alignItems:'center' }}
+                                        onPress={() => ConfirmDelete(row.insurance_id)}
+                                    />
+                                </View>
+                                }
+                            >
+                            <TouchableOpacity key={row.insurance_id} style={appStyles.itemSwipe}
+                                onPress={()=>{ItemEdit(row.insurance_id)}}>
+                                <View >
+                                    <Text >{'Group No: '+row.group_number}{' Policy No: '+row.policy_number}</Text>
+                                    <Text >{'From: '+row.effective_date_display +' To: '+row.terminate_date_display}</Text>
+                                </View>
+                            </TouchableOpacity> 
+                     </ListItem.Swipeable>
+                 
+               ))}
+           </View>
+        )
+    }
+    /*
+    <TouchableOpacity key={row.insurance_id} style={appStyles.item}
                                    onPress={()=>{ItemEdit(row.insurance_id)}}>
                     <View style={appStyles.listItem_textWithDelete}>                 
                         <Text >{row.carrier_name}</Text>
@@ -71,10 +98,7 @@ const InsuranceList = () => {
                     <Text >{'Group No: '+row.group_number}{' Policy No: '+row.policy_number}</Text>
                     <Text >{'From: '+row.effective_date_display +' To: '+row.terminate_date_display}</Text>
                 </TouchableOpacity> 
-               ))}
-           </View>
-        )
-    }
+*/
 //=============================================================================
     return (
         <ScrollView>

@@ -501,7 +501,6 @@ export const VitalsignGetList = (dispatch,patientId) => {
       dispatch({type: VITALSIGNS_GET,payload:response.data}) 
    })
    .catch(error => {
-      console.log('test error',error)
       dispatch({type:RETREIVE_FAILURE,payload:error})
    })
 }

@@ -54,7 +54,7 @@ function PatientEditForm() {
     const updateFormField = (id,action,value) => {
       
         // DataValidationReset()
-        const newFormdata = updateField(formdata,id,action,value,'patient');
+        const newFormdata = updateField(formdata,id,action,value,'personal');
         setFormdata(newFormdata)    
     }
     //=============================================================================
@@ -81,7 +81,7 @@ function PatientEditForm() {
              
              newFormData = populateFields(formdata,demographicData)
              setFormdata(newFormData) 
-             DataValidationReset()  //otherwize does not refresh
+          //   DataValidationReset()  //otherwize does not refresh
          }
       },[loadingState.loading])      
        
@@ -127,9 +127,9 @@ return (
             {/* <Formfield id={'marital_status'} formdata={formdata.marital_status}
                 changefunction={(id,action,value) => updateFormField(id,action,value)} /> */}
             <Formfield id={'gender'} formdata={formdata.gender}
-                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'family_size'} formdata={formdata.family_size}
-                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                        changefunction={(id,action,value) => updateFormField(id,action,value)} /> 
+            {/* <Formfield id={'family_size'} formdata={formdata.family_size}
+                        changefunction={(id,action,value) => updateFormField(id,action,value)} /> */}
             <Formfield id={'primary_language'} formdata={formdata.primary_language}
                         changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'home_phone'} formdata={formdata.home_phone}
@@ -145,9 +145,9 @@ return (
             <Formfield id={'street_address2'} formdata={formdata.street_address2}
                         changefunction={(id,action,value) => updateFormField(id,action,value)} />
              <Formfield id={'city'} formdata={formdata.city}
-                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-            <Formfield id={'state_code'} formdata={formdata.state_code}
-                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
+                        changefunction={(id,action,value) => updateFormField(id,action,value)} /> 
+            <Formfield id={'state_code'} formdata={formdata.state_code} 
+                        changefunction={(id,action,value) => updateFormField(id,action,value)} /> 
             <Formfield id={'zip'} formdata={formdata.zip}
                         changefunction={(id,action,value) => updateFormField(id,action,value)} />
             <Formfield id={'email'} formdata={formdata.email}
@@ -155,7 +155,7 @@ return (
 
             {state.sendSuccess ? <AppMessage type ='success' message='Personal Data Saved Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} /> : <View></View> } 
-            <AppButton type='send' title='Save Personal Details' onPress={submitForm}/>
+            <AppButton type='save' title='Save Personal Details' onPress={submitForm}/>
 
          </ScrollView>
 ); 

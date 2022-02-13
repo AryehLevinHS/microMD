@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { TextInput, Divider, Button }from 'react-native-paper'
+import { Text, View,ScrollView, } from 'react-native'
 import { CheckBox,ListItem } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native';
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
-         resetFields,populateFields} from '../../utils/forms/form_actions';
+        } from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
 import { loading,AppButton,AppMessage } from '../../utils/misc_tools'
@@ -21,7 +21,7 @@ import {appStyles} from '../../../resources/styles/main_styles'
 // RefillForm - sends refill requests
 //=============================================================================
 const RefillForm = () => {
-
+    const navigation = useNavigation();
     const user = useContext (UserContext)
     const ref = useContext(RefContext)
     const [state,DataMedicationRefillRequestSend,DataValidationFailure,
@@ -34,7 +34,7 @@ const RefillForm = () => {
     // goback (goes back to the calling screen)
     //=============================================================================
     const goBack = () => {
-        //history.goBack()
+        navigation.goBack()
     }    
     //=============================================================================
     // useEffect to close form once sent
@@ -144,7 +144,7 @@ const RefillForm = () => {
             <RefillDisplay /> 
             <Formfield id={'notes'} formdata={formdata.notes}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
-
+            {loadingState.loading ? loading(true) : loading(false)} 
             {state.sendSuccess ? <AppMessage type ='success' message='Request Sent Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}} /> : <View></View> } 
             <AppButton type='send' title=' Send Refill Request' onPress={submitForm}/>

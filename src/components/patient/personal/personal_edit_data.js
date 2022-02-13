@@ -1,4 +1,4 @@
-export const PatientData ={
+export const PersonalData ={
     portal_user_id: {
         element: 'input',
         value: '',

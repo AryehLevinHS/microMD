@@ -120,39 +120,39 @@ export const IconButton = ({type,onPress}) =>{
           )
          case 'DELETE':
                return ( <View style={appStyles.deleteButtonContainer}>
-                            <Icon 
+                         <Icon 
                               name= 'delete'  //'closecircleo'
                               type='antdesign'
                               color='white'
                               onPress={onPress}
                               size={15}
-                              />      
+                         />      
                          </View>     
                )
          case 'GOBACK':
-               return ( <Icon 
-                              name='arrowleft'
-                              type='antdesign'
-                              color = {colors.header_backarrow}
-                              onPress={onPress}
-                    />
+               return (<Icon 
+                         name='arrowleft'
+                         type='antdesign'
+                         color = {colors.header_backarrow}
+                         onPress={onPress}
+                       />
                )
           case 'EDIT':
-               return ( <Icon 
-                              name='edit'
-                              type='materialicons'
-                              color ='#517fa4'
-                              onPress={onPress}
-                    />
+               return (<Icon 
+                         name='edit'
+                         type='materialicons'
+                         color ='#517fa4'
+                         onPress={onPress}
+                      />
                )
 
          default:
-          return ( <Icon 
-                              name='arrowleft'
-                              type='antdesign'
-                              color = {colors.header_backarrow}
-                              onPress={onPress}
-                    />
+               return (<Icon 
+                         name='arrowleft'
+                         type='antdesign'
+                         color = {colors.header_backarrow}
+                         onPress={onPress}
+                      />
                 )
      }
 
@@ -174,7 +174,8 @@ const getAppMessageColor = (msgType) => {
 export const AppMessage = ({type,message,onDismiss,onPress}) =>{
   
     if (type==='error' || type === 'info') { 
-       setTimeout(()=>{ onDismiss() },5000)
+         if (typeof onDismiss === 'function')
+            setTimeout(()=>{ onDismiss() },5000)
     }
 
    return (
@@ -189,7 +190,7 @@ export const AppMessage = ({type,message,onDismiss,onPress}) =>{
                                    }} >
                     {message}
                     </Text>
-                    {typeof onDismiss==='function'&&
+                    {typeof onDismiss === 'function' &&
                     <Icon 
                          name='close'
                          type='antdesign'
@@ -229,15 +230,32 @@ export const AppMessage = ({type,message,onDismiss,onPress}) =>{
 //=============================================================================
 export const ConfirmDialog = (msgType,msgHeader,msg,onPress) => {
    
-     return Alert.alert(
-          msgHeader,
-          msg,
-          [// The "Yes" button
-            { text: "Yes", onPress: () =>{onPress(true)}  },
-            // The "No" button
-            { text: "No",  },
-          ]
-        );
+     switch (msgType) {
+          case 'okcancel':
+               return Alert.alert(
+                    msgHeader,
+                    msg,
+                    [ { text: "OK",      onPress: () =>{onPress(true)}  },
+                      { text: "Cancel",  onPress: () =>{onPress(false)} },
+                    ]
+                  );       
+          case 'yesno':
+               return Alert.alert(
+                    msgHeader,
+                    msg,
+                    [ { text: "Yes", onPress: () =>{onPress(true)}  },
+                      { text: "No",  onPress: () =>{onPress(false)}  },
+                    ]
+                    );               
+          default:
+               return Alert.alert(
+                    msgHeader,
+                    msg,
+                    [{ text: "Ok", onPress: () =>{onPress(false)}  },
+                    ]
+                  );
+     }
+     
  
 }
 //=============================================================================r

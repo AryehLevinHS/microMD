@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Text, View,ScrollView} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements'
 // form tools
 import { updateField, generateData, isFormValid, setDefaultValue,populateOptionFields,
          resetFields,populateFields} from '../../utils/forms/form_actions';
@@ -26,6 +25,7 @@ const ContactEditForm = () => {
     const [state,loadingState,DataContactGetDetails,DataContactUpdate,
            DataValidationFailure,DataValidationReset] = useContactForm()
     const [formdata,setFormdata] = useState (ContactData)
+    const [title,setTitle] = useState('Edit Contact')
     const navigation = useNavigation();
     //=============================================================================
     // goback (goes back to the calling screen)
@@ -47,27 +47,28 @@ const ContactEditForm = () => {
     //=============================================================================
     useEffect(()=>{
 
-        let newFormdata = formdata
+        let newFormData = formdata
         // set dropdowns
-        newFormdata = populateOptionFields(newFormdata,ref.gender,'gender')    
-        newFormdata = populateOptionFields(newFormdata,ref.yes_no,'is_primary')    
-        newFormdata = populateOptionFields(newFormdata,ref.relationship,'relationship')    
-        newFormdata = populateOptionFields(newFormdata,ref.contact_type,'contact_type')   
-        newFormdata = populateOptionFields(newFormdata,ref.language,'primary_language')   
-        newFormdata = populateOptionFields(newFormdata,ref.states,'state_code')   
+        newFormData = populateOptionFields(newFormData,ref.gender,'gender')    
+        newFormData = populateOptionFields(newFormData,ref.yes_no,'is_primary')    
+        newFormData = populateOptionFields(newFormData,ref.relationship,'relationship')    
+        newFormData = populateOptionFields(newFormData,ref.contact_type,'contact_type')   
+        newFormData = populateOptionFields(newFormData,ref.language,'primary_language')   
+        newFormData = populateOptionFields(newFormData,ref.states,'state_code')   
 
-        setDefaultValue(newFormdata,'portal_user_id',user.portal_user_id)
+        setDefaultValue(newFormData,'portal_user_id',user.portal_user_id)
         
         let contact_id = user.localStorage.contact_id
-        //console.log('contact_id',contact_id)
         if (contact_id > 0) {  // edit
             DataContactGetDetails(user.patient_id,contact_id)  // see useeffect below
+            user.localStorage.contact_id = 0
         } else {            // add 
-            resetFields(newFormdata,'contact')
-            setDefaultValue(newFormdata,'patient_id',user.patient_id)
+            setTitle('Add Contact')
+            resetFields(newFormData,'contact')
+            setDefaultValue(newFormData,'patient_id',user.patient_id)
         }
 
-        setFormdata(newFormdata)    
+        setFormdata(newFormData)    
         DataValidationReset() 
 
     },[])
@@ -77,9 +78,9 @@ const ContactEditForm = () => {
     useEffect(()=>{
         if (loadingState.loading === false && loadingState.data && loadingState.data.recordset && loadingState.data.recordset.length > 0) {
             let contactData    = loadingState.data.recordset[0]
-            let newFormData = formdata
-            
+            let newFormData = contactData
             newFormData = populateFields(formdata,contactData)
+            setDefaultValue(newFormData,'portal_user_id',user.portal_user_id)
             setFormdata(newFormData) 
             DataValidationReset()  //otherwize does not refresh
         }
@@ -90,8 +91,8 @@ const ContactEditForm = () => {
     const updateFormField = (id,action,value) => {
        
         // DataValidationReset()
-        const newFormdata = updateField(formdata,id,action,value,'contact');
-         setFormdata(newFormdata)    
+        const newFormData = updateField(formdata,id,action,value,'contact');
+         setFormdata(newFormData)    
     }
     //=============================================================================
     // submit form (update information)
@@ -112,7 +113,7 @@ const ContactEditForm = () => {
         <ScrollView style={appStyles.form_container}>
               <View style={appStyles.goBackButton}>
               <IconButton type = 'GOBACK' onPress={() => goBack()} />
-              <Text style={appStyles.form_title}> Edit Contact</Text>
+              <Text style={appStyles.form_title}>{title}</Text>
             </View>
            
             <Formfield id={'contact_type'} formdata={formdata.contact_type}
@@ -152,6 +153,7 @@ const ContactEditForm = () => {
             <Formfield id={'gender'} formdata={formdata.gender}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
                    
+            {loadingState.loading ? loading(true) : loading(false)}        
             {state.sendSuccess ? <AppMessage type ='success' message='Contact Information Updated Successfully' /> : <View></View> }  
             {state.error ? <AppMessage type = 'error' message = {'Error: '+state.error} onDismiss={()=>{DataValidationReset()}}/> : <View></View> }  
             <AppButton type='save' title='Update Contact Information' onPress={submitForm}/> 

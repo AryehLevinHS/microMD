@@ -8,6 +8,7 @@ export const NAV_APPT_NAVIGATOR   = 'Appt Navigator'
 export const NAV_APPT_CURRENT = 'Current Appointments'
 export const NAV_APPT_PAST    = 'Past Appointments'
 export const NAV_APPT_REQ     = 'Appointment Request'
+export const NAV_APPT_REQ_LINK = 'Appt Request'
 export const NAV_APPT_NEW     = 'New Appointment'
 
 /* Practice */
@@ -47,20 +48,21 @@ export const NAV_PATIENT_CHARGES          = 'Charges'
 export const NAV_PATIENT_STATEMENTS       = 'Statements'
 export const NAV_PATIENT_PAYMENTS         = 'Patient Payment'
 export const NAV_PATIENT_CONTACT_NAVIGATOR = 'Contacts'
-export const NAV_PATIENT_CONTACTS         = 'Patient Contacts'
 export const NAV_PATIENT_CONTACTS_EDIT    = 'Edit Patient Contact'
-export const NAV_PATIENT_INSURANCE_NAVIGATOR = 'Insurance List'
+export const NAV_PATIENT_CONTACTS         = 'Patient Contacts'
+export const NAV_PATIENT_PHARMACY         = 'Patient Pharmacies'
+export const NAV_PATIENT_INSURANCE_NAVIGATOR = 'Patient Insurance'
 export const NAV_PATIENT_INSURANCE        = 'Insurance'
 export const NAV_PATIENT_INSURANCE_EDIT   = 'Edit Patient Insurance'
 
 /* Mail */
 export const NAV_MAIL_NAVIGATOR           = 'Mail'
 export const NAV_MAIL_INBOX               = 'Inbox'
-export const NAV_MAIL_INBOX_NAVIGATOR     = 'Inbox List'
 export const NAV_MAIL_OUTBOX              = 'OutBox'
 export const NAV_MAIL_MESSAGE             = 'New Mail Message'
-export const NAV_MAIL_MESSAGE_LINK        = 'New Mail Message1'
+export const NAV_MAIL_MESSAGE_LINK        = 'Send Message'
 export const NAV_MAIL_MSGDISPLAY          = 'Mail Message'
+
 
 /* Medinfo */
 export const NAV_MEDINFO_NAVIGATOR        = 'Medical'

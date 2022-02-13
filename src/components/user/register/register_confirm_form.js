@@ -155,7 +155,7 @@ const RegisterConfirmForm = () => {
          <Formfield id={'date_of_birth'} formdata={formdata.date_of_birth}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />
          <View>
-
+             <InfoIcon />
          </View>
          <Formfield id={'confirm_mechanism'} formdata={formdata.confirm_mechanism}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />

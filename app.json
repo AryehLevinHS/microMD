@@ -3,9 +3,11 @@
     "name": "microMD",
     "slug": "microMD",
     "version": "1.0.0",
+    "icon": "./resouces/images/app.ico",
     "assetBundlePatterns": [
       "**/*"
     ]
   },
   "name": "microMD"
+  
 }

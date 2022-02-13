@@ -15,7 +15,7 @@ const authInitState = {
 const authReducer = (state,{type,payload}) => {
     switch (type) {
         case 'LOGIN':
-            console.log('reducer',payload)
+           // console.log('reducer',payload)
             return  {...state, isloggedIn: true, error:'',isError:false}  
         default:
             return state

@@ -11,7 +11,7 @@ import {useProviderList} from '../../../store/hooks/usePatientData'
 // styles
 import {appStyles} from '../../../resources/styles/main_styles'
 // navigation
-import {NAV_MAIL_MESSAGE,NAV_APPT_REQ,NAV_APPT_NEW,NAV_APPT_NAVIGATOR,NAV_MAIL_MESSAGE_LINK} from '../../../navigation/route_types' 
+import {NAV_APPT_REQ_LINK,NAV_MAIL_MESSAGE_LINK} from '../../../navigation/route_types' 
 //=============================================================================
 // Get ProviderList data
 //=============================================================================
@@ -24,18 +24,21 @@ const ProviderList = () => {
     // sendMessage - opens the send message screen
     //=============================================================================
     const sendMessage = (provider_id) => {
+        user.localStorage.msg_to = provider_id
         navigation.navigate(NAV_MAIL_MESSAGE_LINK)
     }
     //=============================================================================
     // requestAppt - opens the request appt screen
     //=============================================================================
     const requestAppt = (provider_id) => {
-        navigation.navigate(NAV_APPT_REQ)
+        user.localStorage.appt_for = provider_id
+        navigation.navigate(NAV_APPT_REQ_LINK)
     }
     //=============================================================================
     // createAppt - opens the create appt screen
     //=============================================================================
     const createAppt = (provider_id) => {
+        user.localStorage.appt_for = provider_id
         navigation.navigate(NAV_APPT_NEW)
     }
     
@@ -51,7 +54,7 @@ const ProviderList = () => {
     const WorkplaceDisplay = ({providerRow,workplace}) => {
         const [expanded, setExpanded] = React.useState(false);
         const handlePress = () => setExpanded(!expanded);
-        return (<View style={{ justifyContent:'flex-start'}}> 
+        return (<View style={{ justifyContent:'flex-start',borderRadius:5}}> 
                 <List.Accordion 
                         title={providerRow.provider_name}
                         // left={props => <List.Icon {...props} icon="folder" />}
@@ -80,22 +83,28 @@ const ProviderList = () => {
         return (
             <View>
                 {providerdata.recordset.map(row => (
-                 <TouchableOpacity key={row.provider_id} style={appStyles.item}>
+                 <View key={row.provider_id} style={appStyles.item}>
                      <WorkplaceDisplay providerRow ={row} workplace={workplace} />
                      <Text>  </Text>
                      <View style={{ flexDirection: 'row',justifyContent:'space-around'}} >
-                         <View style={appStyles.providerButtonContainer}>
-                            <Icon name='mail' type='antdesign' color='white' onPress={() => sendMessage(row.provider_id)} />
-                         </View>
-                         <View style={appStyles.providerButtonContainer}>
-                             <Icon name='calendar' type='antdesign' color='white' onPress={() => requestAppt(row.provider_id)} />
+                         <View>
+                            <View style={appStyles.providerButtonContainer}>
+                                <Icon name='mail' type='antdesign' color='blue' onPress={() => sendMessage(row.provider_id)} />
+                            </View>
+                            <Text>  Mail</Text>
+                         </View> 
+                         <View>
+                               <View style={appStyles.providerButtonContainer}>
+                                 <Icon name='calendar' type='antdesign' color='blue' onPress={() => requestAppt(row.provider_id)} />
                                </View>
+                               <Text>  Appt</Text>
+                         </View>
                         {/* <Button style={{margin:20}} title='Send Message' onPress={()=>{sendMessage(row.provider_id)}}/> 
                         <Text>  </Text>
                         <Button title='Request Appt' onPress={()=>{requestAppt(row.provider_id)}}/> 
                         */}
                     </View>
-                   </TouchableOpacity> 
+                   </View> 
                ))}
            </View>
         )

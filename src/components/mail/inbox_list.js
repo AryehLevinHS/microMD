@@ -29,6 +29,7 @@ const MailInbox = () => {
     //=============================================================================
     const OpenMail = (msg_id) =>{
         user.localStorage.msg_id = msg_id
+        user.localStorage.msg_calledfrom = 'INBOX'
         navigation.navigate(NAV_MAIL_MSGDISPLAY)
     }
     //=============================================================================

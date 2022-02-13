@@ -74,12 +74,12 @@ const LabResultGraph = () => {
     <Text>
       Bezier Line Chart
     </Text>
-     {/* <LineChart
+      <LineChart
         data={data}
         width={350}
         height={220}
          chartConfig={chartConfig}
-        />  */}
+        />  
 
     {/* <LineChart
       data={linedata}
