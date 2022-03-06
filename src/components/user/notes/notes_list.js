@@ -95,13 +95,14 @@ const NoteList = () => {
     }
 //=============================================================================
     return (
-        <ScrollView>
-            <View style={appStyles.addButton}>
-               <IconButton type = 'ADD' onPress={() => ItemAdd()} />
-            </View>
+        <View style={{flex:1}}>
             {state.loading ? loading(true) : loading(false)} 
-            <NoteListDisplay notedata={state.data} /> 
-        </ScrollView>
+            <ScrollView>
+                <NoteListDisplay notedata={state.data} /> 
+            </ScrollView>
+            <IconButton type = 'ADD_FLOATING' onPress={() => ItemAdd()} />
+        </View>
+        
     )
 }
 

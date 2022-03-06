@@ -28,9 +28,9 @@ const CareplanList = () => {
     //=============================================================================
     // ItemAdd - adds a new item
     //=============================================================================
-    const ItemAdd = () =>{
-        navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
-    }
+    // const ItemAdd = () =>{
+    //     navigation.navigate(NAV_MEDINFO_CAREPLAN_PROGRESS)
+    // }
     //=============================================================================
     // ItemEdit - edits an item
     //=============================================================================

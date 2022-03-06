@@ -18,10 +18,11 @@ const AppSetup = () => {
      axios.defaults.headers.common['Tenant_id'] = tenant_id
     //console.log('app',REACT_APP_PROXYSERVER_AZURE)
     // setup base URL 
-   let baseURL =  REACT_APP_PROXYSERVER //'http://localhost:5000' 
+  let baseURL =  'http://10.22.21.14:5000' 
+  // let baseURL =  REACT_APP_PROXYSERVER //http://10.22.21.14:5000' // local host does not seem to work
   // let baseURL =  REACT_APP_PROXYSERVER_AZURE //'https://patportalserver.azurewebsites.net' 
    axios.defaults.baseURL =  baseURL
-   console.log('base url',baseURL)
+   //console.log('base url',baseURL)
 
    return
 }

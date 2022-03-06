@@ -51,28 +51,27 @@ const MedicationList = () => {
         return (
             <View>
                 {medicationdata.recordset.map((row,index) => (
-                <TouchableOpacity key={index} style={appStyles.item}>
+                <View key={index} style={appStyles.item}>
                     <Text >{row.description}</Text>
                     <Text >{'Created On:'+row.careplan_date_display}{'  By:'+row.provider_name}</Text>
-                </TouchableOpacity> 
+                </View> 
                ))}
            </View>
         )
     }
 //=============================================================================
     return (
-        <ScrollView>
-             <View style={appStyles.addButton}>
-                <Icon 
-                    name='medicinebox'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => rxRequest()}
-                />
+        <View style={{flex:1}}>
+           {state.loading ? loading(true) : loading(false)} 
+            <ScrollView>
+                <MedicationDisplay medicationdata={state.data} /> 
+            </ScrollView>
+            <View style={[appStyles.addButtonFloating,{backgroundColor:'red'}]}>
+                <Icon  name='medicinebox'   type='antdesign'  color='white'
+                       onPress={() => rxRequest()} />
             </View>
-            {state.loading ? loading(true) : loading(false)} 
-            <MedicationDisplay medicationdata={state.data} /> 
-        </ScrollView>
+        </View>
+     
     )
 }
  

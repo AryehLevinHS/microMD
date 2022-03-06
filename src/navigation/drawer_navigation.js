@@ -16,6 +16,9 @@ import {NAV_PATIENT_CONTACT_NAVIGATOR,
     NAV_MAIL_INBOX,NAV_MAIL_OUTBOX,NAV_MAIL_MESSAGE,
 
     NAV_APPT_CURRENT,NAV_APPT_REQ,NAV_APPT_PAST,
+
+    NAV_PRACTICE_NEWS, NAV_PRACTICE_RESOURCES, NAV_PRACTICE_INFO,
+
   } 
     from './route_types'
 
@@ -165,6 +168,37 @@ export const ApptSideDrawerCustom = (props) => {
     </DrawerContentScrollView>
   )
 }
+//=============================================================================
+// PracticeSideDrawerCustom
+//=============================================================================
+export const PracticeSideDrawerCustom = (props) => {
+  const navigation = useNavigation();
+  const options = [
+    {title:'News & Updates',location:NAV_PRACTICE_NEWS},
+    {title:'Info and Resources',location:NAV_PRACTICE_RESOURCES},
+    {title:'Practice Information',location:NAV_PRACTICE_INFO},
+]
 
+  return (
+    <DrawerContentScrollView  {...props} style={appStyles.drawermenu_container}>
+      <View>
+         <Text style={appStyles.drawermenu_title}>Practice Menu</Text>
+      </View>
+      {options.map((item) =>{ 
+        return (
+              <View key={item.title}>
+                 <Pressable onPress={()=> { navigation.navigate(item.location) }}
+                            style={({ pressed }) => [
+                                      { backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',  },
+                                       appStyles.drawermenu_Button
+                                    ]}>
+                   <Text style={appStyles.drawermenu_text}>{item.title}</Text> 
+                 </Pressable>
+              </View> 
+        )
+      })}     
+    </DrawerContentScrollView>
+  )
+}
 //=============================================================================
 

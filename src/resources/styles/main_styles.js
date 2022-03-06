@@ -17,6 +17,12 @@ export const appStyles = StyleSheet.create({
       flexDirection: "row",
       justifyContent:'space-between',
     },
+    listItem_textWithRightButton: {
+      flexDirection: "row",
+      justifyContent:'space-between',
+      marginVertical:1,
+    },
+   
     itemSwipe: {
       backgroundColor: colors.listitem_background,
       padding: 10,
@@ -35,63 +41,7 @@ export const appStyles = StyleSheet.create({
     title: {
       fontSize: 24
     },
-    addButton: {
-      margin:10,
-      flexDirection: "row",
-      justifyContent:'center',
-      alignItems:'center',
-      alignSelf: 'flex-end'
-    },
-    addButtonContainer : {
-       backgroundColor: 'green',
-       width:25,
-       height:25,
-       borderRadius:100,
-       justifyContent:'center',
-       alignItems:'center',
-      // position:'absolute',
-      // bottom:45,
-     //  right:10,
-  },
-    addButtonWithTitle: {
-      marginHorizontal:10,
-      flexDirection: "row",
-      justifyContent:'space-between',
-    },
-    deleteButton: {
-      right: 5,
-      flexDirection: "row",
-      alignSelf: 'flex-end',
-      color: '#841584'
-    },
-    deleteButtonContainer : {
-      backgroundColor: '#ee7d81', //red
-      width:25,
-      height:25,
-      borderRadius:100,
-      justifyContent:'center',
-      alignItems:'center',
-      //position:'absolute',
-  },
-   goBackButton: {
-      margin:10,
-      flexDirection: "row",
-      alignSelf: 'flex-start'
-    },
-    providerButtonContainer : {
-      backgroundColor: 'white', //'darkblue',
-     // backgroundColor: '#44419e', //'darkblue',
-      width:40,
-      height:40,
-      borderRadius:100,
-      justifyContent:'center',
-      alignItems:'center',
-      borderColor:'darkblue',
-      borderWidth:3
-     // position:'absolute',
-     // bottom:45,
-    //  right:10,
- },
+   
     //=============================================================================
     // General Settings
     //=============================================================================
@@ -210,9 +160,91 @@ export const appStyles = StyleSheet.create({
      // justifyContent:'center',
      // textAlign:'center'
     },
+   
+    //=============================================================================
+    // Buttons
+    //=============================================================================
     form_button:{
       margin: 10,
     },
+
+    addButton: {
+      margin:10,
+      flexDirection: "row",
+      justifyContent:'center',
+      alignItems:'center',
+      alignSelf: 'flex-end'
+    },
+    
+    addButtonFloating:{
+      width: 50,  
+      height: 50,   
+      borderRadius: 100,            
+      backgroundColor: 'green',                                    
+      position: 'absolute',   
+      bottom: 5,                                                    
+      right: 5, 
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
+    addButtonContainer : {
+       backgroundColor: 'green',
+       width:25,
+       height:25,
+       borderRadius:100,
+       justifyContent:'center',
+       alignItems:'center',
+      // position:'absolute',
+      // bottom:45,
+     //  right:10,
+    },
+  
+    addButtonWithTitle: {
+      marginHorizontal:10,
+      flexDirection: "row",
+      justifyContent:'space-between',
+    },
+
+    deleteButton: {
+      right: 5,
+      flexDirection: "row",
+      alignSelf: 'flex-end',
+      color: '#841584'
+    },
+
+    deleteButtonContainer : {
+      backgroundColor: '#ee7d81', //red
+      width:25,
+      height:25,
+      borderRadius:100,
+      justifyContent:'center',
+      alignItems:'center',
+      //position:'absolute',
+  },
+
+   goBackButton: {
+      margin:10,
+      flexDirection: "row",
+      alignSelf: 'flex-start'
+    },
+
+   
+
+    providerButtonContainer : {
+      backgroundColor: 'white', //'darkblue',
+     // backgroundColor: '#44419e', //'darkblue',
+      width:40,
+      height:40,
+      borderRadius:100,
+      justifyContent:'center',
+      alignItems:'center',
+      borderColor:'darkblue',
+      borderWidth:3
+     // position:'absolute',
+     // bottom:45,
+    //  right:10,
+ },
     //=============================================================================
     // lookup 
     //=============================================================================
@@ -243,10 +275,37 @@ export const appStyles = StyleSheet.create({
         marginVertical: 1,
         // marginHorizontal: 16,
         padding: 5,
+        
     },
     lookup_item_text: {
-      fontSize: 16,
+      fontSize: 12,
+      flex: 1,
     },
+
+    //=============================================================================
+    // filter bar 
+    //=============================================================================
+    filterbar_container:{
+      backgroundColor: '#e4e8f7',
+      borderColor:'blue',
+      borderRadius:5,
+      borderWidth: 3,
+      margin:2,
+      flexDirection:'row',
+      justifyContent: 'space-evenly'  //'center',
+      // alignContent:'space_between'
+    },
+
+    filterbar_input_picker:{
+      marginVertical: 0,
+      padding: 0,
+      borderWidth: 1,
+      borderColor: "#666",  
+      width:'50%'
+     // color:'green',
+     // height:40
+    },
+
     //=============================================================================
     // tables 
     //=============================================================================

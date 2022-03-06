@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import {ListItem,Button} from 'react-native-elements'
+import {ListItem,Button, Icon} from 'react-native-elements'
 // tools
 import { loading,ConfirmDialog,IconButton } from '../../utils/misc_tools'
 // data
@@ -11,6 +11,7 @@ import {useContactList} from '../../../store/hooks/usePatientData'
 import {appStyles} from '../../../resources/styles/main_styles'
 // Navigation
 import {NAV_PATIENT_CONTACTS_EDIT} from '../../../navigation/route_types' 
+
 //=============================================================================
 // Get ContactList data
 //=============================================================================
@@ -105,13 +106,13 @@ const ContactList = () => {
                 //style={{height:140}}
 //=============================================================================
     return (
-        <ScrollView>
-            <View style={appStyles.addButton}>
-                <IconButton type = 'ADD' onPress={() => ItemAdd()} />
-            </View>
+        <View style={{flex:1}}>
             {state.loading ? loading(true) : loading(false)} 
-            <ContactListDisplay contactdata={state.data} /> 
-        </ScrollView>
+            <ScrollView> 
+                <ContactListDisplay contactdata={state.data} /> 
+            </ScrollView> 
+            <IconButton type = 'ADD_FLOATING' onPress={() => ItemAdd()} />
+        </View>
     )
 }
  

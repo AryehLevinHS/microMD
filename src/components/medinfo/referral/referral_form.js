@@ -80,7 +80,7 @@ const ReferralForm = () => {
  
         let dataToSubmit   = generateData(formdata,'referral');
         let formIsValidRet = isFormValid(formdata,'referral')
-       
+     
          if(formIsValidRet.formIsValid){
             DataReferralSend(dataToSubmit)
          } else {
@@ -90,9 +90,9 @@ const ReferralForm = () => {
 //=============================================================================
     return (
         <ScrollView style={appStyles.form_container}>
-             <View style={appStyles.goBackButton}>
+            <View style={appStyles.goBackButton}>
                 <IconButton type = 'GOBACK' onPress={() => goBack()} />
-                <Text style={appStyles.h3}> Referral Request</Text>
+                <Text style={appStyles.form_title}> Referral Request</Text>
             </View>
             <Formfield id={'receiver_id'} formdata={formdata.receiver_id}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />

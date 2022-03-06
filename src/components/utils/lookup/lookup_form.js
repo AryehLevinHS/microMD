@@ -73,16 +73,16 @@ export const LookupForm = ({lookupset,onOk,onDismiss}) =>{
     // SearchBar - displays the search bar
     //============================================================================= 
     const SearchBarContainer = () => {
-        return (   <View style={{marginHorizontal:10,height:70,}}>
+        return (   <View style={{marginHorizontal:7,height:70,}}>
                       <SearchBar 
-                        round
+                        //round
                         lightTheme={true}
                         autoCapitalize='none'
                         autoCorrect={false}
                         placeholder="Search..."
                         onChangeText={(text) =>{FilterSearch(text) } }
                         value={searchString}
-                        containerStyle={{backgroundColor: '#c8e9fc', borderWidth: 0, borderRadius:10,
+                        containerStyle={{backgroundColor: '#c8e9fc', borderWidth: 0, borderRadius:5,
                         borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
                         // inputStyle={{backgroundColor: 'white'}}
                         /> 
@@ -111,7 +111,7 @@ export const LookupForm = ({lookupset,onOk,onDismiss}) =>{
         const ItemRender = ({description,id,index }) => {
           let colorlist = [colors.lookup_background,colors.lookup_background2]
         
-          return ( <TouchableOpacity  onPress={()=>{handleOk(id,description)} } > 
+          return ( <TouchableOpacity  onLongPress={()=>{handleOk(id,description)} } > 
                     <View style={[appStyles.lookup_item,{backgroundColor:colorlist[index % 2]}]}> 
                         <Text style={appStyles.lookup_item_text}>{description}</Text>
                     </View>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import { Text, View,ScrollView} from 'react-native'
 // tools
 import { loading } from '../utils/misc_tools'
 // data
@@ -31,10 +31,10 @@ const ApptPastList = () => {
         return (
             <View>
                 {apptdata.recordset.map((row) => (
-                <TouchableOpacity key={row.appointment_id} style={appStyles.item}>
+                <View key={row.appointment_id} style={appStyles.item}>
                     <Text >{'Date: '+row.on_date_display}{'  For: '+row.appt_with}</Text>
                     <Text >{'Location: '+row.location}</Text> 
-                </TouchableOpacity> 
+                </View> 
                ))}
            </View>
         )

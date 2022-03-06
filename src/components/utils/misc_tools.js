@@ -107,7 +107,7 @@ export const IconButton = ({type,onPress}) =>{
   
     switch (type) {
        case 'ADD':
-          return ( <View style={appStyles.addButtonContainer}>
+          return ( <TouchableOpacity style={appStyles.addButtonContainer}>
                       <Icon 
                         reverseColor = 'green'
                         solid={true}
@@ -116,9 +116,21 @@ export const IconButton = ({type,onPress}) =>{
                          color = {colors.addbutton_color}
                          onPress={onPress}
                        />
-                    </View>  
+                    </TouchableOpacity>  
           )
-         case 'DELETE':
+          case 'ADD_FLOATING':
+               return ( <TouchableOpacity style={appStyles.addButtonFloating}  onPress={onPress}>
+                           <Icon 
+                             reverseColor = 'green'
+                             solid={true}
+                             name= 'plus'  //'pluscircleo'
+                              type='antdesign'
+                              color = {colors.addbutton_color}
+                              onPress={onPress}
+                            />
+                         </TouchableOpacity>  
+               )
+              case 'DELETE':
                return ( <View style={appStyles.deleteButtonContainer}>
                          <Icon 
                               name= 'delete'  //'closecircleo'
@@ -145,7 +157,24 @@ export const IconButton = ({type,onPress}) =>{
                          onPress={onPress}
                       />
                )
-
+          case 'EDIT_FLOATING':
+               return (<TouchableOpacity style={[appStyles.addButtonFloating,{backgroundColor:'#517fa4'}]}  onPress={onPress}>
+                           <Icon 
+                             solid={true}
+                             name= 'edit'  
+                             type='materialicons'
+                             color = {colors.addbutton_color}
+                             onPress={onPress}
+                            />
+                        </TouchableOpacity>  
+               )
+               // return (<Icon 
+               //           name='edit'
+               //           type='materialicons'
+               //           color ='#517fa4'
+               //           onPress={onPress}
+               //           />
+               // )
          default:
                return (<Icon 
                          name='arrowleft'

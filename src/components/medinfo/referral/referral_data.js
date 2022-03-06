@@ -3,16 +3,11 @@ export const ReferralData ={
         element: 'db',
         value: '',
         validation:{required: false},
-        valid: true,
-        touched: false,
     },
     patient_id: {
         element: 'db',
         value: '',
         validation:{required: false},
-        valid: false,
-        touched: false,
-        validationMessage:''
     },
     receiver_id: {
         element: 'select',
@@ -24,7 +19,7 @@ export const ReferralData ={
             placeholder: 'Send referral request to  '
         },
         validation:{required: true},
-        valid: false,
+        valid: true,
         touched: false,
         validationMessage:'',
         showlabel: true

@@ -93,7 +93,8 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                                 onBlur = {()=> changefunction(id,'onblur',formdata.value)}
                                 onChangeText = {(text)=> changefunction(id,'changed',text) }
                                 keyboardType={formdata.element === 'input_number'? "number-pad":'default'}                                //keyboardType="number-pad"
-                                //maxLengh={4}  
+                                maxLength={formdata.maxLength ? formdata.maxLength : 50}
+                              
                             />
                           </View>
                           {showError()}
@@ -184,6 +185,7 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                                 mode= "flat"
                                 multiline
                                 numberOfLines={4}
+                                maxLength={formdata.maxLength ? formdata.maxLength : 1000}
                                 error = {!formdata.valid}
                                 style={formStyles.form_input_field_textarea}
                                 //label = {formdata.config.label}
@@ -194,6 +196,7 @@ const Formfield = ({formdata,id,changefunction,lookupfn}) => {
                             />
                            </View>
                           {showError()}
+                          
                         </View>
                  
                 )
@@ -320,6 +323,8 @@ const formStyles = StyleSheet.create({
         fontSize:15,
         backgroundColor:'white',
         margin: 5,
+        textAlignVertical: 'top',
+    
      },
       form_input_picker:{
         marginVertical: 0,

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity, Button } from 'react-native'
-import { Icon } from 'react-native-elements'
 import moment from 'moment'
 import { useNavigation } from '@react-navigation/native';
 

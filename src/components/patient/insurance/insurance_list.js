@@ -101,13 +101,13 @@ const InsuranceList = () => {
 */
 //=============================================================================
     return (
-        <ScrollView>
-            <View style={appStyles.addButton}>
-               <IconButton type = 'ADD' onPress={() => ItemAdd()} />
-            </View>
+        <View style={{flex:1}}>
             {state.loading ? loading(true) : loading(false)} 
-            <InsuranceListDisplay insurancedata={state.data} /> 
-        </ScrollView>
+            <ScrollView>
+                <InsuranceListDisplay insurancedata={state.data} /> 
+            </ScrollView>
+            <IconButton type = 'ADD_FLOATING' onPress={() => ItemAdd()} />
+        </View>
     )
 }
  

@@ -33,6 +33,7 @@ const NewsList = () => {
         if (!newsdata || !newsdata.recordset || newsdata.recordset.length === 0)
            return (<View> 
                    </View>)
+          
 
         return (
             <View>

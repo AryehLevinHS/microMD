@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import {ListItem,Button} from 'react-native-elements'
 // tools
 import { loading,IconButton,ConfirmDialog } from '../../utils/misc_tools'
 // data
@@ -46,8 +47,9 @@ const AuthNoList = () => {
             DataAuthNumberDelete(user.portal_user_id,authentication_id)
         }
     }
-    const ConfirmDelete = (authentication_id) => {
-         ConfirmDialog('yesno','Delete Authorization No','Are you sure you want to delete the authorization No?',
+    //=============================================================================
+    const ConfirmDelete = (authentication_id,description) => {
+         ConfirmDialog('yesno','Delete Authorization No',`Are you sure you want to delete the authorization No for ${description}?`,
          (confirmed)=>{ItemDelete(confirmed,authentication_id)} )
     }
     //=============================================================================
@@ -62,17 +64,38 @@ const AuthNoList = () => {
 
         return (
             <View>
-                {authNodata.recordset.map(row => (
-                 <TouchableOpacity key={row.authentication_id} style={appStyles.item}
-                                   onPress={()=>{ItemEdit(row.authentication_id)}}>
-                     <View style={appStyles.listItem_textWithDelete}>                 
-                            <Text>{row.description}</Text>
-                            <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.authentication_id)} />
-                     </View>  
-                    <Text >{'No: '+row.number}</Text>
-                </TouchableOpacity> 
-               ))}
-           </View>
+            {authNodata.recordset.map(row => (
+                 <ListItem.Swipeable style={{height:80}} key={row.authentication_id}
+                    rightContent={
+                     <View style={{height:'70%',marginTop:18}}>
+                         <Button 
+                             title="Delete"
+                             icon={{ name: 'delete', color: 'white' }}
+                             buttonStyle={{minHeight: '100%', backgroundColor: 'red',alignItems:'center' }}
+                             onPress={() => ConfirmDelete(row.authentication_id,row.description)}
+                         />
+                     </View>
+                    }
+                 >
+                 <View key={row.authentication_id} style={appStyles.itemSwipe} >
+                     <Text>{row.description}</Text>
+                     <Text >{'Phone No: '+row.number}</Text>
+                 </View> 
+             </ListItem.Swipeable>
+           ))}
+       </View>
+        //     <View>
+        //         {authNodata.recordset.map(row => (
+        //          <TouchableOpacity key={row.authentication_id} style={appStyles.item}
+        //                            onPress={()=>{ItemEdit(row.authentication_id)}}>
+        //              <View style={appStyles.listItem_textWithDelete}>                 
+        //                     <Text>{row.description}</Text>
+        //                     <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.authentication_id)} />
+        //              </View>  
+        //             <Text >{'No: '+row.number}</Text>
+        //         </TouchableOpacity> 
+        //        ))}
+        //    </View>
         )
     }
 //=============================================================================

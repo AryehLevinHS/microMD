@@ -173,35 +173,30 @@ const PersonalInfo = () => {
      
 //=============================================================================
     return (
-        <ScrollView>
-                <View style={appStyles.addButton}>
-                {/* <Icon 
-                    name='person'
-                    type='ionicons'
-                    color='#517fa4'
-                    onPress={() => setSelectImage(true)}
-                /> */}
-                <IconButton type = 'EDIT' onPress={() => editData()} />
-                </View>
-            {/* <Text> Personal Information</Text> */}
-            {state.loading ? loading(true) : loading(false)} 
-            <PersonalInfoDisplay personaldata={state.data} /> 
-             
-            <BottomSheet modalProps={{}} isVisible={selectImage}>
-                {list.map((l, i) => (
-                <ListItem
-                    key={i}
-                    containerStyle={l.containerStyle}
-                    onPress={l.onPress}
-                >
-                    {l.icon}
-                    <ListItem.Content>
-                    <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-                    </ListItem.Content>
-                </ListItem>
-                ))}
-             </BottomSheet>
-        </ScrollView>
+
+        <View style={{flex:1}}>
+           {state.loading ? loading(true) : loading(false)} 
+            <ScrollView>
+               <PersonalInfoDisplay personaldata={state.data} /> 
+                
+                {/* <BottomSheet modalProps={{}} isVisible={selectImage}>
+                    {list.map((l, i) => (
+                    <ListItem
+                        key={i}
+                        containerStyle={l.containerStyle}
+                        onPress={l.onPress}
+                    >
+                        {l.icon}
+                        <ListItem.Content>
+                        <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+                        </ListItem.Content>
+                    </ListItem>
+                    ))}
+                </BottomSheet> */}
+            </ScrollView>
+            <IconButton type = 'EDIT_FLOATING' onPress={() => editData()} />
+         </View>
+       
     )
 }
  

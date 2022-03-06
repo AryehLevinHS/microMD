@@ -1,7 +1,15 @@
 import React, { useContext, useEffect,useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
+// tools
+import { loading ,IconButton} from '../../utils/misc_tools'
+// data
+import { UserContext } from '../../../store/UserContext'
+import {useReferrals} from '../../../store/hooks/useMedinfoData'
+// styles
+import {appStyles} from '../../../resources/styles/main_styles'
+// navigation
+import {NAV_MEDINFO_REFERRAL_REQUEST} from '../../../navigation/route_types' 
 
   {/*  from react native elements only works on click
         Tooltip
@@ -10,15 +18,7 @@ import { useNavigation } from '@react-navigation/native';
         use react-tooltip
         */}
 
-// tools
-import { loading } from '../../utils/misc_tools'
-// data
-import { UserContext } from '../../../store/UserContext'
-import {useReferrals} from '../../../store/hooks/useMedinfoData'
-// styles
-import {appStyles} from '../../../resources/styles/main_styles'
-// navigation
-import {NAV_MEDINFO_REFERRAL_REQUEST} from '../../../navigation/route_types' 
+
 //=============================================================================
 // Get ReferralList data
 //=============================================================================
@@ -58,30 +58,25 @@ const ReferralList = () => {
         return (
             <View>
                 {referraldata.recordset.map((row,index) => (
-                <TouchableOpacity key={index} style={appStyles.item}>
-                    <Text >{row.specialist}</Text>
+                <View key={index} style={appStyles.item}>
+                    <Text style={appStyles.bold} >{row.specialist}</Text>
                     <Text >{row.service_requested}</Text>
                     <Text >{'Sent On:'+row.date_requested_display}{'  To:'+row.assignedto_name}</Text>
                     <Text >{'Status:'+row.status_description}</Text>
-                </TouchableOpacity> 
+                </View> 
                ))}
            </View>
         )
     }
 //=============================================================================
     return (
-        <ScrollView>
-              <View style={appStyles.addButton}>
-                <Icon 
-                    name='pluscircleo'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => addItem()}
-                />
-              </View>
+           <View>
             {state.loading ? loading(true) : loading(false)} 
-            <MedicationDisplay referraldata={state.data} /> 
-        </ScrollView>
+            <ScrollView>
+              <MedicationDisplay referraldata={state.data} /> 
+            </ScrollView>
+            <IconButton type = 'ADD_FLOATING' onPress={() => ItemAdd()} />
+        </View>
     )
 }
  

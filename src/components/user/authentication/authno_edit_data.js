@@ -3,15 +3,11 @@ export const AuthenticationData ={
         element: 'db',
         value: '',
         validation:{required: false},
-        valid: false,
-        touched: false,
     },
     authentication_id: {
         element: 'db',
         value: '',
         validation:{required: false},
-        valid: false,
-        touched: false,
     },
     description: {
         element: 'input',

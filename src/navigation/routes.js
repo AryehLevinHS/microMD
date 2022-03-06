@@ -11,7 +11,7 @@ import { UserContext } from '../store/UserContext'
 import colors from '../resources/themes/colors';
 // custom navigation
 import { MedinfoSideDrawerCustom,MailSideDrawerCustom,PatientSideDrawerCustom,
-         ApptSideDrawerCustom} from './drawer_navigation';
+         ApptSideDrawerCustom, PracticeSideDrawerCustom} from './drawer_navigation';
 
 // Navigation routes
 import {
@@ -64,8 +64,6 @@ import HomeScreen from '../components/home/home_screen';
 import LoginScreen from '../components/login/login_form'
 import Logout from '../components/login/logout_form'
 import {headerOptions,headerEdit}   from './application_header'
-// import CalendarsList from './test_new'
-//  import TestDate from './datepicker3'
 
 // patient
 import ContactList      from '../components/patient/contacts/contact_list';
@@ -82,7 +80,6 @@ import NoteEdit         from '../components/user/notes/notes_edit_form';
 import PasswordChange   from '../components/user/password/password_change';
 import AuthNoEditForm   from '../components/user/authentication/authno_edit_form';
 import TermsofUse       from '../components/user/register/terms_of_use';
-import ProxyScreen      from '../components/user/proxy/proxy_list'; 
 import RegisterForm     from '../components/user/register/register_form'; 
 import RegisterConfirmForm   from '../components/user/register/register_confirm_form'; 
 import UserProfile      from '../components/user/profile/profile_screen'; 
@@ -99,6 +96,7 @@ import ActionitemList   from '../components/medinfo/actionitems/actionitem_list'
 import CareplanList     from '../components/medinfo/careplan/careplan_list';
 import CarePlanProgress from '../components/medinfo/careplan/careplan_progress';
 import DocumentList     from '../components/medinfo/document/document_list';
+import DocumentView     from '../components/medinfo/document/document_view';
 import EncounterList    from '../components/medinfo/encounter/encounter_list';
 import FormList         from '../components/medinfo/forms/form_list';
 import ImmunizationList from '../components/medinfo/immunization/immunization_list';
@@ -106,8 +104,7 @@ import ImmunizationDetail from '../components/medinfo/immunization/immunization_
 import LabresultList    from '../components/medinfo/labresult/labresult_list';
 import LabResultTests   from '../components/medinfo/labresult/labresult_tests';
 import LabResultCompare from '../components/medinfo/labresult/labresult_compare';
-import LabResultGraph from '../components/medinfo/labresult/labresult_compare';
-//import LabResultGraph   from '../components/medinfo/labresult/labresult_graph';
+import LabResultGraph   from '../components/medinfo/labresult/labresult_compare'; //labresult_graph
 import MedicationList   from '../components/medinfo/medication/medication_list';
 import RefillForm       from '../components/medinfo/medication/refill_form';
 import ReferralList     from '../components/medinfo/referral/referral_list'
@@ -186,7 +183,7 @@ export const Routes = () => {
                          options= {{...headerOptions}} /> 
                   {/* not the greatest solution  note check out path={}      */}
               
-    {/* SPECiALISED ROUTES */}
+    {/* SPECiALISED ROUTES - note: bottom nav not correct*/}
                             
                  <HomeStack.Screen name={NAV_MAIL_MESSAGE_LINK}   component={MsgForm}  
                      options= {{...headerOptions}} />    
@@ -205,10 +202,7 @@ export const Routes = () => {
                             setUserAuthenticated(false)
                           }
                       }}/>  
-
-
-              
-                  
+           
  {/*
           
                 <HomeStack.Screen name={NAV_APPT_CURRENT}              component={ApptCurrentList} />
@@ -340,7 +334,8 @@ export const Routes = () => {
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_ALLERGIES}      component={AllergyList} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_CAREPLAN_NAVIGATOR} component={MedinfoCareplanNavigator} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_DOCUMENTS}      component={DocumentList} />
-                  <MedinfoDrawer.Screen name={NAV_MEDINFO_IMMUNIZATION_NAVIGATOR}  component={MedinfoImmunizationNavigator} />
+                  <MedinfoDrawer.Screen name={NAV_MEDINFO_DOCUMMENT_VIEW}      component={DocumentView} />
+                <MedinfoDrawer.Screen name={NAV_MEDINFO_IMMUNIZATION_NAVIGATOR}  component={MedinfoImmunizationNavigator} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_LABRESULT_NAVIGATOR}  component={MedinfoLabResultNavigator} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_MEDICATIONS}    component={MedicationList} />
                   <MedinfoDrawer.Screen name={NAV_MEDINFO_REFILLS}        component={RefillForm} />
@@ -488,9 +483,8 @@ export const Routes = () => {
      /* header options is on object application_header */
       return (
               <PracticeDrawer.Navigator InitialRouteName={NAV_PRACTICE_NEWS}
-                    options= {{headerShown: false}}
-                    screenOptions={{  ...headerOptions,
-                 }}>
+                    screenOptions={{  ...headerOptions}}
+                    drawerContent={(props) => <PracticeSideDrawerCustom {...props} />} >
                   <PracticeDrawer.Screen name={NAV_PRACTICE_NEWS}       component={NewsList} />
                   <PracticeDrawer.Screen name={NAV_PRACTICE_RESOURCES}  component={ResourceList} />
                   <PracticeDrawer.Screen name={NAV_PRACTICE_INFO}       component={PracticeInfo} /> 

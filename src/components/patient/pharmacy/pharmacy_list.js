@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View,ScrollView,TouchableOpacity } from 'react-native'
+import {ListItem,Button} from 'react-native-elements'
 // tools
 import { loading,ConfirmDialog,IconButton } from '../../utils/misc_tools'
 import LookupForm  from '../../utils/lookup/lookup_form';
@@ -61,31 +62,39 @@ const PharmacyList = () => {
         return (
             <View>
                 {pharmacydata.recordset.map(row => (
-                 <TouchableOpacity key={row.pharmacy_id} style={appStyles.item}
-                                   >
-                    <View style={appStyles.listItem_textWithDelete}>                 
-                        <Text >{row.pharmacy_name}</Text>
-                        <IconButton type = 'DELETE' onPress={() => ConfirmDelete(row.pharmacy_id,row.pharmacy_name)} />
-                    </View>
-                    <Text >{'Phone: '+row.phone}{' Fax: '+row.fax}</Text>
-                    <Text >{'hours: '+row.store_hours}</Text>
-                </TouchableOpacity> 
+                     <ListItem.Swipeable style={{height:80}} key={row.pharmacy_id}
+                        rightContent={
+                         <View style={{height:'70%',marginTop:18}}>
+                             <Button 
+                                 title="Delete"
+                                 icon={{ name: 'delete', color: 'white' }}
+                                 buttonStyle={{minHeight: '100%', backgroundColor: 'red',alignItems:'center' }}
+                                 onPress={() => ConfirmDelete(row.pharmacy_id,row.pharmacy_name)}
+                             />
+                         </View>
+                        }
+                     >
+                     <View key={row.pharmacy_id} style={appStyles.itemSwipe} >
+                        <Text > {row.pharmacy_name}</Text>
+                        <Text >{'Phone: '+row.phone}{' Fax: '+row.fax}</Text>
+                        {/* <Text >{'hours: '+row.store_hours}</Text> */}
+                     </View> 
+                 </ListItem.Swipeable>
                ))}
            </View>
         )
     }
 //=============================================================================
     return (
-        <ScrollView>
-            <View style={appStyles.addButton}>
-                <IconButton type = 'ADD' onPress={() => ItemAdd()} />
-            </View>
+        <View style={{flex:1}}>
             {statePharmacy.loading ? loading(true) : loading(false)} 
-            <PharmacyListDisplay pharmacydata={statePharmacy.data} /> 
+            <ScrollView>
+                <PharmacyListDisplay pharmacydata={statePharmacy.data} /> 
+            </ScrollView>
             { lookupOpen ?   <LookupForm lookupset='pharmacy' onOk={(lookupvalue)=>{handleItemAdd(lookupvalue)}} 
-                                                              onDismiss={()=>{setLookupOpen(false)}}/> : null} 
-    
-        </ScrollView>
+                                                                onDismiss={()=>{setLookupOpen(false)}}/> : null} 
+           <IconButton type = 'ADD_FLOATING' onPress={() => ItemAdd()} />
+      </View>
     )
 }
  

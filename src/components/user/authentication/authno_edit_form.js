@@ -7,10 +7,9 @@ import { updateField, generateData, isFormValid, setDefaultValue,populateOptionF
          resetFields,populateFields} from '../../utils/forms/form_actions';
 import Formfield from '../../utils/forms/form_fields';
 // tools
-import { loading,AppMessage,AppButton } from '../../utils/misc_tools'
+import { loading,AppMessage,AppButton,IconButton } from '../../utils/misc_tools'
 // data
 import { UserContext } from '../../../store/UserContext'
-import { RefContext } from '../../../store/RefContext'
 import {useAuthenicationForm} from '../../../store/hooks/useUserData'
 import {AuthenticationData} from './authno_edit_data'
 // styles
@@ -21,7 +20,6 @@ import {appStyles} from '../../../resources/styles/main_styles'
 const AuthNoEditForm = () => {
 
     const user = useContext (UserContext)
-    const ref = useContext(RefContext)
     const [state,loadingState,DataAuthenticationUpdate,DataAuthenticationGetDetails,
            DataValidationFailure,DataValidationReset] = useAuthenicationForm()
     const [formdata,setFormdata] = useState (AuthenticationData)
@@ -104,13 +102,8 @@ const AuthNoEditForm = () => {
     return (
         <ScrollView style={appStyles.form_container}>
             <View style={appStyles.goBackButton}>
-                <Icon 
-                    name='arrowleft'
-                    type='antdesign'
-                    color='#517fa4'
-                    onPress={() => goBack()}
-                />
-                <Text style={appStyles.form_title}> Authentication Number</Text>
+                <IconButton type = 'GOBACK' onPress={() => goBack()} />
+                <Text style={appStyles.form_title}>Authentication Number</Text>
             </View>
             <Formfield id={'description'} formdata={formdata.description}
                        changefunction={(id,action,value) => updateFormField(id,action,value)} />

@@ -52,19 +52,21 @@ export const UserContext = React.createContext({
 // Local Storage
 //=============================================================================
      localStorage: {
+        appt_for:0,
+        authentication_id:13,
+        contact_id:0,
+        careplan_id:0,
+        careplan_name:'',
+        document_id: 0,
+        insurance_id:0,
+        immunization_id:0,
         labresult_id: 0,
         labresultcat_id: 0,
-        note_id:0,
         msg_id:0,
         msg_calledfrom:'',
         msg_to:0,
-        authentication_id:13,
-        contact_id:0,
-        insurance_id:0,
-        immunization_id:0,
-        careplan_id:0,
-        careplan_name:'',
-        appt_for:0,
+        note_id:0,
+       
      }
 })
 //=============================================================================
